@@ -1,0 +1,222 @@
+/* line 1, style.scss */
+#wpadminbar {
+  display: none !important;
+}
+
+/****************************************
+
+	CSS RESET
+
+****************************************/
+/* line 23, style.scss */
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* line 23, style.scss */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+/* line 23, style.scss */
+body {
+  line-height: 1;
+}
+
+/* line 23, style.scss */
+ol, ul {
+  list-style: none;
+}
+
+/* line 23, style.scss */
+blockquote, q {
+  quotes: none;
+}
+
+/* line 23, style.scss */
+blockquote:after, blockquote:before, q:after, q:before {
+  content: '';
+  content: none;
+}
+
+/* line 23, style.scss */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/****************************************
+
+	FONTS
+
+****************************************/
+/****************************************
+
+	GENERAL
+
+****************************************/
+/* line 39, style.scss */
+body {
+  width: 100%;
+  height: 100%;
+}
+
+/* line 44, style.scss */
+a, a:visited {
+  text-decoration: none;
+  color: black;
+}
+
+/****************************************
+
+	INTRO
+
+****************************************/
+/* line 55, style.scss */
+section {
+  border: 1px solid purple;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* line 61, style.scss */
+#intro_nav {
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  width: 100%;
+  text-align: center;
+}
+/* line 67, style.scss */
+#intro_nav li {
+  display: inline-block;
+}
+
+/* line 72, style.scss */
+#contents_list {
+  margin-top: 48px;
+}
+
+/****************************************
+
+	ARTICLES
+
+****************************************/
+/* line 82, style.scss */
+#articles {
+  border: 1px solid green;
+  background-color: white;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  display: none;
+}
+
+/* line 93, style.scss */
+#article_nav {
+  border: 1px solid pink;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+/* line 100, style.scss */
+#article_nav div {
+  display: inline-block;
+}
+
+/****************************************
+
+	LIGHTBOX
+
+****************************************/
+/* line 111, style.scss */
+#lightbox_bg {
+  position: fixed;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.8);
+  width: 100%;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+/* line 122, style.scss */
+#lightbox_close {
+  position: fixed;
+  top: 36px;
+  right: 36px;
+  width: 48px;
+  height: 48px;
+  z-index: 999;
+  cursor: pointer;
+  display: none;
+}
+@media (max-width: 800px), (max-height: 600px) {
+  /* line 122, style.scss */
+  #lightbox_close {
+    top: 18px;
+    right: 18px;
+    width: 32px;
+    height: 32px;
+  }
+}
+/* line 138, style.scss */
+#lightbox_close img {
+  width: 100%;
+  height: 100%;
+}
+
+/* line 144, style.scss */
+#lightbox_inner_wrapper {
+  position: fixed;
+  z-index: 9999;
+  width: 67%;
+  height: 80%;
+  top: 10%;
+  left: 16.7%;
+  text-align: center;
+  display: none;
+}
+@media (max-width: 600px) {
+  /* line 144, style.scss */
+  #lightbox_inner_wrapper {
+    width: 80%;
+    left: 10%;
+  }
+}
+/* line 158, style.scss */
+#lightbox_inner_wrapper .image {
+  max-height: 100%;
+  max-width: 100%;
+  position: absolute;
+  cursor: pointer;
+  transition: width 0.5s, height 0.5s, opacity 1s;
+}
+/* line 165, style.scss */
+#lightbox_inner_wrapper .landscape {
+  width: 100%;
+  height: auto;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+/* line 172, style.scss */
+#lightbox_inner_wrapper .portrait {
+  height: 100%;
+  width: auto;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+}

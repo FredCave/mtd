@@ -1,0 +1,22 @@
+### HOW TO GET NEXT + PREVIOUS?
+
+### VIDEO
+
+### INTRO SECTIONS
+
+### RECYCLABLE LIGHTBOX FUNCTION
+
+### BOOK EDITOR FUNCTIONALITY
+
+
+
+
+### GENERATE PDFs
+	– https://parall.ax/products/jspdf – NO CSS?
+	– https://wkhtmltopdf.org – COMMAND LINE
+	– https://github.com/mozilla/pdf.js
+	– https://github.com/marcbachmann/node-html-pdf/!!!!!
+	– http://pdfmake.org/
+
+	MAX WIDTH 1440
+	MOBILE WIDTH 768

@@ -107,7 +107,7 @@ section {
 
 ****************************************/
 /* line 82, style.scss */
-#articles {
+#article_wrapper {
   border: 1px solid green;
   background-color: white;
   position: fixed;

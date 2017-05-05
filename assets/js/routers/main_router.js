@@ -2,17 +2,19 @@ var app = app || {};
 
 app.MainRouter = Backbone.Router.extend({
 
+    introLoaded: false,
+
     articleWrapper: false,
 
     currentArticle: "",
 
 	routes: {
 
-        "test-one"      : "articleShow",
+        "test-one"      : "showArticle",
 
-        "test-two"      : "articleShow",
+        "test-two"      : "showArticle",
 
-        "test-three"    : "articleShow",
+        "test-three"    : "showArticle",
 
         "foreword"      : "introNav",
 
@@ -30,18 +32,9 @@ app.MainRouter = Backbone.Router.extend({
 
         console.log("MainRouter.introNav");
 
-        if ( !$("#intro_nav").length ) {
-            new app.AppView();
-        }
-
-    },
-
-    showHome: function () {
-
-    	console.log("MainRouter.showHome");
-
-        if ( !$("#intro_nav").length ) {
-            new app.AppView();
+        if ( !this.introLoaded ) {
+            Home.init();
+            this.introLoaded = true;
         }
 
     },
@@ -66,62 +59,33 @@ app.MainRouter = Backbone.Router.extend({
 
     },
 
-    bindWrapperEvents: function () {
+    showHome: function () {
 
-        console.log("MainRouter.bindWrapperEvents");
+        console.log("MainRouter.showHome");
 
-        var self = this;
-
-        $("#articles").off();
-        $("#articles").on("click", "#nav_close", function(){
-
-            self.articleClose();
-
-        });
+        if ( !this.introLoaded ) {
+            Home.init();
+            this.introLoaded = true;
+        }
 
     },
 
-    articleShow: function ( ) {
+    showArticle: function ( ) {
 
-        console.log("MainRouter.articleShow");
+        console.log("MainRouter.showArticle");
 
         var article = Backbone.history.fragment,
-            artId = this.getId( article ),
-            wrapperTemplate = _.template( $('#article_wrapper_template').html() );
+            artId = this.getId( article );
 
-        // CHECK IF WRAPPER EXISTS
-        if ( !this.articleWrapper ) {
-            console.log("Article wrapper appended.");
-            $("#articles").append( wrapperTemplate() );
-            this.bindWrapperEvents();
-            this.articleWrapper = true;
-        }
-
-        // IF URL ARTICLE IS NOT LOADED IN CURRENT
-        if ( artId !== this.currentArticle ) {
-            new app.ArticleView({id:artId});
-            this.currentArticle = artId;
-        } else {
-            // FADE IN ARTICLES
-            $("#articles").fadeIn(1000);
-        }
+        Article.init( artId );
 
     },
 
-    articleClose: function () {
+    showEditor: function () {
 
-        console.log("MainRouter.articleClose");
+        console.log("MainRouter.showEditor");
 
-        $("#articles").fadeOut(1000);
-
-    },
-
-    bookEditor: function () {
-
-        console.log("MainRouter.bookEditor");
-
-        var appModel = new app.AppModel;
-        new app.EditorView({model:appModel});
+        Editor.init();
 
     }
 

@@ -17,6 +17,7 @@
 	– https://github.com/mozilla/pdf.js
 	– https://github.com/marcbachmann/node-html-pdf/!!!!!
 	– http://pdfmake.org/
+	– mpdf !!!!!!
 
 	MAX WIDTH 1440
 	MOBILE WIDTH 768

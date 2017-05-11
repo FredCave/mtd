@@ -10,6 +10,9 @@ var Article = {
 
         this.bindEvents();
 
+        // FADE OUT EDITOR
+        $("#editor_wrapper").fadeOut(1000);
+
         if ( !this.wrapperVisible ) {
             // SHOW WRAPPER 
             $("#article_wrapper").fadeIn( 1000 );
@@ -22,10 +25,10 @@ var Article = {
             AjaxCalls.loadArticle( artId );
             this.currentArticle = artId;
 
-           
+            // TITLE, PREV + NEXT STORED IN APP OBJECT
+            this.loadTitle( artId );
 
-            // SET TIMEOUT: LOAD PREV + NEXT
-
+            this.loadPrevNext( artId );
 
         } else {
             // FADE IN ARTICLES
@@ -48,11 +51,77 @@ var Article = {
 
     },
 
+    loadTitle: function ( id ) {
+
+        console.log("Article.loadTitle");
+
+        // IF ARTICLE DATA NOT YET LOADED, EG. NAVIGATION STRAIGHT TO ARTICLE:
+        // CALL AJAX HERE
+        if ( App.articles === "" ) {
+            console.log("Article data not loaded");
+            return;
+        }
+
+        var articles = App.articles;
+        $.each( articles, function ( i ) {
+            if ( $(this)[0].ID === id ) {
+                $("#nav_title").text( $(this)[0].title );
+            }
+        });
+
+    },
+
+    loadPrevNext: function ( id ) {
+
+        console.log("Article.loadPrevNext");
+
+        // IF ARTICLE DATA NOT YET LOADED, EG. NAVIGATION STRAIGHT TO ARTICLE:
+        // CALL AJAX HERE
+        if ( App.articles === "" ) {
+            console.log("Article data not loaded");
+            return;
+        }
+
+        var articles = App.articles,
+            arrayPos;
+        // GET ARTICLE'S POSITION IN ARRAY
+        $.each( articles, function ( i ) {
+            if ( $(this)[0].ID === id ) {
+                arrayPos = i;
+            }
+            i++;
+        });
+
+        // NEXT
+        var nextPos = arrayPos + 1;
+        if ( nextPos >= articles.length ) {
+            nextPos = 0;
+        }
+
+        $("#nav_right a").attr({
+            "href"          : "#" + articles[ nextPos ].slug,
+            "data-title"    : articles[ nextPos ].title
+        });
+
+        // PREV
+        var prevPos = arrayPos - 1;
+        if ( prevPos < 0 ) {
+            prevPos = articles.length - 1;
+        }
+
+        $("#nav_left a").attr({
+            "href"          : "#" + articles[ prevPos ].slug,
+            "data-title"    : articles[ prevPos ].title
+        });
+
+    },
+
     articleClose: function () {
 
         console.log("Article.articleClose");
 
         $("#article_wrapper").fadeOut(1000);
+        this.wrapperVisible = false;
 
     }
 

@@ -76,14 +76,14 @@ a, a:visited {
 	INTRO
 
 ****************************************/
-/* line 55, style.scss */
+/* line 59, style.scss */
 section {
   border: 1px solid purple;
   width: 100%;
   min-height: 100vh;
 }
 
-/* line 61, style.scss */
+/* line 65, style.scss */
 #intro_nav {
   position: fixed;
   z-index: 99;
@@ -91,14 +91,32 @@ section {
   width: 100%;
   text-align: center;
 }
-/* line 67, style.scss */
+/* line 71, style.scss */
 #intro_nav li {
   display: inline-block;
 }
 
-/* line 72, style.scss */
+/* line 76, style.scss */
 #contents_list {
   margin-top: 48px;
+}
+
+/* line 80, style.scss */
+.intro_content {
+  border: 1px solid green;
+  min-height: 100vh;
+  font-size: 1.8em;
+}
+
+/* line 86, style.scss */
+.intro_wrapper > p {
+  width: 33%;
+}
+
+/* line 90, style.scss */
+section img {
+  width: auto;
+  height: 100vh;
 }
 
 /****************************************
@@ -106,7 +124,7 @@ section {
 	ARTICLES
 
 ****************************************/
-/* line 82, style.scss */
+/* line 102, style.scss */
 #article_wrapper {
   border: 1px solid green;
   background-color: white;
@@ -118,18 +136,27 @@ section {
   display: none;
 }
 
-/* line 93, style.scss */
+/* line 113, style.scss */
 #article_nav {
   border: 1px solid pink;
   position: absolute;
   top: 0;
   width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
-  justify-content: space-between;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
-/* line 100, style.scss */
+/* line 120, style.scss */
 #article_nav div {
   display: inline-block;
+}
+
+/* line 125, style.scss */
+#article_current {
+  padding-top: 120px;
 }
 
 /****************************************
@@ -137,7 +164,7 @@ section {
 	LIGHTBOX
 
 ****************************************/
-/* line 111, style.scss */
+/* line 135, style.scss */
 #lightbox_bg {
   position: fixed;
   z-index: 999;
@@ -149,7 +176,7 @@ section {
   display: none;
 }
 
-/* line 122, style.scss */
+/* line 146, style.scss */
 #lightbox_close {
   position: fixed;
   top: 36px;
@@ -161,7 +188,7 @@ section {
   display: none;
 }
 @media (max-width: 800px), (max-height: 600px) {
-  /* line 122, style.scss */
+  /* line 146, style.scss */
   #lightbox_close {
     top: 18px;
     right: 18px;
@@ -169,13 +196,13 @@ section {
     height: 32px;
   }
 }
-/* line 138, style.scss */
+/* line 162, style.scss */
 #lightbox_close img {
   width: 100%;
   height: 100%;
 }
 
-/* line 144, style.scss */
+/* line 168, style.scss */
 #lightbox_inner_wrapper {
   position: fixed;
   z-index: 9999;
@@ -187,36 +214,48 @@ section {
   display: none;
 }
 @media (max-width: 600px) {
-  /* line 144, style.scss */
+  /* line 168, style.scss */
   #lightbox_inner_wrapper {
     width: 80%;
     left: 10%;
   }
 }
-/* line 158, style.scss */
+/* line 182, style.scss */
 #lightbox_inner_wrapper .image {
   max-height: 100%;
   max-width: 100%;
   position: absolute;
   cursor: pointer;
+  -webkit-transition: width 0.5s, height 0.5s, opacity 1s;
   transition: width 0.5s, height 0.5s, opacity 1s;
 }
-/* line 165, style.scss */
+/* line 189, style.scss */
 #lightbox_inner_wrapper .landscape {
   width: 100%;
   height: auto;
   top: 50%;
   left: 0;
   -webkit-transform: translateY(-50%);
-  -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 172, style.scss */
+/* line 196, style.scss */
 #lightbox_inner_wrapper .portrait {
   height: 100%;
   width: auto;
   left: 50%;
   -webkit-transform: translateX(-50%);
-  -ms-transform: translateX(-50%);
   transform: translateX(-50%);
+}
+
+/****************************************
+
+	EDITOR
+
+****************************************/
+/* line 210, style.scss */
+#editor_wrapper {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  display: none;
 }

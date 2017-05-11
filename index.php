@@ -10,9 +10,9 @@
 
 		    <div id="article_nav">
 		        <div id="nav_close"><a href="#contents">X</a></div>
-		        <div id="nav_left"><</div>
+		        <div id="nav_left"><a href="" data-title=""><</a></div>
 		        <div id="nav_title"></div>
-		        <div id="nav_right">></div>
+		        <div id="nav_right"><a href="" data-title="">></a></div>
 		        <div id="nav_book_editor"><a href="#make-book">Book</a></div>
 		    </div>
 
@@ -26,6 +26,8 @@
 
 	</div>
 
-	<div id="editor"></div>
+	<div id="editor">
+		<?php include("includes/editor.php"); ?>
+	</div>
 
 <?php get_footer(); ?>

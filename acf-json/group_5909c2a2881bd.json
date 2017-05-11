@@ -24,6 +24,27 @@
             "disabled": 0
         },
         {
+            "key": "field_5912c83a8c812",
+            "label": "Author",
+            "name": "article_author",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": "",
+            "readonly": 0,
+            "disabled": 0
+        },
+        {
             "key": "field_5909c2a61c66f",
             "label": "Background Colour",
             "name": "article_bg_color",
@@ -304,5 +325,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1493893726
+    "modified": 1494403146
 }

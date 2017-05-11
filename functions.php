@@ -117,6 +117,17 @@ function mtd_article () {
 
 }
 
+add_action( 'wp_ajax_articledata', 'mtd_article_data' );
+add_action( 'wp_ajax_nopriv_articledata', 'mtd_article_data' );
+
+function mtd_article_data () {
+
+    echo include( "includes/article_data.php" );
+
+    wp_die();
+        
+}
+
 
 // SET STYLES IN ARTICLES
 
@@ -126,5 +137,12 @@ function mtd_template_style ( $template ) {
 
 }
 
+// CUSTOM URL QUERY
+
+function myplugin_register_query_vars( $vars ) {
+    $vars[] = 'art';
+    return $vars;
+}
+add_filter( 'query_vars', 'myplugin_register_query_vars' ); 
 
 ?>

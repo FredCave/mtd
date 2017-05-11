@@ -52,6 +52,10 @@ a, a:visited {
 
 ****************************************/
 
+#intro_wrapper {
+	// height: 100vh;
+}
+
 section {
 	border: 1px solid purple;
 	width: 100%;
@@ -72,6 +76,22 @@ section {
 #contents_list {
 	margin-top: 48px;
 }
+
+.intro_content {
+	border: 1px solid green;
+	min-height: 100vh;
+	font-size: 1.8em;
+}
+
+.intro_wrapper > p {
+	width: 33%;
+}
+
+section img { // TMP: FOR VIDEO PLACEHOLDER
+	width: auto;
+	height: 100vh;
+}
+
 
 /****************************************
 
@@ -100,6 +120,10 @@ section {
 	div {
 		display: inline-block;
 	}
+}
+
+#article_current {
+	padding-top: 120px;
 }
 
 /****************************************
@@ -175,4 +199,17 @@ section {
 		left: 50%;
 		@include translateX();
 	}
+}
+
+/****************************************
+
+	EDITOR
+
+****************************************/
+
+#editor_wrapper {
+	position: fixed;
+	top: 0;
+	z-index: 999;
+	display: none;
 }

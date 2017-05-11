@@ -28,17 +28,38 @@ AjaxCalls = {
 
 		        $("#intro").append( data );
 
-		        // INIT FULL PAGE
-		        $('#intro_wrapper').fullpage({
-					sectionSelector: '.intro_section',
-					anchors:['foreword', 'contents', 'colophon']
-				});
+		        _.defer( Home.ajaxSuccess() );
 
 		    },
 		    error: function(errorThrown){
 		        console.log(errorThrown);
 		    }
 		}); 
+
+	},
+
+	loadArticleData: function () {
+
+		console.log("AjaxCalls.loadArticleData");
+
+		var self = this;
+
+		$.ajax({
+		    url: myAjax.ajaxurl,
+		    data: {
+		        "action" : "articledata"
+		    },
+		    dataType: "json",
+		    success:function(data) {
+
+		    	// SAVE ARTICLE DATA TO APP OBJECT
+		    	App.articles = data;
+
+		    },
+		    error: function(errorThrown){
+		        console.log(errorThrown);
+		    }
+		}); 		
 
 	},
 
@@ -54,19 +75,16 @@ AjaxCalls = {
 		        "action" : "article",
 		        "id" : article_id
 		    },
-		    dataType: "json",
+		    // dataType: "json",
 		    success:function(data) {
 
 		    	data = self.responseTrim( data );
+		    	$("#article_current").html( data );
 
-		    	console.log( 61, data );
+		    	// // LOAD TITLE
+		    	// Article.loadTitle( data );
 
-		    	// LOAD TITLE IN ARTICLE WRAPPER
-		    	$("#nav_title").text( data[0] );
-
-		    	// $("#article_current").html( data.html );
-
-				console.log( 60, data );
+		    	// // LOAD PREV + NEXT
 
 		    },
 		    error: function(errorThrown){

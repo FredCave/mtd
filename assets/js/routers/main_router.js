@@ -10,11 +10,11 @@ app.MainRouter = Backbone.Router.extend({
 
 	routes: {
 
-        "test-one"      : "showArticle",
+        "a-path-for-the-documentation-of-teaching-practice" : "showArticle",
 
-        "test-two"      : "showArticle",
+        "the-skin-is-the-most-external-layer-of-the-brain"  : "showArticle",
 
-        "test-three"    : "showArticle",
+        "documentation-as-part-of-artistic-practice"        : "showArticle",
 
         "foreword"      : "introNav",
 
@@ -22,40 +22,9 @@ app.MainRouter = Backbone.Router.extend({
 
         "colophon"      : "introNav",
 
-        "make-book"     : "bookEditor", 
+        "make-book"     : "showEditor", 
 
         "*other"        : "showHome"
-
-    },
-
-    introNav: function () {
-
-        console.log("MainRouter.introNav");
-
-        if ( !this.introLoaded ) {
-            Home.init();
-            this.introLoaded = true;
-        }
-
-    },
-
-    getId: function ( slug ) {
-
-        console.log( 45, slug );
-
-        switch ( slug ) {
-            case "test-one" :
-                id = 19;
-                break;
-            case "test-two" :
-                id = 34;
-                break;
-            case "test-three" :
-                id = 35;
-                break;
-        }
-
-        return id;
 
     },
 
@@ -70,10 +39,46 @@ app.MainRouter = Backbone.Router.extend({
 
     },
 
+    introNav: function () {
+
+        console.log("MainRouter.introNav");
+
+        var section = Backbone.history.fragment;
+
+        if ( !this.introLoaded ) {
+            Home.init( section );
+            this.introLoaded = true;
+        } else {
+            // NAVIGATE TO SECTION
+            Home.navTo( section );
+        }
+
+    },
+
+    getId: function ( slug ) {
+
+        console.log( 45, slug );
+
+        switch ( slug ) {
+            case "a-path-for-the-documentation-of-teaching-practice" :
+                id = 19;
+                break;
+            case "the-skin-is-the-most-external-layer-of-the-brain" :
+                id = 34;
+                break;
+            case "documentation-as-part-of-artistic-practice" :
+                id = 35;
+                break;
+        }
+
+        return id;
+
+    },
+
     showArticle: function ( ) {
 
         console.log("MainRouter.showArticle");
-
+        
         var article = Backbone.history.fragment,
             artId = this.getId( article );
 

@@ -8,8 +8,9 @@ function mtd_foreword () {
     ) );    
     if ( $articles_query->have_posts() ) :
         while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
-            <div>
+            <div id="foreword_wrapper" class="intro_content">
                 <?php the_title(); ?>
+                <?php the_content(); ?>
             </div>
         <?php endwhile;
         wp_reset_postdata();
@@ -52,8 +53,9 @@ function mtd_colophon () {
     ) );    
     if ( $articles_query->have_posts() ) :
         while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
-            <div>
+            <div id="colophon_wrapper" class="intro_content fp-auto-height">
                 <?php the_title(); ?>
+                <?php the_content(); ?>
             </div>
         <?php endwhile;
         wp_reset_postdata();
@@ -72,14 +74,19 @@ function mtd_colophon () {
 </div>
 
 <div id="intro_wrapper">
+    <!-- VIDEO -->
+    <section id="" class="intro_section" data-anchor="video">
+        <img src="<?php bloginfo('template_url'); ?>/assets/img/home_video.png" />
+    </section>
+
     <!-- FOREWORD -->
     <section id="" class="intro_section" data-anchor="foreword">
-            <?php mtd_foreword(); ?>
+        <?php mtd_foreword(); ?>
     </section>
 
     <!-- CONTENTS -->
     <section id="" class="intro_section" data-anchor="contents">
-        <ul id="contents_list">
+        <ul id="contents_list" class="intro_wrapper">
             <?php mtd_contents_list(); ?>
         </ul>
     </section>

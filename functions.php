@@ -40,7 +40,7 @@ function create_post_types() {
         ),
         'public' => true,
         'show_in_rest' => true,
-        'taxonomies' => array('category'),
+        'taxonomies' => array('category','post_tag'),
         'has_archive' => true,
         'supports' => array('editor','title'),
         'menu_position' => 5

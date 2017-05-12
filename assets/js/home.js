@@ -35,13 +35,13 @@ var Home = {
 		console.log("Home.ajaxSuccess");
 
 		// INIT FULL PAGE
-        $('#intro_wrapper').fullpage({
-			sectionSelector: '.intro_section',
-			anchors:['foreword', 'contents', 'colophon']
-		});
+  //       $('#intro_wrapper').fullpage({
+		// 	sectionSelector: '.intro_section',
+		// 	anchors:['foreword', 'contents', 'colophon']
+		// });
 
-		// // NAVIGATE TO SECTION
-		// this.navTo( this.section );
+		// NAVIGATE TO SECTION
+		this.navTo( this.section );
 
 	},
 

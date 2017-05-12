@@ -43,9 +43,27 @@ var Article = {
 
         var self = this;
 
+        $("#nav_close").off("click");
         $("#nav_close").on("click", function(){
 
             self.articleClose();
+
+        });
+
+        $("#article_current").off("click");
+        $("#article_current").on("click", ".add_to_book", function(e){
+
+            console.log(54);
+
+            e.preventDefault();
+            self.addToBook();
+
+        });
+
+        $("#article_current").on("click", ".download_pdf", function(e){
+
+            var thisHref = "generate/?art=" + self.currentArticle;
+            $(this).attr("href", thisHref);
 
         });
 
@@ -64,7 +82,7 @@ var Article = {
 
         var articles = App.articles;
         $.each( articles, function ( i ) {
-            if ( $(this)[0].ID === id ) {
+            if ( $(this)[0].ID === parseInt(id) ) {
                 $("#nav_title").text( $(this)[0].title );
             }
         });
@@ -86,7 +104,7 @@ var Article = {
             arrayPos;
         // GET ARTICLE'S POSITION IN ARRAY
         $.each( articles, function ( i ) {
-            if ( $(this)[0].ID === id ) {
+            if ( $(this)[0].ID === parseInt(id) ) {
                 arrayPos = i;
             }
             i++;
@@ -99,7 +117,7 @@ var Article = {
         }
 
         $("#nav_right a").attr({
-            "href"          : "#" + articles[ nextPos ].slug,
+            "href"          : "#article/" + articles[ nextPos ].ID + "/" + articles[ nextPos ].slug,
             "data-title"    : articles[ nextPos ].title
         });
 
@@ -110,11 +128,32 @@ var Article = {
         }
 
         $("#nav_left a").attr({
-            "href"          : "#" + articles[ prevPos ].slug,
+            "href"          : "#article/" + articles[ nextPos ].ID + "/" + articles[ prevPos ].slug,
             "data-title"    : articles[ prevPos ].title
         });
 
     },
+
+    addToBook: function () {
+
+        console.log("Article.addToBook");
+
+        console.log( Editor.savedArticles, $.inArray( parseInt(this.currentArticle), Editor.savedArticles ) );
+
+        // CHECK IF THIS ID ALREADY IN SAVED BOOKS ARRAY
+        if ( $.inArray( parseInt(this.currentArticle), Editor.savedArticles ) === -1 ) {
+            Editor.savedArticles.push( parseInt(this.currentArticle) );
+        } else {
+            console.log("Already saved.");
+        }
+
+    },
+
+    downloadPdf: function () {
+
+        console.log("Article.downloadPdf");
+
+    },   
 
     articleClose: function () {
 

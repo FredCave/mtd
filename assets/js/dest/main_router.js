@@ -10,21 +10,17 @@ app.MainRouter = Backbone.Router.extend({
 
 	routes: {
 
-        "a-path-for-the-documentation-of-teaching-practice" : "showArticle",
+        "article/:id/:title"    : "showArticle",
 
-        "the-skin-is-the-most-external-layer-of-the-brain"  : "showArticle",
+        "foreword"          : "introNav",
 
-        "documentation-as-part-of-artistic-practice"        : "showArticle",
+        "contents"          : "introNav",
 
-        "foreword"      : "introNav",
+        "colophon"          : "introNav",
 
-        "contents"      : "introNav",
+        "make-book"         : "showEditor", 
 
-        "colophon"      : "introNav",
-
-        "make-book"     : "showEditor", 
-
-        "*other"        : "showHome"
+        "*other"            : "showHome"
 
     },
 
@@ -55,34 +51,11 @@ app.MainRouter = Backbone.Router.extend({
 
     },
 
-    getId: function ( slug ) {
+    showArticle: function ( id ) {
 
-        console.log( 45, slug );
-
-        switch ( slug ) {
-            case "a-path-for-the-documentation-of-teaching-practice" :
-                id = 19;
-                break;
-            case "the-skin-is-the-most-external-layer-of-the-brain" :
-                id = 34;
-                break;
-            case "documentation-as-part-of-artistic-practice" :
-                id = 35;
-                break;
-        }
-
-        return id;
-
-    },
-
-    showArticle: function ( ) {
-
-        console.log("MainRouter.showArticle");
+        console.log("MainRouter.showArticle", id);
         
-        var article = Backbone.history.fragment,
-            artId = this.getId( article );
-
-        Article.init( artId );
+        Article.init( id );
 
     },
 

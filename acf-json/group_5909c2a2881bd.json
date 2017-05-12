@@ -320,10 +320,9 @@
         "format",
         "page_attributes",
         "featured_image",
-        "tags",
         "send-trackbacks"
     ],
     "active": 1,
     "description": "",
-    "modified": 1494403146
+    "modified": 1494581884
 }

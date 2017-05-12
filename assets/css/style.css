@@ -159,12 +159,20 @@ section img {
   padding-top: 120px;
 }
 
+/* line 129, style.scss */
+.article_button {
+  border: 1px solid red;
+  width: 64px;
+  height: 64px;
+  display: inline-block;
+}
+
 /****************************************
 
 	LIGHTBOX
 
 ****************************************/
-/* line 135, style.scss */
+/* line 142, style.scss */
 #lightbox_bg {
   position: fixed;
   z-index: 999;
@@ -176,7 +184,7 @@ section img {
   display: none;
 }
 
-/* line 146, style.scss */
+/* line 153, style.scss */
 #lightbox_close {
   position: fixed;
   top: 36px;
@@ -188,7 +196,7 @@ section img {
   display: none;
 }
 @media (max-width: 800px), (max-height: 600px) {
-  /* line 146, style.scss */
+  /* line 153, style.scss */
   #lightbox_close {
     top: 18px;
     right: 18px;
@@ -196,13 +204,13 @@ section img {
     height: 32px;
   }
 }
-/* line 162, style.scss */
+/* line 169, style.scss */
 #lightbox_close img {
   width: 100%;
   height: 100%;
 }
 
-/* line 168, style.scss */
+/* line 175, style.scss */
 #lightbox_inner_wrapper {
   position: fixed;
   z-index: 9999;
@@ -214,13 +222,13 @@ section img {
   display: none;
 }
 @media (max-width: 600px) {
-  /* line 168, style.scss */
+  /* line 175, style.scss */
   #lightbox_inner_wrapper {
     width: 80%;
     left: 10%;
   }
 }
-/* line 182, style.scss */
+/* line 189, style.scss */
 #lightbox_inner_wrapper .image {
   max-height: 100%;
   max-width: 100%;
@@ -229,7 +237,7 @@ section img {
   -webkit-transition: width 0.5s, height 0.5s, opacity 1s;
   transition: width 0.5s, height 0.5s, opacity 1s;
 }
-/* line 189, style.scss */
+/* line 196, style.scss */
 #lightbox_inner_wrapper .landscape {
   width: 100%;
   height: auto;
@@ -238,7 +246,7 @@ section img {
   -webkit-transform: translateY(-50%);
   transform: translateY(-50%);
 }
-/* line 196, style.scss */
+/* line 203, style.scss */
 #lightbox_inner_wrapper .portrait {
   height: 100%;
   width: auto;
@@ -252,7 +260,7 @@ section img {
 	EDITOR
 
 ****************************************/
-/* line 210, style.scss */
+/* line 217, style.scss */
 #editor_wrapper {
   position: fixed;
   top: 0;

@@ -22,25 +22,53 @@ function mtd_foreword () {
 
 function mtd_contents_list () {
 
-    $articles_query = new WP_Query( array( 
-        'post_type' => 'articles' 
-    ) );    
-    if ( $articles_query->have_posts() ) :
-        while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
-            <li>
-            <?php 
-            global $post;
-            $image = get_field("article_preview_image");
-            $cats = get_the_category();
-            foreach ( $cats as $cat ) {
-                $article_cat = $cat->cat_name;
-            } ?>
-                <a href="#<?php echo $post->post_name; ?>"><?php the_title(); ?></a>
-                <?php echo $article_cat; ?>
-            </li>
-        <?php endwhile;
-        wp_reset_postdata();
-    endif;
+    // GET CATEGORIES
+    $cats = get_categories();
+    $num = 1;
+
+    foreach ( $cats as $cat ) {        
+        if ( $cat->cat_name !== "Uncategorized" ) {
+            
+            echo $num++ . ". ";
+            echo $cat->cat_name;
+            echo "<hr>";
+
+            $catId = $cat->term_id;
+            $articles_query = new WP_Query( array( 
+                'post_type' => 'articles',
+                'cat'       => $catId,
+                'orderby'   => 'menu_order', 
+                // 'order'     => 'DESC'
+            ) );    
+            if ( $articles_query->have_posts() ) :
+                while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
+                    <li>
+                    <?php 
+                    global $post;
+                    $image = get_field("article_preview_image");
+                    ?>
+                        <a href="#article/<?php the_ID(); ?>/<?php echo $post->post_name; ?>">
+                            <h1>
+                            <?php if ( get_field("full_title") ) {
+                                the_field("full_title");
+                            } else {
+                                the_title();
+                            } ?>
+                            </h1>
+                        </a>
+                        <?php $articletags = strip_tags(get_the_tag_list('',', ',''));
+                        echo $articletags; ?>
+                    </li>
+                <?php endwhile;
+                wp_reset_postdata();
+            endif;
+
+            echo "<hr>";
+
+        // $num++;
+    // END OF CAT LOOP
+        }
+    } 
 
 }
 

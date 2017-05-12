@@ -2,8 +2,9 @@
 	
     $data = array();
 	$articles_query = new WP_Query( array( 
-        'post_type' => 'articles',
-        'order'     => 'ASC'
+        'post_type'         => 'articles',
+        'order'             => 'ASC',
+        'posts_per_page'    => 99
     ) );    
     if ( $articles_query->have_posts() ) :
         while ( $articles_query->have_posts() ) : $articles_query->the_post();

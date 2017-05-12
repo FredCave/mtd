@@ -1,5 +1,7 @@
 var Editor = {
 	
+	savedArticles: [],
+
 	init: function () {
 
 		console.log("Editor.init");
@@ -38,12 +40,9 @@ var Editor = {
 
 		console.log("Editor.loadArticles");
 
-		// TMP
-		var savedArticles = [35,19];
-
-		_.each( savedArticles, function( id ) {
+		_.each( this.savedArticles, function( id ) {
 		    
-		    console.log(id);
+		    $("#editor_articles").append(id);
 		    
 		});
 

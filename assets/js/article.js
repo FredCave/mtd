@@ -33,6 +33,7 @@ var Article = {
         } else {
             // FADE IN ARTICLES
             $("#article_wrapper").fadeIn(1000);
+            this.wrapperVisible = true;
         }
 
 	},
@@ -52,8 +53,6 @@ var Article = {
 
         $("#article_current").off("click");
         $("#article_current").on("click", ".add_to_book", function(e){
-
-            console.log(54);
 
             e.preventDefault();
             self.addToBook();
@@ -137,8 +136,6 @@ var Article = {
     addToBook: function () {
 
         console.log("Article.addToBook");
-
-        console.log( Editor.savedArticles, $.inArray( parseInt(this.currentArticle), Editor.savedArticles ) );
 
         // CHECK IF THIS ID ALREADY IN SAVED BOOKS ARRAY
         if ( $.inArray( parseInt(this.currentArticle), Editor.savedArticles ) === -1 ) {

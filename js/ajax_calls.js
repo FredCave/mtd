@@ -26,7 +26,7 @@ AjaxCalls = {
 
 		    	data = self.responseTrim( data );
 
-		        $("#intro").append( data );
+		        $("#intro_sections").append( data );
 
 		        _.defer( Home.ajaxSuccess() );
 

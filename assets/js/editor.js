@@ -1,6 +1,6 @@
 var Editor = {
 	
-	savedArticles: [],
+	savedArticles: [19,34,35,37,38,45],
 
 	init: function () {
 
@@ -36,15 +36,25 @@ var Editor = {
 
 	},
 
+	template: _.template( $('#editor_article_template').html() ),
+
 	loadArticles: function () {
 
 		console.log("Editor.loadArticles");
 
-		_.each( this.savedArticles, function( id ) {
+		// BEFORE / AFTER APPEND ??
+		$( "#editor_articles" ).sortable();
+		$( "#editor_articles" ).disableSelection();
+
+		$( "#editor_articles" ).append( this.template );
+
+		// GET INFO FROM APP.ARTICLE_DATA
+
+		// _.each( this.savedArticles, function( id ) {
 		    
-		    $("#editor_articles").append(id);
-		    
-		});
+		//     $("#editor_articles").append(id);
+
+		// });
 
 	}
 

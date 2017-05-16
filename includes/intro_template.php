@@ -8,10 +8,24 @@ function mtd_foreword () {
     ) );    
     if ( $articles_query->have_posts() ) :
         while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
-            <div id="foreword_wrapper" class="intro_content">
-                <?php the_title(); ?>
-                <?php the_content(); ?>
+            
+            <div id="foreword_wrapper" class="content_wrapper">
+
+                <div class="intro_column_left intro_column">
+                    <h1 class="uppercase">Mind the Dance</h1>
+                    <h1><br></h1>
+                    <h1>A Guide to <br>
+                    Documenting <br>
+                    Contemporary Dance <br>
+                    Teaching</h1>
+                </div>
+
+                <div class="intro_column_right intro_column">
+                    <?php the_content(); ?>
+                </div>
+
             </div>
+
         <?php endwhile;
         wp_reset_postdata();
     endif; 
@@ -27,45 +41,55 @@ function mtd_contents_list () {
     $num = 1;
 
     foreach ( $cats as $cat ) {        
-        if ( $cat->cat_name !== "Uncategorized" ) {
+        if ( $cat->cat_name !== "Uncategorized" ) { ?>
             
-            echo $num++ . ". ";
-            echo $cat->cat_name;
-            echo "<hr>";
+            <div class="contents_sub_section">
+               
+                <div class="contents_sub_section_header">
 
-            $catId = $cat->term_id;
-            $articles_query = new WP_Query( array( 
-                'post_type' => 'articles',
-                'cat'       => $catId,
-                'orderby'   => 'menu_order', 
-                // 'order'     => 'DESC'
-            ) );    
-            if ( $articles_query->have_posts() ) :
-                while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
-                    <li>
-                    <?php 
-                    global $post;
-                    $image = get_field("article_preview_image");
-                    ?>
-                        <a href="#article/<?php the_ID(); ?>/<?php echo $post->post_name; ?>">
-                            <h1>
-                            <?php if ( get_field("full_title") ) {
-                                the_field("full_title");
-                            } else {
-                                the_title();
-                            } ?>
-                            </h1>
-                        </a>
-                        <?php $articletags = strip_tags(get_the_tag_list('',', ',''));
-                        echo $articletags; ?>
-                    </li>
-                <?php endwhile;
-                wp_reset_postdata();
-            endif;
+                    <div class="contents_number"><?php echo $num++ . "."; ?></div>
+                    <h4 class="contents_sub_section_title"><?php echo $cat->cat_name; ?></h4>
 
-            echo "<hr>";
+                </div>
 
-        // $num++;
+                <?php
+                $catId = $cat->term_id;
+                $articles_query = new WP_Query( array( 
+                    'post_type' => 'articles',
+                    'cat'       => $catId,
+                    'orderby'   => 'menu_order'
+                ) );    
+                if ( $articles_query->have_posts() ) :
+                    while ( $articles_query->have_posts() ) : $articles_query->the_post(); 
+                        // WITH COMMAS
+                        $articletags = strip_tags( get_the_tag_list('',', ','') );
+                        // STRIP COMMAS FOR CLASSNAMES
+                        ?>
+                        <li class="<?php echo strtolower ( str_replace( ",", "", $articletags ) ); ?>">
+                        <?php 
+                        global $post;
+                        $image = get_field("article_preview_image");
+                        ?>
+                            <a href="#article/<?php the_ID(); ?>/<?php echo $post->post_name; ?>">
+                                <p class="contents_title">
+                                    <?php if ( get_field("full_title") ) {
+                                        the_field("full_title");
+                                    } else {
+                                        the_title();
+                                    } ?>
+                                </p>
+                            </a>
+                            <p class="contents_author"><?php the_field("article_author"); ?></p>
+                            <p class="contents_category"><?php echo $articletags; ?></p>
+                            
+                        </li>
+                    <?php endwhile;
+                    wp_reset_postdata();
+                endif; ?>
+
+            </div><!-- END OF .CONTENTS_SUB_SECTION -->
+
+        <?php
     // END OF CAT LOOP
         }
     } 
@@ -81,10 +105,21 @@ function mtd_colophon () {
     ) );    
     if ( $articles_query->have_posts() ) :
         while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
-            <div id="colophon_wrapper" class="intro_content fp-auto-height">
-                <?php the_title(); ?>
-                <?php the_content(); ?>
+ 
+            <div id="colophon_wrapper" class="content_wrapper">
+                
+                <div class="intro_column_left intro_column">
+                    <?php the_title(); ?>
+                    <?php the_field("authors"); ?>
+                </div>
+
+                <div class="intro_column_right intro_column">
+                    <?php the_title(); ?>
+                    <?php the_field("colophon"); ?>
+                </div>
+
             </div>
+
         <?php endwhile;
         wp_reset_postdata();
     endif; 
@@ -92,36 +127,33 @@ function mtd_colophon () {
 }
 ?>
 
-<!-- NAV -->
-<div id="intro_nav">
-    <ul>
-        <li><a href="#foreword">Foreword</a></li>
-        <li><a href="#contents">Contents</a></li>
-        <li><a href="#colophon">Colophon</a></li>
-    </ul>
-</div>
+<!-- FOREWORD -->
+<section id="" class="intro_section" data-anchor="foreword">
+    <?php mtd_foreword(); ?>
+</section>
 
-<div id="intro_wrapper">
-    <!-- VIDEO -->
-    <section id="" class="intro_section" data-anchor="video">
-        <img src="<?php bloginfo('template_url'); ?>/assets/img/home_video.png" />
-    </section>
+<!-- CONTENTS -->
+<section id="" class="intro_section grey_intro_section" data-anchor="contents">
+    
+    <div id="contents_wrapper" class="content_wrapper">
 
-    <!-- FOREWORD -->
-    <section id="" class="intro_section" data-anchor="foreword">
-        <?php mtd_foreword(); ?>
-    </section>
+        <div class="intro_column_left intro_column">
+            
+            <ul id="contents_list" class="intro_wrapper">
+                <?php mtd_contents_list(); ?>
+            </ul>
 
-    <!-- CONTENTS -->
-    <section id="" class="intro_section" data-anchor="contents">
-        <ul id="contents_list" class="intro_wrapper">
-            <?php mtd_contents_list(); ?>
-        </ul>
-    </section>
+        </div>
 
-    <!-- AUTHORS / COLOPHON -->
-    <section id="" class="intro_section" data-anchor="colophon">
-        <?php mtd_colophon(); ?>
-    </section>
+        <div class="intro_column_right intro_column">
+            <div id="intro_image_wrapper"></div>
+        </div>
 
-</div><!-- END OF #INTRO_WRAPPER -->
+    </div>
+
+</section>
+
+<!-- AUTHORS / COLOPHON -->
+<section id="" class="intro_section" data-anchor="colophon">
+    <?php mtd_colophon(); ?>
+</section>

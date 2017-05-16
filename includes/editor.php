@@ -12,3 +12,14 @@
 	</ul>
 	
 </div>
+
+<script id="editor_article_template" type="text/template">
+
+    <% articles = this.model.attributes.acf.home_background_image;
+    _.each ( images, function( img ) { %>
+
+        <li id="<%= img.image.ID %>" style="background-image:url('<%= img.image.src %>')"></li>
+
+    <% }); %>
+
+</script>

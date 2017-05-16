@@ -2,7 +2,36 @@
 
 	<div id="video"></div>
 
-	<div id="intro"></div>
+	<div id="intro">
+		
+		<div id="intro_wrapper">
+		    
+		    <!-- VIDEO (WITH NAV INSIDE) -->
+		    <section id="" class="intro_section" data-anchor="video">
+	
+				<!-- NAV -->				
+				<div id="intro_nav">
+				    <span id="intro_nav_left">Mind the Dance</span>
+				    <ul>
+				        <li><a href="#foreword">Foreword</a></li>
+				        <li><a href="#contents">Contents</a></li>
+				        <li><a href="#colophon">Colophon</a></li>
+				    </ul>
+				    <span id="intro_nav_right"><a href="#make-book">Editor</a></span>
+				</div>
+				
+		        <video id="introvid" playsinline autoplay poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
+		            <source src="<?php bloginfo('template_url'); ?>/assets/vid/mind_the_dance.mp4" type="video/mp4">
+		        </video>
+		    </section>
+
+			<div id="intro_sections">
+				<!-- AJAX HERE -->
+			</div>
+
+		</div><!-- END OF #INTRO_WRAPPER -->
+
+	</div>
 
 	<div id="articles">
 		

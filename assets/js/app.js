@@ -4,9 +4,16 @@ var App = {
 
 	articles: "",
 
+	articlesLoaded: false,
+
 	init: function () {
 
 		console.log("App.init");
+
+		// SCROLL TO TOP
+		$("html,body").animate({
+			scrollTop: 0 
+		}, 10 );
 
 		this.loadArticleData();
 
@@ -16,14 +23,13 @@ var App = {
 
 		console.log("App.loadArticleData");
 
-		var articleData = AjaxCalls.loadArticleData();
+		// CHECK IF NOT YET LOADED
+		if ( !this.articlesLoaded ) {
+			
+			this.articlesLoaded = true;
+			AjaxCalls.loadArticleData();
 
-		// HOW TO DO THIS WITHOUT SET TIMEOUT??????
-		setTimeout( function(){
-
-			console.log( 23, App.articles );
-
-		}, 2000 );
+		}
 
 	}
 

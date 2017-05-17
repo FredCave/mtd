@@ -15,6 +15,19 @@ function wpversion_remove_version() {
     }
 add_filter('the_generator', 'wpversion_remove_version');
 
+// REMOVE DASHICONS
+function wpdocs_dequeue_dashicon() {
+    // if (current_user_can( 'update_core' )) {
+    //     return;
+    // }
+    wp_deregister_style('dashicons');
+}
+add_action( 'wp_enqueue_scripts', 'wpdocs_dequeue_dashicon' );
+
+// REMOVE EMOJIS
+remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
+remove_action( 'wp_print_styles', 'print_emoji_styles' );
+
 // ENQUEUE CUSTOM SCRIPTS
 function enqueue_mtd_scripts() {
   

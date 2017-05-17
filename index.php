@@ -8,8 +8,14 @@
 		    
 		    <!-- VIDEO (WITH NAV INSIDE) -->
 		    <section id="" class="intro_section" data-anchor="video">
-	
-				<!-- NAV -->				
+					
+		        <video id="introvid" playsinline autoplay poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
+		            <source src="<?php bloginfo('template_url'); ?>/assets/vid/mind_the_dance.mp4" type="video/mp4">
+		        </video>
+		    </section>
+
+			<!-- NAV -->				
+			<div id="intro_nav_wrapper">
 				<div id="intro_nav">
 				    <span id="intro_nav_left">Mind the Dance</span>
 				    <ul>
@@ -19,11 +25,7 @@
 				    </ul>
 				    <span id="intro_nav_right"><a href="#make-book">Editor</a></span>
 				</div>
-				
-		        <video id="introvid" playsinline autoplay poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
-		            <source src="<?php bloginfo('template_url'); ?>/assets/vid/mind_the_dance.mp4" type="video/mp4">
-		        </video>
-		    </section>
+			</div>
 
 			<div id="intro_sections">
 				<!-- AJAX HERE -->

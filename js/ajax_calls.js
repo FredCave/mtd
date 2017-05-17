@@ -28,7 +28,9 @@ AjaxCalls = {
 
 		        $("#intro_sections").append( data );
 
-		        _.defer( Home.ajaxSuccess() );
+		        _.defer( function () {
+		        	Home.ajaxSuccess();
+		        } );
 
 		    },
 		    error: function(errorThrown){
@@ -54,6 +56,9 @@ AjaxCalls = {
 
 		    	// SAVE ARTICLE DATA TO APP OBJECT
 		    	App.articles = data;
+
+		    	console.log(60);
+		    	$(document).trigger("dataloaded");
 
 		    },
 		    error: function(errorThrown){

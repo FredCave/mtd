@@ -11,7 +11,7 @@ function mtd_foreword () {
             
             <div id="foreword_wrapper" class="content_wrapper">
 
-                <div class="intro_column_left intro_column">
+                <div class="intro_column_left column">
                     <h1 class="uppercase">Mind the Dance</h1>
                     <h1><br></h1>
                     <h1>A Guide to <br>
@@ -20,7 +20,7 @@ function mtd_foreword () {
                     Teaching</h1>
                 </div>
 
-                <div class="intro_column_right intro_column">
+                <div class="intro_column_right column">
                     <?php the_content(); ?>
                 </div>
 
@@ -65,7 +65,7 @@ function mtd_contents_list () {
                         $articletags = strip_tags( get_the_tag_list('',', ','') );
                         // STRIP COMMAS FOR CLASSNAMES
                         ?>
-                        <li class="<?php echo strtolower ( str_replace( ",", "", $articletags ) ); ?>">
+                        <li data-id="<?php the_ID(); ?>" class="<?php echo strtolower ( str_replace( ",", "", $articletags ) ); ?>">
                         <?php 
                         global $post;
                         $image = get_field("article_preview_image");
@@ -108,12 +108,12 @@ function mtd_colophon () {
  
             <div id="colophon_wrapper" class="content_wrapper">
                 
-                <div class="intro_column_left intro_column">
+                <div class="intro_column_left column">
                     <?php the_title(); ?>
                     <?php the_field("authors"); ?>
                 </div>
 
-                <div class="intro_column_right intro_column">
+                <div class="intro_column_right column">
                     <?php the_title(); ?>
                     <?php the_field("colophon"); ?>
                 </div>
@@ -137,7 +137,7 @@ function mtd_colophon () {
     
     <div id="contents_wrapper" class="content_wrapper">
 
-        <div class="intro_column_left intro_column">
+        <div class="intro_column_left column">
             
             <ul id="contents_list" class="intro_wrapper">
                 <?php mtd_contents_list(); ?>
@@ -145,8 +145,10 @@ function mtd_colophon () {
 
         </div>
 
-        <div class="intro_column_right intro_column">
-            <div id="intro_image_wrapper"></div>
+        <div class="intro_column_right column">
+            <div id="contents_image_wrapper">
+                <div id="contents_image"></div>
+            </div>
         </div>
 
     </div>

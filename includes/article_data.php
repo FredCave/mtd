@@ -17,6 +17,7 @@
             $article->slug          = $post->post_name;
             $article->title         = get_the_title();
             $article->full_title    = get_field("full_title");
+            $article->image         = get_field("article_preview_image");
             
             $data[] = $article;
 

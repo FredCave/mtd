@@ -5,21 +5,31 @@
 		<div id="editor_close">X</div>
 		<div id="editor_caption">Edit your selected articles</div>
 	</div>
+	
+	<div id="" class="content_wrapper">
 
-	<!-- SELECTED ARTICLES -->
-	<ul id="editor_articles">
+		<!-- VIDEO ??? -->
+		<div class="column">
+		</div>
 
-	</ul>
+		<div class="column">
+			<!-- SELECTED ARTICLES -->
+			<ul id="editor_articles">
+
+			</ul>
+		</div>
+
+	</div><!-- END OF .CONTENT_WRAPPER -->
 	
 </div>
 
 <script id="editor_article_template" type="text/template">
 
-    <% articles = this.model.attributes.acf.home_background_image;
-    _.each ( images, function( img ) { %>
-
-        <li id="<%= img.image.ID %>" style="background-image:url('<%= img.image.src %>')"></li>
-
-    <% }); %>
+    <% 
+    console.log( 28, this.data ); 
+	// ID 
+	// TITLE
+	// AUTHOR
+    %>
 
 </script>

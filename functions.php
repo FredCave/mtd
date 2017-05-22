@@ -32,9 +32,9 @@ remove_action( 'wp_print_styles', 'print_emoji_styles' );
 function enqueue_mtd_scripts() {
   
     wp_deregister_script( 'jquery' );
-	wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js');
-    // wp_register_script( 'jquery', get_template_directory_uri() . '/assets/js/lib/_jquery.min.js');
-	wp_enqueue_script( 'jquery' );  
+	// wp_register_script( 'jquery', 'https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js');
+    wp_register_script( 'jquery', get_template_directory_uri() . '/js/__jquery.min.js');
+    wp_enqueue_script( 'jquery' );  
  
     wp_register_script( "custom_ajax", get_template_directory_uri() . '/js/ajax_calls.js#asyncload', array('jquery'), true );
     wp_localize_script( "custom_ajax", "myAjax", array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );        

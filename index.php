@@ -2,14 +2,14 @@
 
 	<div id="video"></div>
 
-	<div id="intro">
+	<div id="intro" class="nav_section">
 		
 		<div id="intro_wrapper">
 		    
 		    <!-- VIDEO (WITH NAV INSIDE) -->
 		    <section id="" class="intro_section" data-anchor="video">
 					
-		        <video id="introvid" playsinline autoplay poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
+		        <video id="introvid" playsinline poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
 		            <source src="<?php bloginfo('template_url'); ?>/assets/vid/mind_the_dance.mp4" type="video/mp4">
 		        </video>
 		    </section>
@@ -17,7 +17,7 @@
 			<!-- NAV -->				
 			<div id="intro_nav_wrapper">
 				<div id="intro_nav">
-				    <span id="intro_nav_left">Mind the Dance</span>
+				    <span id="intro_nav_left"><a href="">Mind the Dance</a></span>
 				    <ul>
 				        <li><a href="#foreword">Foreword</a></li>
 				        <li><a href="#contents">Contents</a></li>
@@ -35,7 +35,7 @@
 
 	</div>
 
-	<div id="articles">
+	<div id="articles" class="nav_section">
 		
 		<div id="article_wrapper">
 
@@ -57,7 +57,7 @@
 
 	</div>
 
-	<div id="editor">
+	<div id="editor" class="nav_section">
 		<?php include("includes/editor.php"); ?>
 	</div>
 

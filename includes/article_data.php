@@ -16,7 +16,8 @@
             $article->ID            = get_the_ID();
             $article->slug          = $post->post_name;
             $article->title         = get_the_title();
-            $article->full_title    = get_field("full_title");
+            $article->full_title    = get_field("article_full_title");
+            $article->author        = get_field("article_author");
             $article->image         = get_field("article_preview_image");
             
             $data[] = $article;

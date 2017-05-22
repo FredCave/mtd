@@ -1,6 +1,6 @@
 var Article = {
 	
-    wrapperVisible: false,
+    // wrapperVisible: false,
 
     currentArticle: "",
 
@@ -10,31 +10,17 @@ var Article = {
 
         this.bindEvents();
 
-        // FADE OUT EDITOR
-        $("#editor_wrapper").fadeOut(1000);
-
-        if ( !this.wrapperVisible ) {
-            // SHOW WRAPPER 
-            $("#article_wrapper").fadeIn( 1000 );
-            this.wrapperVisible = true;
-        }
-
         // IF URL ARTICLE IS NOT LOADED IN CURRENT
         if ( artId !== this.currentArticle ) {
+            
             // LOAD ARTICLE
             AjaxCalls.loadArticle( artId );
             this.currentArticle = artId;
 
-            // TITLE, PREV + NEXT STORED IN APP OBJECT
-            this.loadTitle( artId );
+            // TITLE, PREV + NEXT STORED IN APP.ARTICLEDATA OBJECT
+            this.articleDataCheck();
 
-            this.loadPrevNext( artId );
-
-        } else {
-            // FADE IN ARTICLES
-            $("#article_wrapper").fadeIn(1000);
-            this.wrapperVisible = true;
-        }
+        } 
 
 	},
 
@@ -44,10 +30,21 @@ var Article = {
 
         var self = this;
 
+        // ONCE ARTICLE DATA LOADED (IF NEEDED)
+        $(document).on("dataloaded", function(){
+            
+            self.loadTitle( self.currentArticle );
+            console.log( 37, "Dataloaded event", self.currentArticle );
+
+        });
+
         $("#nav_close").off("click");
         $("#nav_close").on("click", function(){
 
-            self.articleClose();
+            // self.articleClose();
+
+            // GO BACK TO CONTENTS
+            app.MainRouter.navigate('contents');
 
         });
 
@@ -68,36 +65,42 @@ var Article = {
 
     },
 
-    loadTitle: function ( id ) {
+    articleDataCheck: function () {
 
-        console.log("Article.loadTitle");
+        console.log("Editor.articleDataCheck");
 
-        // IF ARTICLE DATA NOT YET LOADED, EG. NAVIGATION STRAIGHT TO ARTICLE:
-        // CALL AJAX HERE
         if ( App.articles === "" ) {
-            console.log("Article data not loaded");
-            return;
+            console.log( 56, "Article data not loaded." );
+            // LOAD ARTICLE DATA
+            App.loadArticleData();
+        } else {
+            console.log(60, "Article data loaded.");
+            this.loadTitle( this.currentArticle );
         }
 
+    },  
+
+    loadTitle: function ( id ) {
+
+        console.log("Article.loadTitle", id );
+
         var articles = App.articles;
+
+        console.log( 89, articles );
+
         $.each( articles, function ( i ) {
             if ( $(this)[0].ID === parseInt(id) ) {
                 $("#nav_title").text( $(this)[0].title );
             }
         });
 
+        this.loadPrevNext( id );
+
     },
 
     loadPrevNext: function ( id ) {
 
-        console.log("Article.loadPrevNext");
-
-        // IF ARTICLE DATA NOT YET LOADED, EG. NAVIGATION STRAIGHT TO ARTICLE:
-        // CALL AJAX HERE
-        if ( App.articles === "" ) {
-            console.log("Article data not loaded");
-            return;
-        }
+        console.log("Article.loadPrevNext", id );
 
         var articles = App.articles,
             arrayPos;
@@ -152,13 +155,13 @@ var Article = {
 
     },   
 
-    articleClose: function () {
+    // articleClose: function () {
 
-        console.log("Article.articleClose");
+    //     console.log("Article.articleClose");
 
-        $("#article_wrapper").fadeOut(1000);
-        this.wrapperVisible = false;
+    //     $("#article_wrapper").fadeOut(1000);
+    //     this.wrapperVisible = false;
 
-    }
+    // }
 
 }

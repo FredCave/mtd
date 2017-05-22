@@ -8,7 +8,13 @@
         while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
 
             <!-- TITLE -->
-			<h1><?php the_field("article_full_title"); ?></h1>
+			<h1>
+                <?php if ( get_field("full_title") ) {
+                    the_field("full_title");
+                } else {
+                    the_title();
+                } ?>         
+            </h1>
 
             <!-- AUTHOR -->
             <p><?php the_field("article_author"); ?></p>

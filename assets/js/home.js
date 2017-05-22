@@ -8,12 +8,19 @@ var Home = {
 
 		// PIN NAV
 		var sticky = new Waypoint.Sticky({
-			element: $("#intro_nav")[0]
+			element: $("#intro_nav")[0],
+			handler: function(direction) {
+		    	// BUG FIX
+		    	// CHECK IF PAGE HAS SCROLLED
+		    	if ( $(window).scrollTop() === 0 ) {
+		    		$("#intro_nav").removeClass("stuck");
+		    	}
+			},
 		});
 
 		// LOAD INTRO SECTIONS
 		this.loadIntroSections();
-
+		
 	},
 
 	bindEvents: function () {
@@ -51,23 +58,6 @@ var Home = {
 
 	},
 
-	pinInit: function () {
-
-		console.log("Home.pinInit");
-
-		// var winScroll = $(window).scrollTop(),
-		// 	navTop = $("#intro_nav_wrapper").offset().top;
-
-		// if ( winScroll >= navTop ) {
-
-		// 	$("#intro_nav")
-
-		// }
-
-		// console.log( 44, winScroll, navTop );
-
-	},
-
 	onVideoEnd: function () {
 
 		console.log("Home.onVideoEnd");
@@ -96,6 +86,7 @@ var Home = {
 		this.navColourInit();
 
 		// SET CONTENTS HEIGHT HERE
+		this.contentsHeight();
 
 		this.contentsImgInit();
 
@@ -110,8 +101,9 @@ var Home = {
 
 		console.log("Home.navTo", section);
 
-		if ( section !== undefined ) {
+		if ( section.length ) {
 			var targetTop = $('[data-anchor="'+ section +'"]').offset().top;
+			console.log( 122, targetTop );
 			$("html,body").animate({
 				scrollTop: targetTop
 			}, 1000 );
@@ -125,6 +117,7 @@ var Home = {
 
 		var self = this;
 
+		// CONTENTS WAYPOINT
 		var inview = new Waypoint.Inview({
 			element: $('#contents_wrapper')[0],
 			enter: function( direction ) {
@@ -153,13 +146,44 @@ var Home = {
 			}
 		});
 
+		// COLOPHON WAYPOINT
+		var inview = new Waypoint.Inview({
+			element: $('#colophon_wrapper')[0],
+			enter: function( direction ) {
+				// ON UP: CONTENTS ENTERS THE SCREEN
+				if ( direction === "up" ) {
+					self.navColourChange("#fffab4");
+				}
+			},
+			entered: function( direction ) {
+				// ON UP: CONTENTS EXITS THE SCREEN
+				if ( direction === "up" ) {
+					self.navColourChange("#424242");
+				}
+			},
+			exit: function( direction ) {
+				// ON DOWN: CONTENTS ENTERS THE SCREEN
+				if ( direction === "down" ) {
+					self.navColourChange("#fffab4");
+				}
+			},
+			exited: function( direction ) {
+				// ON DOWN: CONTENTS EXITS THE SCREEN
+				if ( direction === "down" ) {
+					self.navColourChange("#424242");
+				}
+			}
+		});
+
 	},
 
 	navColourChange: function ( colour ) {
 
 		console.log("Home.navColour");
 
-		var textColour = ( colour == "white" ? "#212121" : "#fff" );
+		console.log( 183, colour );
+
+		var textColour = ( colour == "#424242" ? "#fff" : "#212121" );
 
 		$("#intro_nav").css({
 			"background-color" : colour
@@ -238,7 +262,7 @@ var Home = {
 
 	contentsImgFix: function () {
 
-		console.log("contentsImgFix");
+		console.log("Home.contentsImgFix");
 
 		// GET PARENT WIDTH
 		var parentW = $("#contents_image").width();
@@ -255,7 +279,7 @@ var Home = {
 
 	contentsImgUnfix: function () {
 
-		console.log("contentsImgUnfix");
+		console.log("Home.contentsImgUnfix");
 
 		// GET CURRENT TOP POSITION
 
@@ -267,6 +291,26 @@ var Home = {
 			"position" : "",
 			"top" : currTop
 		});
+
+	},
+
+	contentsHeight: function () {
+
+		console.log("Home.contentsHeight");
+
+		var totalH = 0;
+
+		// LOOP THROUGH SUB-SECTIONS
+		$(".contents_sub_section").each( function(i) {
+
+			if ( i % 2 === 0 ) {
+				totalH += $(this).height() + 36;
+			}
+
+		});
+
+		console.log( 314, totalH );
+		$("#contents_wrapper #contents_list").css( "height", totalH + 28 );
 
 	}
 

@@ -70,7 +70,7 @@ AjaxCalls = {
 
 	loadArticle: function ( article_id ) {
 
-		console.log("AjaxCalls.loadArticle");
+		console.log("AjaxCalls.loadArticle", article_id);
 
 		var self = this;
 

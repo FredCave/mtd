@@ -4,7 +4,9 @@ app.MainRouter = Backbone.Router.extend({
 
     introLoaded: false,
 
-    articleWrapper: false,
+    // articleWrapper: false,
+
+    editorLoaded: false,
 
     currentArticle: "",
 
@@ -12,11 +14,11 @@ app.MainRouter = Backbone.Router.extend({
 
         "article/:id/:title"    : "showArticle",
 
-        "foreword"          : "introNav",
+        "foreword"          : "showHome",
 
-        "contents"          : "introNav",
+        "contents"          : "showHome",
 
-        "colophon"          : "introNav",
+        "colophon"          : "showHome",
 
         "make-book"         : "showEditor", 
 
@@ -24,29 +26,51 @@ app.MainRouter = Backbone.Router.extend({
 
     },
 
-    showHome: function () {
+    navManager: function ( section ) {
 
-        console.log("MainRouter.showHome");
+        console.log("MainRouter.navManager", section);
 
-        if ( !this.introLoaded ) {
-            Home.init();
-            this.introLoaded = true;
+        if ( section === "intro" ) {
+
+            $("#intro").fadeIn(1000).siblings(".nav_section").fadeOut(1000);
+
+        } else if ( section === "article" ) {
+
+            $("#articles").fadeIn(1000).siblings(".nav_section").fadeOut(1000);
+
+        } else if ( section === "editor" ) {
+
+            $("#editor").fadeIn(1000).siblings(".nav_section").fadeOut(1000);
+
         }
 
     },
 
-    introNav: function () {
+    showHome: function () {
 
-        console.log("MainRouter.introNav");
+        console.log("MainRouter.showHome");
 
         var section = Backbone.history.fragment;
 
+        this.navManager("intro");
+
         if ( !this.introLoaded ) {
-            Home.init( section );
+
+            if ( section !== "intro" ) {
+                Home.init( section );                
+            } else {
+                Home.init(); 
+            }
+
             this.introLoaded = true;
+
         } else {
+
             // NAVIGATE TO SECTION
+            console.log( 36, section );
+
             Home.navTo( section );
+
         }
 
     },
@@ -55,6 +79,8 @@ app.MainRouter = Backbone.Router.extend({
 
         console.log("MainRouter.showArticle", id);
         
+        this.navManager("article");
+
         Article.init( id );
 
     },
@@ -63,7 +89,12 @@ app.MainRouter = Backbone.Router.extend({
 
         console.log("MainRouter.showEditor");
 
-        Editor.init();
+        this.navManager("editor");
+
+        if ( !this.editorLoaded ) {
+            Editor.init();
+            this.editorLoaded = true;
+        }
 
     }
 

@@ -11,7 +11,7 @@ function mtd_foreword () {
             
             <div id="foreword_wrapper" class="content_wrapper">
 
-                <div class="intro_column_left column">
+                <div class="intro_column_left mtd_column">
                     <h1 class="uppercase">Mind the Dance</h1>
                     <h1><br></h1>
                     <h1>A Guide to <br>
@@ -20,7 +20,7 @@ function mtd_foreword () {
                     Teaching</h1>
                 </div>
 
-                <div class="intro_column_right column">
+                <div class="intro_column_right mtd_column">
                     <?php the_content(); ?>
                 </div>
 
@@ -52,40 +52,44 @@ function mtd_contents_list () {
 
                 </div>
 
-                <?php
-                $catId = $cat->term_id;
-                $articles_query = new WP_Query( array( 
-                    'post_type' => 'articles',
-                    'cat'       => $catId,
-                    'orderby'   => 'menu_order'
-                ) );    
-                if ( $articles_query->have_posts() ) :
-                    while ( $articles_query->have_posts() ) : $articles_query->the_post(); 
-                        // WITH COMMAS
-                        $articletags = strip_tags( get_the_tag_list('',', ','') );
-                        // STRIP COMMAS FOR CLASSNAMES
-                        ?>
-                        <li data-id="<?php the_ID(); ?>" class="<?php echo strtolower ( str_replace( ",", "", $articletags ) ); ?>">
-                        <?php 
-                        global $post;
-                        $image = get_field("article_preview_image");
-                        ?>
-                            <a href="#article/<?php the_ID(); ?>/<?php echo $post->post_name; ?>">
-                                <p class="contents_title">
-                                    <?php if ( get_field("full_title") ) {
-                                        the_field("full_title");
-                                    } else {
-                                        the_title();
-                                    } ?>
-                                </p>
-                            </a>
-                            <p class="contents_author"><?php the_field("article_author"); ?></p>
-                            <p class="contents_category"><?php echo $articletags; ?></p>
-                            
-                        </li>
-                    <?php endwhile;
-                    wp_reset_postdata();
-                endif; ?>
+                <div class="contents_sub_section_contents">
+
+                    <?php
+                    $catId = $cat->term_id;
+                    $articles_query = new WP_Query( array( 
+                        'post_type' => 'articles',
+                        'cat'       => $catId,
+                        'orderby'   => 'menu_order'
+                    ) );    
+                    if ( $articles_query->have_posts() ) :
+                        while ( $articles_query->have_posts() ) : $articles_query->the_post(); 
+                            // WITH COMMAS
+                            $articletags = strip_tags( get_the_tag_list('',', ','') );
+                            // STRIP COMMAS FOR CLASSNAMES
+                            ?>
+                            <li data-id="<?php the_ID(); ?>" class="<?php echo strtolower ( str_replace( ",", "", $articletags ) ); ?>">
+                            <?php 
+                            global $post;
+                            $image = get_field("article_preview_image");
+                            ?>
+                                <a href="#article/<?php the_ID(); ?>/<?php echo $post->post_name; ?>">
+                                    <p class="contents_title">
+                                        <?php if ( get_field("full_title") ) {
+                                            the_field("full_title");
+                                        } else {
+                                            the_title();
+                                        } ?>
+                                    </p>
+                                </a>
+                                <p class="contents_author"><?php the_field("article_author"); ?></p>
+                                <p class="contents_category"><?php echo $articletags; ?></p>
+                                
+                            </li>
+                        <?php endwhile;
+                        wp_reset_postdata();
+                    endif; ?>
+
+                </div>
 
             </div><!-- END OF .CONTENTS_SUB_SECTION -->
 
@@ -108,14 +112,23 @@ function mtd_colophon () {
  
             <div id="colophon_wrapper" class="content_wrapper">
                 
-                <div class="intro_column_left column">
-                    <?php the_title(); ?>
-                    <?php the_field("authors"); ?>
+                <div class="intro_column_left mtd_column">
+                    <div class="column_title"><h4>Authors</h4></div>
+                    <div class="column_contents small_font">
+                        <?php the_field("authors"); ?>
+                    </div>
                 </div>
 
-                <div class="intro_column_right column">
-                    <?php the_title(); ?>
-                    <?php the_field("colophon"); ?>
+                <div class="intro_column_right mtd_column">
+                    <div class="column_title"><h4>Colophon</h4></div>
+                    <div class="column_contents small_font">
+                        <div class="sub_column">
+                            <?php the_field("colophon_col_1"); ?>
+                        </div>
+                        <div class="sub_column">
+                            <?php the_field("colophon_col_2"); ?>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -137,7 +150,7 @@ function mtd_colophon () {
     
     <div id="contents_wrapper" class="content_wrapper">
 
-        <div class="intro_column_left column">
+        <div class="intro_column_left mtd_column">
             
             <ul id="contents_list" class="intro_wrapper">
                 <?php mtd_contents_list(); ?>
@@ -145,7 +158,7 @@ function mtd_colophon () {
 
         </div>
 
-        <div class="intro_column_right column">
+        <div class="intro_column_right mtd_column">
             <div id="contents_image_wrapper">
                 <div id="contents_image"></div>
             </div>
@@ -156,6 +169,6 @@ function mtd_colophon () {
 </section>
 
 <!-- AUTHORS / COLOPHON -->
-<section id="" class="intro_section" data-anchor="colophon">
+<section id="" class="intro_section yellow_intro_section" data-anchor="colophon">
     <?php mtd_colophon(); ?>
 </section>

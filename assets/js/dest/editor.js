@@ -1,6 +1,6 @@
 var Editor = {
 	
-	savedArticles: [19,34,35,37,38,45],
+	savedArticles: [19,34,35,47,48,45],
 
 	init: function () {
 
@@ -8,8 +8,8 @@ var Editor = {
 
 		this.bindEvents();
 
-		// SHOW EDITOR
-		this.showEditor();
+		// GET ANY SAVED BOOKS
+		this.loadArticleCheck();
 
 	},
 
@@ -19,8 +19,22 @@ var Editor = {
 
 		var self = this;
 
-		$("#editor_close").on("click", function (){
+		$("#editor").on( "click", "#editor_close", function (){
+			
+			console.log("Editor close.");
 			window.history.back();
+
+		});
+
+		$("#generate_book a").on( "click", function(e) {
+
+			// e.preventDefault();
+
+			console.log("Generate book");
+
+			var thisHref = "generate/?art=" + self.savedArticles;
+            $(this).attr("href", thisHref);
+
 		});
 
 		// ONCE ARTICLE DATA LOADED (IF NEEDED)
@@ -32,21 +46,7 @@ var Editor = {
 
 	},
 
-	showEditor: function () {
-
-		console.log("Editor.showEditor");
-
-		// GET ANY SAVED BOOKS
-		this.loadArticleCheck();
-
-		// RENDER
-		$("#intro_wrapper").fadeOut(1000);
-		$("#article_wrapper").fadeOut(1000);
-		$("#editor_wrapper").fadeIn(1000);
-
-	},
-
-	template: _.template( $('#editor_article_template').html() ),
+	template: _.template( $('#editor_article_template').html(), {variable: 'data'} ),
 
 	loadArticleCheck: function () {
 
@@ -81,26 +81,55 @@ var Editor = {
 
 		// LOOP THROUGH SAVED ARTICLES
 		_.each( this.savedArticles, function( id ) {
-		    	
-			self.data = "test";
 
-			console.log( 88, self.data );
+			// GET DATA FROM ARTICLE DATA		    				
+			_.each( articleData, function( art ) {
 
-			// GET DATA FROM ARTICLE DATA
+				self.data = art;
 
-			$("#editor_articles").append( self.template( self.data ) );
+				if ( art.ID === id ) {
+
+					// console.log( 79, art );
+
+					$("#editor_articles").append( self.template( self.data ) );
+
+				}
+
+			});
 
 		});		
 
-		// BEFORE / AFTER APPEND ??
-		// $( "#editor_articles" ).sortable();
-		// $( "#editor_articles" ).disableSelection();
+		$( "#editor_articles" ).sortable({
+			cursor: "move",
+			placeholder: "sortable-placeholder",
+			stop: function( event, ui ) {
+				
+				// UPDATE ARTICLE ORDER
+				self.updateOrder( $( "#editor_articles" ).sortable('toArray') );
 
-		// $( "#editor_articles" ).append( this.template );
+			}
+		}).disableSelection();
 
-		// GET INFO FROM APP.ARTICLE_DATA
+	},
 
+	updateOrder: function ( array ) {
 
+		console.log("Editor.updateOrder");
+
+		var self = this;
+
+		// CLEAR EXISTING ARRAY
+		this.savedArticles = [];
+
+		// LOOP THROUGH INPUT ARRAY
+		_.each( array, function( art ) {
+
+			// GET ID + APPEND TO ARRAY
+			self.savedArticles.push( art.split("-")[2] );
+
+		});
+
+		console.log( 119, this.savedArticles );
 
 	}
 

@@ -1,0 +1,36 @@
+.caption {
+	color: #757575;
+	font-family:  "Univers", sans-serif;
+	font-size: 0.78em;
+	margin-bottom: 12px;
+	display: block;
+	text-indent: 48px;
+}
+
+.footnote_link {
+	vertical-align: super;
+    font-size: smaller;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+}
+
+h2 {
+	font-size: 2em;
+}
+
+h4 {
+	text-transform: uppercase;
+}
+
+.interview_left, .interview_right {
+	display: block;
+	margin: 0;
+    padding: 0;
+    width: 67%;
+}
+
+.interview_right {
+	margin-left: 25%;
+}

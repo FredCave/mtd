@@ -304,13 +304,13 @@ var Home = {
 		$(".contents_sub_section").each( function(i) {
 
 			if ( i % 2 === 0 ) {
-				totalH += $(this).height() + 36;
+				totalH += $(this).outerHeight() + 36;
 			}
 
 		});
 
 		console.log( 314, totalH );
-		$("#contents_wrapper #contents_list").css( "height", totalH + 28 );
+		$("#contents_wrapper #contents_list").css( "height", totalH + 44 );
 
 	}
 

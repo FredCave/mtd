@@ -9,7 +9,7 @@
 		    <!-- VIDEO (WITH NAV INSIDE) -->
 		    <section id="" class="intro_section" data-anchor="video">
 					
-		        <video id="introvid" playsinline poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
+		        <video id="introvid" playsinline autoplay poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
 		            <source src="<?php bloginfo('template_url'); ?>/assets/vid/mind_the_dance.mp4" type="video/mp4">
 		        </video>
 		    </section>
@@ -40,16 +40,32 @@
 		<div id="article_wrapper">
 
 		    <div id="article_nav">
-		        <div id="nav_close"><a href="#contents">X</a></div>
-		        <div id="nav_left"><a href="" data-title=""><</a></div>
-		        <div id="nav_title"></div>
-		        <div id="nav_right"><a href="" data-title="">></a></div>
-		        <div id="nav_book_editor"><a href="#make-book">Book</a></div>
+		        <div id="nav_close">
+		        	<a href="#contents">
+		        		<img src="<?php bloginfo('template_url'); ?>/assets/img/nav_close.svg" />
+		        	</a>
+		        </div>
+		        <div id="nav_left" class="nav_arrow">
+		        	<a href="" data-title="">
+		        		<img src="<?php bloginfo('template_url'); ?>/assets/img/nav_arrow_left.svg" />		        		
+		        	</a>
+		        </div>
+		        <div id="nav_title"><span></span></div>
+		        <div id="nav_right" class="nav_arrow">
+		        	<a href="" data-title="">
+		        		<img src="<?php bloginfo('template_url'); ?>/assets/img/nav_arrow_right.svg" />		        				        		
+		        	</a>
+		        </div>
+		        <div id="nav_book_editor">
+		        	<a href="#make-book">
+		        		<img src="<?php bloginfo('template_url'); ?>/assets/img/nav_book.svg" />		        				        				        	
+		        	</a>
+		        </div>
 		    </div>
 
 		    <div id="article_prev"></div>
 
-		    <div id="article_current"></div>
+		    <div id="article_current" class="article"></div>
 
 		    <div id="article_next"></div>
 

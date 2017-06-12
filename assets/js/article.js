@@ -38,6 +38,14 @@ var Article = {
 
         });
 
+        // NAV ARROWS CLICK
+        $(".nav_arrow").on("click", function(e){
+            
+            // e.preventDefault();
+            $(".article_inner_wrapper").fadeOut(100);
+
+        });
+
         $("#nav_close").off("click");
         $("#nav_close").on("click", function(){
 
@@ -67,7 +75,7 @@ var Article = {
 
     articleDataCheck: function () {
 
-        console.log("Editor.articleDataCheck");
+        console.log("Article.articleDataCheck");
 
         if ( App.articles === "" ) {
             console.log( 56, "Article data not loaded." );
@@ -80,6 +88,94 @@ var Article = {
 
     },  
 
+    ajaxSuccess: function ( data ) {
+
+        console.log("Article.ajaxSuccess");
+
+        this.colourCheck( data );
+
+        $("#article_current").html( data );
+
+        this.imageSizes();
+        this.htmlPrep();
+
+        $("#article_current").find(".article_inner_wrapper").fadeIn(1000);
+
+    },
+
+    colourCheck: function ( data ) {
+
+        console.log("Article.colourCheck");
+
+        var bgColour = data.split("article_inner_wrapper")[1].split("\"")[0].trim();
+
+        if ( bgColour === "grey" ) {
+            $("#article_wrapper").addClass("grey");
+            $("#article_nav").addClass("grey");
+        } else {
+            $("#article_wrapper").removeClass("grey");
+            $("#article_nav").removeClass("grey");           
+        }
+
+    },
+
+    imageSizes: function () {
+
+        console.log("Article.imageSizes");
+
+        $("#article_current").find("img").each( function(){
+
+            console.log( 128, $(this).attr("height"), $(this).attr("width") );
+
+            // GET RATIO
+            if ( $(this).attr("height") > $(this).attr("width") ) {
+
+                console.log( 131, "portrait", $(this) );
+                $(this).addClass("portrait");
+
+            }
+
+        });
+
+    },
+
+    htmlPrep: function () {
+
+        console.log("Article.htmlPrep");
+
+        // ADD GLYPHS TO CAPTIONS + UNWRAP
+        $("#article_current").find(".caption").each( function(){
+
+            if ( $(this).parent("p").length ) {
+                $(this).unwrap();
+            }
+
+            $(this).prepend("<span class='glyph'>&#10230;</span> ");
+            console.log( 127, $(this).text() );
+
+        });
+
+        // IF ARTICLE 3: EXTRACT IMAGE
+        $("#article_current").find(".article_template_3").each( function(){
+
+            // IF CONTAINS IMAGES
+            if ( $(this).find("img").length ) {
+
+                var newWrapper = $("<div class='image_wrapper'></div>");
+                $(this).find("img").appendTo( newWrapper );
+                $(this).find(".caption").appendTo( newWrapper );
+                
+                // WRAP TEXT ELEMENTS IN WRAPPER
+                $(this).wrapInner( "<div class='text_wrapper'></div>");
+                $(this).append(newWrapper);
+
+            }
+
+        });
+
+
+    },
+
     loadTitle: function ( id ) {
 
         console.log("Article.loadTitle", id );
@@ -90,7 +186,7 @@ var Article = {
 
         $.each( articles, function ( i ) {
             if ( $(this)[0].ID === parseInt(id) ) {
-                $("#nav_title").text( $(this)[0].title );
+                $("#nav_title span").text( $(this)[0].title );
             }
         });
 

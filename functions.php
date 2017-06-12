@@ -158,4 +158,64 @@ function myplugin_register_query_vars( $vars ) {
 }
 add_filter( 'query_vars', 'myplugin_register_query_vars' ); 
 
+// ADD CUSTOM STYLES TO WYSIWYG EDITOR
+
+function add_style_select_buttons( $buttons ) {
+    array_unshift( $buttons, 'styleselect' );
+    return $buttons;
+}
+// Register our callback to the appropriate filter
+add_filter( 'mce_buttons_2', 'add_style_select_buttons' );
+
+function my_custom_styles( $init_array ) {  
+ 
+    $style_formats = array(  
+        // These are the custom styles
+        array(  
+            'title' => 'Caption',  
+            'block' => 'span',  
+            'classes' => 'caption',
+            'wrapper' => true,
+        ),  
+        array(  
+            'title' => 'Footnote',  
+            'inline' => 'span', 
+            'classes' => 'footnote_link',
+            'wrapper' => true,
+        ),
+        array(  
+            'title' => 'Interview Left',  
+            'block' => 'span', 
+            'classes' => 'interview_left',
+            'wrapper' => true,
+        ),
+        array(  
+            'title' => 'Interview Right',  
+            'block' => 'span', 
+            'classes' => 'interview_right',
+            'wrapper' => true,
+        ),        
+    );  
+    // Insert the array, JSON ENCODED, into 'style_formats'
+    $init_array['style_formats'] = json_encode( $style_formats );  
+    
+    return $init_array;  
+  
+} 
+add_filter( 'tiny_mce_before_init', 'my_custom_styles' );
+
+// MAKE STYLES VISIBLE IN EDITOR
+function my_theme_add_editor_styles() {
+    add_editor_style( 'editor-styles.css' );
+}
+add_action( 'init', 'my_theme_add_editor_styles' );
+
+// REMOVE PARAGRAPH TAGS FROM IMAGES
+function filter_ptags_on_images($content) {
+    $content = preg_replace('/<p>\s*(<a .*>)?\s*(<img .* \/>)\s*(<\/a>)?\s*<\/p>/iU', '\1\2\3', $content);
+    return preg_replace('/<p>\s*(<iframe .*>*.<\/iframe>)\s*<\/p>/iU', '\1', $content);
+}
+add_filter('acf_the_content', 'filter_ptags_on_images', 9999);
+add_filter('the_content', 'filter_ptags_on_images', 9999);
+
 ?>

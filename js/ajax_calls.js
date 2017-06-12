@@ -84,12 +84,8 @@ AjaxCalls = {
 		    success:function(data) {
 
 		    	data = self.responseTrim( data );
-		    	$("#article_current").html( data );
 
-		    	// // LOAD TITLE
-		    	// Article.loadTitle( data );
-
-		    	// // LOAD PREV + NEXT
+		    	Article.ajaxSuccess( data );
 
 		    },
 		    error: function(errorThrown){

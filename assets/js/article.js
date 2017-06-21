@@ -34,7 +34,6 @@ var Article = {
         $(document).on("dataloaded", function(){
             
             self.loadTitle( self.currentArticle );
-            console.log( 37, "Dataloaded event", self.currentArticle );
 
         });
 
@@ -125,12 +124,9 @@ var Article = {
 
         $("#article_current").find("img").each( function(){
 
-            console.log( 128, $(this).attr("height"), $(this).attr("width") );
-
             // GET RATIO
             if ( $(this).attr("height") > $(this).attr("width") ) {
 
-                console.log( 131, "portrait", $(this) );
                 $(this).addClass("portrait");
 
             }
@@ -143,15 +139,30 @@ var Article = {
 
         console.log("Article.htmlPrep");
 
+        // ADD TARGET=_BLANK TO EXTERNAL LINKS
+        $("#article_current a").each( function(){
+
+            if ( $(this).attr("href").indexOf("http") > -1 ) {
+                $(this).attr( "target", "_blank" );
+            }
+
+        });
+
         // ADD GLYPHS TO CAPTIONS + UNWRAP
-        $("#article_current").find(".caption").each( function(){
+        $("#article_current").find(".caption, .caption_vertical").each( function(){
 
             if ( $(this).parent("p").length ) {
                 $(this).unwrap();
             }
 
             $(this).prepend("<span class='glyph'>&#10230;</span> ");
-            console.log( 127, $(this).text() );
+
+        });
+
+        // ADD GLYPHS TO WINGDING TEXTS
+        $("#article_current").find(".after_wingdings").each( function(){
+
+            $(this).prepend("<span class='wingdings'>&#xF039;</span> ");
 
         });
 
@@ -181,8 +192,6 @@ var Article = {
         console.log("Article.loadTitle", id );
 
         var articles = App.articles;
-
-        console.log( 89, articles );
 
         $.each( articles, function ( i ) {
             if ( $(this)[0].ID === parseInt(id) ) {
@@ -226,7 +235,7 @@ var Article = {
         }
 
         $("#nav_left a").attr({
-            "href"          : "#article/" + articles[ nextPos ].ID + "/" + articles[ prevPos ].slug,
+            "href"          : "#article/" + articles[ prevPos ].ID + "/" + articles[ prevPos ].slug,
             "data-title"    : articles[ prevPos ].title
         });
 

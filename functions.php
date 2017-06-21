@@ -158,6 +158,10 @@ function myplugin_register_query_vars( $vars ) {
 }
 add_filter( 'query_vars', 'myplugin_register_query_vars' ); 
 
+// STOP WP AUTOMATICALLY ADDING P TAGS
+remove_filter( 'the_content', 'wpautop' );
+remove_filter('the_excerpt', 'wpautop');
+
 // ADD CUSTOM STYLES TO WYSIWYG EDITOR
 
 function add_style_select_buttons( $buttons ) {
@@ -170,11 +174,19 @@ add_filter( 'mce_buttons_2', 'add_style_select_buttons' );
 function my_custom_styles( $init_array ) {  
  
     $style_formats = array(  
-        // These are the custom styles
+
+        // PARAGRAPH STYLES
+
         array(  
-            'title' => 'Caption',  
+            'title' => 'Caption Horizontal Image',  
             'block' => 'span',  
             'classes' => 'caption',
+            'wrapper' => true,
+        ), 
+        array(  
+            'title' => 'Caption Vertical Image',  
+            'block' => 'span',  
+            'classes' => 'caption_vertical',
             'wrapper' => true,
         ),  
         array(  
@@ -194,7 +206,89 @@ function my_custom_styles( $init_array ) {
             'block' => 'span', 
             'classes' => 'interview_right',
             'wrapper' => true,
-        ),        
+        ), 
+        array(  
+            'title' => 'Comment',  
+            'block' => 'span', 
+            'classes' => 'comment',
+            'wrapper' => true,
+        ), 
+        array(  
+            'title' => 'Quote',  
+            'block' => 'span', 
+            'classes' => 'quote',
+            'wrapper' => true,
+        ),   
+        array(  
+            'title' => 'Text Indent',  
+            'block' => 'span', 
+            'classes' => 'text_indent',
+            'wrapper' => true,
+        ),  
+        array(  
+            'title' => 'Large Text',  
+            'block' => 'span', 
+            'classes' => 'large_text',
+            'wrapper' => true,
+        ), 
+        array(  
+            'title' => 'List One',  
+            'block' => 'span', 
+            'classes' => 'list_one',
+            'wrapper' => true,
+        ),  
+        array(  
+            'title' => 'List Two',  
+            'block' => 'span', 
+            'classes' => 'list_two',
+            'wrapper' => true,
+        ),  
+        array(  
+            'title' => 'Large List',  
+            'block' => 'span', 
+            'classes' => 'large_list',
+            'wrapper' => true,
+        ),       
+        array(  
+            'title' => 'After Wingdings',  
+            'block' => 'span', 
+            'classes' => 'after_wingdings',
+            'wrapper' => false
+        ), 
+
+        // CHARACTER STYLES
+
+        array(  
+            'title' => 'Char List Marker',  
+            'inline' => 'span', 
+            'classes' => 'list_marker',
+            'wrapper' => false
+        ),  
+        array(  
+            'title' => 'Char List Content',  
+            'inline' => 'span', 
+            'classes' => 'list_content',
+            'wrapper' => false
+        ), 
+        array(  
+            'title' => 'Char Stix Symbols',  
+            'inline' => 'span', 
+            'classes' => 'stix_symbols',
+            'wrapper' => false
+        ),  
+        array(  
+            'title' => 'Char Stix Numbers Large',  
+            'inline' => 'span', 
+            'classes' => 'stix_symbols_large',
+            'wrapper' => false
+        ), 
+        // array(  
+        //     'title' => 'Char Stix Numbers',  
+        //     'inline' => 'span', 
+        //     'classes' => 'stix_numbers',
+        //     'wrapper' => false
+        // ),   
+
     );  
     // Insert the array, JSON ENCODED, into 'style_formats'
     $init_array['style_formats'] = json_encode( $style_formats );  

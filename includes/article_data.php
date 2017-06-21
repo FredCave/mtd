@@ -4,6 +4,7 @@
 	$articles_query = new WP_Query( array( 
         'post_type'         => 'articles',
         'order'             => 'ASC',
+        'cat'               => '-17', 
         'posts_per_page'    => 99
     ) );    
     if ( $articles_query->have_posts() ) :

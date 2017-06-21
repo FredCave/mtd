@@ -34,3 +34,293 @@ h4 {
 .interview_right {
 	margin-left: 25%;
 }
+
+/****************************************
+
+  FONTS
+
+****************************************/
+@font-face {
+  font-family: "News Plantin";
+  font-weight: normal;
+  font-style: normal;
+  src: url("assets/fonts/News Plantin.woff2") format("woff2"), url("assets/fonts/News Plantin.woff") format("woff");
+}
+@font-face {
+  font-family: "News Plantin";
+  font-weight: normal;
+  font-style: italic;
+  src: url("assets/fonts/News Plantin Italic.woff2") format("woff2"), url("assets/fonts/News Plantin Italic.woff") format("woff");
+}
+@font-face {
+  font-family: "News Plantin";
+  font-weight: bold;
+  font-style: normal;
+  src: url("assets/fonts/News Plantin Bold.woff2") format("woff2"), url("assets/fonts/News Plantin Bold.woff") format("woff");
+}
+@font-face {
+  font-family: "News Plantin";
+  font-weight: bold;
+  font-style: italic;
+  src: url("assets/fonts/News Plantin Bold Italic.woff2") format("woff2"), url("assets/fonts/News Plantin bold Italic.woff") format("woff");
+}
+@font-face {
+  font-family: "Univers";
+  font-weight: normal;
+  font-style: normal;
+  src: url("assets/fonts/universltstd-webfont.woff2") format("woff2"), url("assets/fonts/universltstd-webfont.woff") format("woff");
+}
+@font-face {
+  font-family: "Univers";
+  font-weight: normal;
+  font-style: italic;
+  src: url("assets/fonts/universltstd-obl-webfont.woff2") format("woff2"), url("assets/fonts/universltstd-obl-webfont.woff") format("woff");
+}
+@font-face {
+  font-family: 'stix';
+  src: url("assets/fonts/stixgeneral-webfont.woff2") format("woff2"), url("assets/fonts/stixgeneral-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'mtdwingdings';
+  src: url("assets/fonts/wingdings-webfont.woff2") format("woff2"), url("assets/fonts/wingdings-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+/****************************************
+
+  GENERAL
+
+****************************************/
+/* line 135, style.scss */
+/*html, body {
+  width: 100%;
+  min-height: 100%;
+  font-family: "Univers", sans-serif;
+  font-size: 18px;
+  line-height: 1.28;
+  overflow-x: hidden;
+  color: #212121;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}*/
+
+/* line 147, style.scss */
+a, a:visited {
+  text-decoration: none;
+  color: #2962FF;
+}
+
+/* line 152, style.scss */
+.nav_section {
+  display: none;
+}
+
+/* line 156, style.scss */
+section {
+  width: 100%;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+/* line 165, style.scss */
+.content_wrapper {
+  max-width: 1224px;
+  width: calc( 100% - 142px );
+  margin: 0 auto 36px auto;
+  padding-top: 96px;
+}
+
+/* line 173, style.scss */
+.content_wrapper p {
+  margin-bottom: 18px;
+}
+
+/* line 177, style.scss */
+h1 {
+  font-size: 3em;
+  line-height: 1.1;
+}
+
+/* line 182, style.scss */
+h2 {
+  font-size: 2em;
+}
+
+/* line 186, style.scss */
+h4 {
+  line-height: 1.15;
+  text-transform: uppercase;
+}
+
+/* line 193, style.scss */
+h5 {
+  text-transform: uppercase;
+}
+
+/* line 197, style.scss */
+i, em {
+  font-style: italic;
+  font-size: 1.05em;
+}
+
+/* line 202, style.scss */
+b, strong {
+  font-weight: bold;
+}
+
+/* line 206, style.scss */
+.footnote_link {
+  font-family: "Univers", sans-serif;
+  vertical-align: super;
+  font-size: 0.7em;
+  line-height: 0;
+}
+
+/* line 213, style.scss */
+.small_font {
+  font-size: 0.78em;
+  line-height: 1.42;
+}
+
+/* line 218, style.scss */
+.uppercase {
+  text-transform: uppercase;
+}
+
+
+
+/****************************************
+
+  ARTICLES
+
+****************************************/
+/* line 677, style.scss */
+h2 {
+  margin-bottom: 52px;
+}
+/* line 680, style.scss */
+h4 {
+  text-indent: 32px;
+  margin-bottom: 24px;
+}
+/* line 684, style.scss */
+p {
+  margin-bottom: 24px;
+}
+
+/* line 694, style.scss */
+img {
+  height: auto;
+  margin-bottom: 30px;
+  -webkit-box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+          box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.5);
+  -webkit-transition: -webkit-box-shadow 2s;
+  transition: -webkit-box-shadow 2s;
+  transition: box-shadow 2s;
+  transition: box-shadow 2s, -webkit-box-shadow 2s;
+}
+
+/* line 704, style.scss */
+.caption {
+  margin-top: -10px;
+  font-family: "Univers", sans-serif;
+  font-size: 0.78em;
+  color: #757575;
+  margin-bottom: 64px;
+  display: block;
+}
+
+/* line 868, style.scss */
+.glyph {
+  font-family: "stix", serif;
+}
+
+/* line 872, style.scss */
+.comment {
+  display: block;
+  font-family: "Univers", sans-serif;
+  font-size: 0.78em;
+  color: #757575;
+}
+
+/* line 879, style.scss */
+.quote {
+  display: block;
+  margin-left: 8.57%;
+}
+
+/* line 885, style.scss */
+.text_indent {
+  display: block;
+  text-indent: 4.29%;
+}
+
+/* line 890, style.scss */
+.large_text {
+  display: block;
+  font-size: 1.44em;
+  line-height: 1.3;
+}
+
+/* line 898, style.scss */
+.list_one span, .list_two span, .large_list span {
+  display: inline-block;
+  vertical-align: top;
+}
+/* line 903, style.scss */
+.list_one .list_marker, .list_two .list_marker, .large_list .list_marker {
+  width: 4.29%;
+}
+/* line 906, style.scss */
+.list_one .list_content, .list_two .list_content, .large_list .list_content {
+  width: 94%;
+}
+
+/* line 911, style.scss */
+.list_two {
+  display: block;
+  margin-left: 4.29%;
+}
+
+/* line 916, style.scss */
+.large_list {
+  display: block;
+  font-size: 1.44em;
+  line-height: 1.3;
+}
+/* line 920, style.scss */
+.large_list .list_marker {
+  width: 8.57%;
+}
+/* line 923, style.scss */
+.large_list .list_content {
+  width: 91%;
+  margin-left: -8px;
+}
+
+/* line 927, style.scss */
+ 
+.stix_symbols {
+  font-family: 'stix';
+}
+
+/* line 933, style.scss */
+.stix_symbols_large {
+  font-family: 'stix';
+  font-size: 2.88em;
+}
+
+/* line 938, style.scss */
+.wingdings {
+  font-family: wingdings, 'mtdwingdings';
+}
+
+.wp-editor img {
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+

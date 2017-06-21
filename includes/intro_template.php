@@ -41,13 +41,15 @@ function mtd_contents_list () {
     $num = 1;
 
     foreach ( $cats as $cat ) {        
-        if ( $cat->cat_name !== "Uncategorized" ) { ?>
+        if ( $cat->cat_name !== "Uncategorized" && $cat->cat_name !== "Satellite" ) { ?>
             
             <div class="contents_sub_section">
                
                 <div class="contents_sub_section_header">
 
-                    <div class="contents_number"><?php echo $num++ . "."; ?></div>
+                    <div class="contents_number">
+                        <span><?php echo $num++ . "."; ?></span>
+                    </div>
                     <h4 class="contents_sub_section_title"><?php echo $cat->cat_name; ?></h4>
 
                 </div>
@@ -74,8 +76,8 @@ function mtd_contents_list () {
                             ?>
                                 <a href="#article/<?php the_ID(); ?>/<?php echo $post->post_name; ?>">
                                     <p class="contents_title">
-                                        <?php if ( get_field("full_title") ) {
-                                            the_field("full_title");
+                                        <?php if ( get_field("article_full_title") ) {
+                                            the_field("article_full_title");
                                         } else {
                                             the_title();
                                         } ?>

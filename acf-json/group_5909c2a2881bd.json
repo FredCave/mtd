@@ -115,6 +115,29 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_5947d777d50b0",
+                            "label": "Serif \/ Sans Serif",
+                            "name": "article_template_serif",
+                            "type": "radio",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "serif": "Serif",
+                                "sansserif": "Sans Serif"
+                            },
+                            "allow_null": 0,
+                            "other_choice": 0,
+                            "save_other_choice": 0,
+                            "default_value": "serif",
+                            "layout": "horizontal"
+                        },
+                        {
                             "key": "field_5909cae3a0fa3",
                             "label": "Content",
                             "name": "content",
@@ -142,6 +165,29 @@
                     "label": "Template 2",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_5947d776d50af",
+                            "label": "Serif \/ Sans Serif",
+                            "name": "article_template_serif",
+                            "type": "radio",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "serif": "Serif",
+                                "sansserif": "Sans Serif"
+                            },
+                            "allow_null": 0,
+                            "other_choice": 0,
+                            "save_other_choice": 0,
+                            "default_value": "serif",
+                            "layout": "horizontal"
+                        },
                         {
                             "key": "field_5909caf1a0fa4",
                             "label": "Content",
@@ -171,6 +217,29 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_5947d7b3d50b1",
+                            "label": "Serif \/ Sans Serif",
+                            "name": "article_template_serif",
+                            "type": "radio",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "serif": "Serif",
+                                "sansserif": "Sans Serif"
+                            },
+                            "allow_null": 0,
+                            "other_choice": 0,
+                            "save_other_choice": 0,
+                            "default_value": "serif",
+                            "layout": "horizontal"
+                        },
+                        {
                             "key": "field_5909cb281302e",
                             "label": "Content",
                             "name": "content",
@@ -199,6 +268,29 @@
                     "display": "block",
                     "sub_fields": [
                         {
+                            "key": "field_5947d7bad50b2",
+                            "label": "Serif \/ Sans Serif",
+                            "name": "article_template_serif",
+                            "type": "radio",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "serif": "Serif",
+                                "sansserif": "Sans Serif"
+                            },
+                            "allow_null": 0,
+                            "other_choice": 0,
+                            "save_other_choice": 0,
+                            "default_value": "serif",
+                            "layout": "horizontal"
+                        },
+                        {
                             "key": "field_5909cb271302c",
                             "label": "Content",
                             "name": "content",
@@ -226,6 +318,29 @@
                     "label": "Template 5",
                     "display": "block",
                     "sub_fields": [
+                        {
+                            "key": "field_5947d7e1d50b4",
+                            "label": "Serif \/ Sans Serif",
+                            "name": "article_template_serif",
+                            "type": "radio",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "serif": "Serif",
+                                "sansserif": "Sans Serif"
+                            },
+                            "allow_null": 0,
+                            "other_choice": 0,
+                            "save_other_choice": 0,
+                            "default_value": "serif",
+                            "layout": "horizontal"
+                        },
                         {
                             "key": "field_5909cb261302a",
                             "label": "Content",
@@ -271,7 +386,7 @@
             "label": "Footnotes",
             "name": "article_footnotes",
             "type": "wysiwyg",
-            "instructions": "",
+            "instructions": "Click the \"Bulleted List\" button before entering footnotes.\r\nOr else enter footnotes on separate lines, select all and click \"Bulleted List\".",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -283,6 +398,33 @@
             "tabs": "all",
             "toolbar": "full",
             "media_upload": 1
+        },
+        {
+            "key": "field_593f7e0376ca7",
+            "label": "Satellites",
+            "name": "article_satellites",
+            "type": "relationship",
+            "instructions": "Select any satellites relating to the current article here",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "articles"
+            ],
+            "taxonomy": [
+                "category:satellite"
+            ],
+            "filters": [
+                "search"
+            ],
+            "elements": "",
+            "min": "",
+            "max": "",
+            "return_format": "object"
         }
     ],
     "location": [
@@ -316,5 +458,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1497302945
+    "modified": 1497881945
 }

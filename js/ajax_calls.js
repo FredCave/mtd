@@ -57,7 +57,8 @@ AjaxCalls = {
 		    	// SAVE ARTICLE DATA TO APP OBJECT
 		    	App.articles = data;
 
-		    	console.log(60);
+		    	console.log( 60, App.articles );
+
 		    	$(document).trigger("dataloaded");
 
 		    },

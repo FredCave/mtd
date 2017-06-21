@@ -12,8 +12,8 @@
                 <!-- TITLE -->
     			<div class="title_wrapper">
                     <h1>
-                        <?php if ( get_field("full_title") ) {
-                            the_field("full_title");
+                        <?php if ( get_field("article_full_title") ) {
+                            the_field("article_full_title");
                         } else {
                             the_title();
                         } ?>         
@@ -42,11 +42,11 @@
 
                 <!-- CONTENT -->
 
-    			<?php 
+    			<?php
                 if ( have_rows("article_templates") ):
                     while ( have_rows("article_templates") ) : the_row(); ?>
 
-                        <div class="template <?php echo get_row_layout() ?>">
+                        <div class="template <?php echo get_row_layout() ?> <?php the_sub_field("article_template_serif"); ?>">
 
                             <?php the_sub_field("content"); ?>
 
@@ -56,6 +56,21 @@
                     endwhile;
                 endif;
                 ?>
+
+                <!-- FOOTNOTES -->
+                <?php
+                if ( get_field("article_footnotes") ): ?>
+                    
+                        <div class="article_footnotes">
+
+                            <?php the_field("article_footnotes"); ?>
+
+                        </div><!-- END OF .TEMPLATE -->
+
+                    <?php 
+                endif;
+                ?>
+
 
             </div><!-- END OF .ARTICLE_WRAPPER -->
 

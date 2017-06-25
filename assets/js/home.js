@@ -107,6 +107,9 @@ var Home = {
 		console.log("Home.navTo", section);
 
 		if ( section.length ) {
+
+			console.log( 111, $('[data-anchor="'+ section +'"]') );
+
 			var targetTop = $('[data-anchor="'+ section +'"]').offset().top;
 
 			$("html,body").animate({

@@ -46,13 +46,31 @@
                 if ( have_rows("article_templates") ):
                     while ( have_rows("article_templates") ) : the_row(); ?>
 
-                        <div class="template <?php echo get_row_layout() ?> <?php the_sub_field("article_template_serif"); ?>">
+                        <?php if ( get_row_layout() === "article_template_5" ) : ?>
 
-                            <?php the_sub_field("content"); ?>
+                            <div class="template <?php echo get_row_layout() ?> <?php the_sub_field("article_template_serif"); ?>">
+                                <div class="mtd_column">
+                                    <?php the_sub_field("content"); ?>
+                                </div>
+                                <div class="mtd_column">
+                                    <?php the_sub_field("video"); ?>
+                                </div>
+                            </div>
 
-                        </div><!-- END OF .TEMPLATE -->
+                        <?php elseif ( get_row_layout() === "article_template_6" ) : ?>
 
-                    <?php 
+                            <div class="template <?php echo get_row_layout() ?>">
+                                <?php the_sub_field("video"); ?>
+                            </div>                         
+
+                        <?php else : ?>
+    
+                            <div class="template <?php echo get_row_layout() ?> <?php the_sub_field("article_template_serif"); ?>">
+                                <?php the_sub_field("content"); ?>
+                            </div>
+
+                        <?php endif;
+
                     endwhile;
                 endif;
                 ?>

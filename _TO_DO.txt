@@ -1,4 +1,12 @@
-### CHECK STYLES
+### BOOK EDITOR
+	### FOR CONTENTS + EDITOR – HOW TO KNOW IF SERIF IR NOT??
+
+
+
+
+
+
+
 
 ### SNAP TO INTRO SECTIONS
 
@@ -8,7 +16,7 @@
 
 ### HYPHENATION FOR CONTENTS SUBSECTION TITLES
 
-### ONLY LOAD VIDEO IF VISIBLE
+### ONLY LOAD VIDEO IF VISIBLE – STOP WHEN NAVIGATION AWAY
 
 
 
@@ -20,16 +28,16 @@
 
 
 
-### GENERATE PDFs
-	– https://parall.ax/products/jspdf – NO CSS?
-	– https://wkhtmltopdf.org – COMMAND LINE
-	– https://github.com/mozilla/pdf.js
-	– https://github.com/marcbachmann/node-html-pdf/!!!!!
-	– http://pdfmake.org/
-	– mpdf !!!!!!
 
-	MAX WIDTH 1440
-	MOBILE WIDTH 768
+
+
+
+
+
+
+
+
+
 
 ### SAVE BOOKS IN LOCAL STORAGE
 

@@ -143,8 +143,8 @@
                             "name": "content",
                             "type": "wysiwyg",
                             "instructions": "",
-                            "required": "",
-                            "conditional_logic": "",
+                            "required": 0,
+                            "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
                                 "class": "",
@@ -194,8 +194,8 @@
                             "name": "content",
                             "type": "wysiwyg",
                             "instructions": "",
-                            "required": "",
-                            "conditional_logic": "",
+                            "required": 0,
+                            "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
                                 "class": "",
@@ -245,8 +245,8 @@
                             "name": "content",
                             "type": "wysiwyg",
                             "instructions": "",
-                            "required": "",
-                            "conditional_logic": "",
+                            "required": 0,
+                            "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
                                 "class": "",
@@ -255,7 +255,7 @@
                             "default_value": "",
                             "tabs": "all",
                             "toolbar": "full",
-                            "media_upload": ""
+                            "media_upload": 1
                         }
                     ],
                     "min": "",
@@ -296,8 +296,8 @@
                             "name": "content",
                             "type": "wysiwyg",
                             "instructions": "",
-                            "required": "",
-                            "conditional_logic": "",
+                            "required": 0,
+                            "conditional_logic": 0,
                             "wrapper": {
                                 "width": "",
                                 "class": "",
@@ -306,7 +306,7 @@
                             "default_value": "",
                             "tabs": "all",
                             "toolbar": "full",
-                            "media_upload": ""
+                            "media_upload": 1
                         }
                     ],
                     "min": "",
@@ -366,6 +366,32 @@
                             "type": "oembed",
                             "instructions": "Add Vimeo URL.",
                             "required": "",
+                            "conditional_logic": "",
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "width": "",
+                            "height": ""
+                        }
+                    ],
+                    "min": "",
+                    "max": ""
+                },
+                {
+                    "key": "594b8c0d0cd59",
+                    "name": "article_template_6",
+                    "label": "Template 6 \u2013 Video",
+                    "display": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_594b8c220cd5a",
+                            "label": "Video",
+                            "name": "video",
+                            "type": "oembed",
+                            "instructions": "Add Vimeo URL",
+                            "required": 0,
                             "conditional_logic": "",
                             "wrapper": {
                                 "width": "",
@@ -458,5 +484,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1497881945
+    "modified": 1498123700
 }

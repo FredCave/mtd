@@ -89,7 +89,7 @@ var Editor = {
 
 				if ( art.ID === id ) {
 
-					// console.log( 79, art );
+					console.log( 79, art );
 
 					$("#editor_articles").append( self.template( self.data ) );
 

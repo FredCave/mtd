@@ -141,6 +141,25 @@ function mtd_article_data () {
         
 }
 
+// EDITOR LOOP - NOT AJAX
+
+function mtd_get_editor_text () {
+
+    $editor_query = new WP_Query( array( 
+        'name' => 'editor-page-text' 
+    ) );    
+    if ( $editor_query->have_posts() ) :
+        while ( $editor_query->have_posts() ) : $editor_query->the_post();
+            
+            the_content();
+
+        endwhile;
+        wp_reset_postdata();
+    endif; 
+
+}
+
+
 
 // SET STYLES IN ARTICLES
 

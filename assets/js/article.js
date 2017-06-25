@@ -70,6 +70,17 @@ var Article = {
 
         });
 
+        // FOOTNOTES LINK
+        $("#article_current").on("click", ".footnote_link", function(){
+
+            self.viewFootnotes();
+
+        });
+
+        $(window).on("resize",  _.throttle( function(){
+            self.resizeIframes();
+        }, 1000 ));
+
     },
 
     articleDataCheck: function () {
@@ -162,7 +173,8 @@ var Article = {
         // ADD GLYPHS TO WINGDING TEXTS
         $("#article_current").find(".after_wingdings").each( function(){
 
-            $(this).prepend("<span class='wingdings'>&#xF039;</span> ");
+            console.log( 169, "Glyph added." );
+            $(this).prepend("<span class='wingdings'><img src='" + TEMPLATE + "/assets/img/wingding_glyph.svg' /></span> ");
 
         });
 
@@ -176,16 +188,50 @@ var Article = {
                 $(this).find("img").appendTo( newWrapper );
                 $(this).find(".caption").appendTo( newWrapper );
                 
-                // WRAP TEXT ELEMENTS IN WRAPPER
-                $(this).wrapInner( "<div class='text_wrapper'></div>");
-                $(this).append(newWrapper);
+            }
+
+            // WRAP TEXT ELEMENTS IN WRAPPER
+            $(this).wrapInner( "<div class='text_wrapper'></div>");
+            $(this).append(newWrapper);
+
+        });
+
+        // IF TEMPLATE 6: RESIZE IFRAME
+        this.resizeIframes();
+
+    },
+
+    resizeIframes: function () {
+
+        console.log("Article.resizeIframes");
+
+        $("iframe").each( function(){
+
+            var ratio = $(this).attr("width") / $(this).attr("height");
+
+            // IF IN TEMPLATE 6
+            if ( $(this).parents(".article_template_6").length ) {
+
+                // GET RATIO
+                var thisH = $(".article_inner_wrapper").width() / ratio;
+                $(this).css({
+                    "height" : thisH
+                });
+
+            } else if ( $(this).parents(".article_template_5").length ) {
+
+                // GET RATIO
+                var thisH = ( $(".article_inner_wrapper").width() / 2 - 36 ) / ratio;
+                $(this).css({
+                    "height" : thisH
+                });
+                console.log( 216, thisH );                
 
             }
 
         });
 
-
-    },
+    }, 
 
     loadTitle: function ( id ) {
 
@@ -260,13 +306,20 @@ var Article = {
 
     },   
 
-    // articleClose: function () {
+    viewFootnotes: function () {
 
-    //     console.log("Article.articleClose");
+        console.log("Article.viewFootnotes");
 
-    //     $("#article_wrapper").fadeOut(1000);
-    //     this.wrapperVisible = false;
+        var target = $(".article_footnotes").offset().top;
+        console.log( 314, target );
 
-    // }
+        $("html,body").animate({
+            scrollTop : target - 72
+        }, 1000 );
+
+        // IF MOBILE – SCROLL UP
+
+
+    }
 
 }

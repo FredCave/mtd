@@ -7,10 +7,10 @@
     if ( $articles_query->have_posts() ) :
         while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
 
-            <div class="article_inner_wrapper <?php the_field("article_bg_color"); ?>">
+            <div class="top_wrapper">
 
                 <!-- TITLE -->
-    			<div class="title_wrapper">
+                <div class="title_wrapper <?php the_field("article_bg_color"); ?>">
                     <h1>
                         <?php if ( get_field("article_full_title") ) {
                             the_field("article_full_title");
@@ -39,6 +39,10 @@
                     </div>
 
                 </div>
+
+            </div><!-- END OF .TOP_WRAPPER -->
+
+            <div class="article_inner_wrapper <?php the_field("article_bg_color"); ?>">
 
                 <!-- CONTENT -->
 
@@ -75,22 +79,14 @@
                 endif;
                 ?>
 
-                <!-- FOOTNOTES -->
-                <?php
-                if ( get_field("article_footnotes") ): ?>
-                    
-                        <div class="article_footnotes">
-
-                            <?php the_field("article_footnotes"); ?>
-
-                        </div><!-- END OF .TEMPLATE -->
-
-                    <?php 
-                endif;
-                ?>
-
-
             </div><!-- END OF .ARTICLE_WRAPPER -->
+
+            <!-- FOOTNOTES -->
+            <?php if ( get_field("article_footnotes") ): ?>
+                <div class="article_footnotes">
+                    <?php the_field("article_footnotes"); ?>
+                </div><!-- END OF .TEMPLATE -->
+            <?php endif; ?>
 
         <?php endwhile;
         wp_reset_postdata();

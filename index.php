@@ -6,10 +6,9 @@
 		
 		<div id="intro_wrapper">
 		    
-		    <!-- VIDEO (WITH NAV INSIDE) -->
-		    <section id="" class="intro_section" data-anchor="video">
-					
-		        <video id="introvid" playsinline autoplay poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
+		    <!-- VIDEO -->
+		    <section id="video_section" class="" data-anchor="video">
+		        <video id="introvid" playsinline poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
 		            <source src="<?php bloginfo('template_url'); ?>/assets/vid/mind_the_dance.mp4" type="video/mp4">
 		        </video>
 		    </section>

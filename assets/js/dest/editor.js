@@ -1,12 +1,20 @@
 var Editor = {
 	
-	savedArticles: [19,34,35,47,48,45],
+	savedArticles: [],
 
 	init: function () {
 
 		console.log("Editor.init");
 
 		this.bindEvents();
+
+		this.showSection();
+
+	},
+
+	showSection: function () {
+
+		console.log("Editor.showSection");
 
 		// GET ANY SAVED BOOKS
 		this.loadArticleCheck();
@@ -26,7 +34,7 @@ var Editor = {
 
 		});
 
-		$("#generate_book a").on( "click", function(e) {
+		$("#editor_button a").on( "click", function(e) {
 
 			// e.preventDefault();
 
@@ -76,7 +84,20 @@ var Editor = {
 		// IF NO ARTICLES
 		if ( articles.length < 1 ) {
 			$("#editor_articles").append("You currently have no saved articles.");
+			
+			// DISABLE GENERATE PDF BUTTON
+			$("#editor_button").css({
+				"opacity" 			: 0,
+				"pointer-events" 	: "none"
+			}); 
+
 			return;
+		} else {
+			$("#editor_articles").empty();
+			$("#editor_button").css({
+				"opacity" 			: "",
+				"pointer-events" 	: ""
+			}); 		
 		}
 
 		// LOOP THROUGH SAVED ARTICLES

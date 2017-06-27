@@ -55,6 +55,7 @@ var Article = {
 
         });
 
+        // ADD TO BOOK
         $("#article_current").off("click");
         $("#article_current").on("click", ".add_to_book", function(e){
 
@@ -63,6 +64,7 @@ var Article = {
 
         });
 
+        // DOWNLOAD PDF
         $("#article_current").on("click", ".download_pdf", function(e){
 
             var thisHref = "generate/?art=" + self.currentArticle;
@@ -80,6 +82,13 @@ var Article = {
         $(window).on("resize",  _.throttle( function(){
             self.resizeIframes();
         }, 1000 ));
+
+        // RUNNING TITLE SHOW/HIDE
+        $(window).on("scroll", _.throttle( function(){
+
+            self.titleCheck( $(window).scrollTop() );
+
+        }, 500 ));
 
     },
 
@@ -121,10 +130,14 @@ var Article = {
 
         if ( bgColour === "grey" ) {
             $("#article_wrapper").addClass("grey");
-            $("#article_nav").addClass("grey");
+            $("#article_nav").addClass("grey").css({
+                "box-shadow": "0px 2px 6px #eee"                
+            });
         } else {
             $("#article_wrapper").removeClass("grey");
-            $("#article_nav").removeClass("grey");           
+            $("#article_nav").removeClass("grey").css({
+                "box-shadow": ""                
+            });          
         }
 
     },
@@ -154,7 +167,7 @@ var Article = {
         $("#article_current a").each( function(){
 
             if ( $(this).attr("href").indexOf("http") > -1 ) {
-                $(this).attr( "target", "_blank" );
+                $(this).attr( "target", "_blank" ).addClass("external_link");
             }
 
         });
@@ -242,6 +255,7 @@ var Article = {
         $.each( articles, function ( i ) {
             if ( $(this)[0].ID === parseInt(id) ) {
                 $("#nav_title span").text( $(this)[0].title );
+                document.title = "Mind The Dance – " + $(this)[0].title;
             }
         });
 
@@ -319,6 +333,19 @@ var Article = {
 
         // IF MOBILE – SCROLL UP
 
+
+    },
+
+    titleCheck: function ( scroll ) {
+
+        console.log("Article.titleCheck", scroll );
+
+        var limit = $("#article_current .top_wrapper").outerHeight() + parseInt ( $("#article_current").css("padding-top") ) - 100 ;
+        if ( scroll > limit ) {
+            $("#nav_title span").css("opacity","1");
+        } else {
+            $("#nav_title span").css("opacity","0");
+        }
 
     }
 

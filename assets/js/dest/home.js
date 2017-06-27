@@ -7,7 +7,7 @@ var Home = {
 		this.section = section;
 
 		// PIN NAV
-		var sticky = new Waypoint.Sticky({
+		this.sticky = new Waypoint.Sticky({
 			element: $("#intro_nav")[0],
 			handler: function(direction) {
 		    	// BUG FIX
@@ -17,6 +17,15 @@ var Home = {
 		    	}
 			},
 		});
+
+		console.log( 28, this.sticky );
+
+		if ( section === "" ) {
+			// IF NO HASH: PLAY VIDEO
+			$("#introvid")[0].play();
+		} else {
+			this.hideVideo();
+		}
 
 		// LOAD INTRO SECTIONS
 		this.loadIntroSections();
@@ -31,12 +40,17 @@ var Home = {
 
 		var self = this;
 
-		// $("#introvid").on("ended", function(){
+		$("#intro_nav a").on("click", function(){
 
-		// 	// SCROLL DOWN TO FOREWORD
-		// 	// ANIMATION BEFORE?
+			self.hideVideo();
 
-		// });
+		});
+
+		$("#introvid").on("ended", function(){
+
+			self.hideVideo();
+
+		});
 
 		$("#contents_list li").on( "mouseover", function(){
 			
@@ -63,9 +77,33 @@ var Home = {
 
 	},
 
-	onVideoEnd: function () {
+	hideVideo: function () {
 
-		console.log("Home.onVideoEnd");
+		console.log("Home.hideVideo");
+
+		$("#introvid")[0].volume = 0;
+		$("#introvid")[0].pause();
+
+		$("#video_section").css({
+			"height" : 		0,
+			"min-height" :  0
+		});
+
+		// STOP NAV STICKINESS
+		console.log( 91, this.sticky );
+		this.sticky.destroy();
+
+		$("#intro_nav").css({
+			"position" : "fixed",
+			"top" : 0
+		});
+
+		// FORCE RECALC OF INVIEW POINTS
+		
+		setTimeout( function(){
+			Waypoint.refreshAll()
+			$(window).trigger('resize');
+		}, 1100 );
 
 	},
 
@@ -92,6 +130,7 @@ var Home = {
 
 		// SET CONTENTS HEIGHT HERE
 		this.contentsHeight();
+		this.htmlPrep();
 
 		this.contentsImgInit();
 
@@ -125,80 +164,190 @@ var Home = {
 
 		var self = this;
 
+		// COLOPHON WAYPOINT
+		var inview_foreword = new Waypoint.Inview({
+			element: $('#foreword_wrapper')[0],
+			enter: function( direction ) {
+				// ON UP: COLOPHON ENTERS THE SCREEN
+				if ( direction === "up" ) {
+					self.navForeword("enter");
+					// self.navColourChange("#fff9c2");
+				}
+			},
+			entered: function( direction ) {
+				// ON UP: COLOPHON EXITS THE SCREEN
+				if ( direction === "up" ) {
+					self.navForeword("exit");
+					// self.navColourChange("#424242");
+					console.log("Exit up.");
+				}
+			},
+			exit: function( direction ) {
+				// ON DOWN: COLOPHON ENTERS THE SCREEN
+				if ( direction === "down" ) {
+					self.navForeword("enter");
+					// self.navColourChange("#fff9c2");
+				}
+			},
+			exited: function( direction ) {
+				// ON DOWN: COLOPHON EXITS THE SCREEN
+				if ( direction === "down" ) {
+					// self.navForeword("exit");
+					// self.navColourChange("#424242");
+					console.log("Exit down.");
+				}
+			}
+		});
+
 		// CONTENTS WAYPOINT
-		var inview = new Waypoint.Inview({
+		var inview_contents = new Waypoint.Inview({
 			element: $('#contents_wrapper')[0],
 			enter: function( direction ) {
 				// ON UP: CONTENTS ENTERS THE SCREEN
 				if ( direction === "up" ) {
-					self.navColourChange("#424242");
+					self.navContents("enter");
+					// self.navColourChange("#424242");
 				}
 			},
 			entered: function( direction ) {
 				// ON UP: CONTENTS EXITS THE SCREEN
 				if ( direction === "up" ) {
-					self.navColourChange("white");
+					self.navContents("exit");
+					// self.navColourChange("white");
 				}
 			},
 			exit: function( direction ) {
 				// ON DOWN: CONTENTS ENTERS THE SCREEN
 				if ( direction === "down" ) {
-					self.navColourChange("#424242");
+					self.navContents("enter");
+					// self.navColourChange("#424242");
 				}
 			},
 			exited: function( direction ) {
 				// ON DOWN: CONTENTS EXITS THE SCREEN
 				if ( direction === "down" ) {
-					self.navColourChange("white");
+					self.navContents("exit");
+					// self.navColourChange("white");
 				}
 			}
 		});
 
 		// COLOPHON WAYPOINT
-		var inview = new Waypoint.Inview({
+		var inview_colophon = new Waypoint.Inview({
 			element: $('#colophon_wrapper')[0],
 			enter: function( direction ) {
-				// ON UP: CONTENTS ENTERS THE SCREEN
+				// ON UP: COLOPHON ENTERS THE SCREEN
 				if ( direction === "up" ) {
-					self.navColourChange("#fffab4");
+					self.navColophon("enter");
+					// self.navColourChange("#fff9c2");
 				}
 			},
 			entered: function( direction ) {
-				// ON UP: CONTENTS EXITS THE SCREEN
+				// ON UP: COLOPHON EXITS THE SCREEN
 				if ( direction === "up" ) {
-					self.navColourChange("#424242");
+					self.navColophon("exit");
+					// self.navColourChange("#424242");
 				}
 			},
 			exit: function( direction ) {
-				// ON DOWN: CONTENTS ENTERS THE SCREEN
+				// ON DOWN: COLOPHON ENTERS THE SCREEN
 				if ( direction === "down" ) {
-					self.navColourChange("#fffab4");
+					self.navColophon("enter");
+					// self.navColourChange("#fff9c2");
 				}
 			},
 			exited: function( direction ) {
-				// ON DOWN: CONTENTS EXITS THE SCREEN
+				// ON DOWN: COLOPHON EXITS THE SCREEN
 				if ( direction === "down" ) {
-					self.navColourChange("#424242");
+					self.navColophon("exit");
+					// self.navColourChange("#424242");
 				}
 			}
 		});
 
 	},
 
-	navColourChange: function ( colour ) {
+	navForeword: function ( direction ) {
 
-		console.log("Home.navColour");
+		console.log("Home.navForeword", direction );
 
-		var textColour = ( colour == "#424242" ? "#fff" : "#212121" );
-
+		var bgColour, textColour;
+		if ( direction === "enter" ) {
+			bgColour = "white";
+			textColour = "#212121";
+		} else if (  direction === "exit" ) {
+			bgColour = "";
+			textColour = "";
+		}
 		$("#intro_nav").css({
-			"background-color" : colour
+			"background-color" 	: bgColour,
+			"box-shadow" 		: "0px 2px 6px " + bgColour	
 		});
-		$("#intro_nav a").css({
-			"color" : textColour
+		$("#intro_nav ul li:first-child a").css({
+			"color"	: textColour
 		});
 
 	},
+
+	navContents: function ( direction ) {
+
+		console.log("Home.navContents");
+
+		var bgColour, textColour;
+		if ( direction === "enter" ) {
+			bgColour = "#424242";
+			textColour = "white";
+		} else if (  direction === "exit" ) {
+			textColour = "";
+		}
+		$("#intro_nav").css({
+			"background-color" 	: bgColour,
+			"box-shadow" 		: "0px 2px 6px " + bgColour	
+		});	
+		$("#intro_nav ul li a").css({
+			"color"	: ""
+		});	
+		$("#intro_nav ul li:nth-child(2) a").css({
+			"color"	: textColour
+		});	
+
+	},
+
+	navColophon: function ( direction ) {
+
+		console.log("Home.navColophon");
+
+		var bgColour, textColour;
+		if ( direction === "enter" ) {
+			bgColour = "#fff9c2";
+			textColour = "#212121";
+		} else if (  direction === "exit" ) {
+			textColour = "";
+		}
+		$("#intro_nav").css({
+			"background-color" 	: bgColour,
+			"box-shadow" 		: "0px 2px 6px " + bgColour	
+		});	
+		$("#intro_nav ul li:nth-child(3) a").css({
+			"color"	: textColour
+		});	
+
+	},	
+
+	// navColourChange: function ( colour ) {
+
+	// 	console.log("Home.navColour");
+
+	// 	var textColour = ( colour == "#424242" ? "#fff" : "#212121" );
+
+	// 	$("#intro_nav").css({
+	// 		"background-color" : colour
+	// 	});
+	// 	$("#intro_nav a").css({
+	// 		// "color" : textColour
+	// 	});
+
+	// },
 
 	loadContentsImgs: function () {
 
@@ -274,7 +423,7 @@ var Home = {
 		console.log("Home.contentsImgFix");
 
 		// GET PARENT WIDTH
-		var parentW = $("#contents_image").width();
+		var parentW = $("#contents_image_wrapper").width();
 
 		$("#contents_image").css({
 			"position" : "fixed",
@@ -309,10 +458,12 @@ var Home = {
 		// LOOP THROUGH SUB-SECTIONS
 		$(".contents_sub_section").each( function(i) {
 
-			if ( i % 2 === 0 ) {
+			// FIRST 3 
+			if ( i < 3 ) {
 
 				leftH += $(this).outerHeight() + 40;
 
+			// LAST 3 
 			} else {
 
 				rightH += $(this).outerHeight() + 40;
@@ -328,6 +479,20 @@ var Home = {
 		var totalH = Math.max( leftH, rightH );
 
 		$("#contents_wrapper #contents_list").css( "height", totalH + 60 );
+
+	},
+
+	htmlPrep: function () {
+
+		console.log("Home.htmlPrep");
+
+		// ADD GLYPHS TO WINGDING TEXTS
+        $("#contents_list li").each( function(){
+
+            console.log( 169, "Glyph added." );
+            $(this).find(".contents_category").prepend("<span class='wingdings'><img src='" + TEMPLATE + "/assets/img/wingding_glyph_white.svg' /></span> ");
+
+        });
 
 	}
 

@@ -84,8 +84,10 @@ function mtd_contents_list () {
                                     </p>
                                 </a>
                                 <p class="contents_author"><?php the_field("article_author"); ?></p>
-                                <p class="contents_category"><?php echo $articletags; ?></p>
-                                
+                                <?php if ( $articletags !== "" ) : ?>
+                                    <p class="contents_category"><?php echo $articletags; ?></p>
+                                <?php endif; ?>
+
                             </li>
                         <?php endwhile;
                         wp_reset_postdata();
@@ -115,20 +117,39 @@ function mtd_colophon () {
             <div id="colophon_wrapper" class="content_wrapper">
                 
                 <div class="intro_column_left mtd_column">
-                    <div class="column_title"><h4>Authors</h4></div>
+                    <div class="column_title"><span>Authors</span></div>
                     <div class="column_contents small_font">
                         <?php the_field("authors"); ?>
                     </div>
                 </div>
 
                 <div class="intro_column_right mtd_column">
-                    <div class="column_title"><h4>Colophon</h4></div>
+                    <div class="column_title"><span>Colophon</span></div>
                     <div class="column_contents small_font">
                         <div class="sub_column">
                             <?php the_field("colophon_col_1"); ?>
                         </div>
                         <div class="sub_column">
                             <?php the_field("colophon_col_2"); ?>
+                            <?php // LOGOS 
+                            if ( have_rows("colophon_logos") ) { 
+                                echo "<ul>";
+                                while ( have_rows("colophon_logos") ) : the_row( );
+                                    $logo = get_sub_field("colophon_logo");
+                                    $logo_url = $logo["url"];
+                                    // var_dump( $logo );
+                                    $logo_url = str_replace( "png", "svg", $logo["url"] ); ?>
+                                    <li><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></li>
+                                <?php 
+                                endwhile;
+                                echo "</ul>";
+                            } 
+                            // EU TEXT
+                            if ( get_field("colophon_eu_text") ) { ?>
+                                <div class="">
+                                    <?php the_field("colophon_eu_text"); ?>
+                                </div>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>
@@ -160,7 +181,7 @@ function mtd_colophon () {
 
         </div>
 
-        <div class="intro_column_right mtd_column">
+        <div class="">
             <div id="contents_image_wrapper">
                 <div id="contents_image"></div>
             </div>

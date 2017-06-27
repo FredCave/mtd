@@ -12,7 +12,7 @@ app.MainRouter = Backbone.Router.extend({
 
 	routes: {
 
-        "article/:id/:title"    : "showArticle",
+        "article/:id/:title": "showArticle",
 
         "foreword"          : "showHome",
 
@@ -22,7 +22,9 @@ app.MainRouter = Backbone.Router.extend({
 
         "make-book"         : "showEditor", 
 
-        "*other"            : "showHome"
+        // "*other"            : "showHome"
+
+        ""                  : "showHome"
 
     },
 
@@ -94,6 +96,8 @@ app.MainRouter = Backbone.Router.extend({
         if ( !this.editorLoaded ) {
             Editor.init();
             this.editorLoaded = true;
+        } else {
+            Editor.showSection();
         }
 
     }

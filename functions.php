@@ -243,7 +243,13 @@ function my_custom_styles( $init_array ) {
             'block' => 'span', 
             'classes' => 'text_indent',
             'wrapper' => true,
-        ),  
+        ),
+        array(  
+            'title'     => 'First Line Indent',  
+            'block'     => 'span', 
+            'classes'   => 'first_line_indent',
+            'wrapper'   => true, 
+        ),   
         array(  
             'title' => 'Large Text',  
             'block' => 'span', 
@@ -301,13 +307,7 @@ function my_custom_styles( $init_array ) {
             'classes' => 'stix_symbols_large',
             'wrapper' => false
         ), 
-        // array(  
-        //     'title' => 'Char Stix Numbers',  
-        //     'inline' => 'span', 
-        //     'classes' => 'stix_numbers',
-        //     'wrapper' => false
-        // ),   
-
+  
     );  
     // Insert the array, JSON ENCODED, into 'style_formats'
     $init_array['style_formats'] = json_encode( $style_formats );  

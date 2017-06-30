@@ -188,6 +188,7 @@ h1 {
 
 h2 {
 	font-size: 2em;
+	line-height: 1.28;
 }
 
 h3 {
@@ -208,7 +209,19 @@ h5 {
 
 i, em {
 	font-style: italic;
-	font-size: 1.05em;
+}
+
+.sansserif {
+	letter-spacing: 0.3px; 
+	line-height: 1.39;
+}
+
+.serif {
+	line-height: 1.39;
+	letter-spacing: 0.1px;
+	i, em {
+		font-size: 1.1em;
+	}
 }
 
 h4 i, h4 em, 
@@ -224,13 +237,16 @@ b, strong {
 	font-family: $univers;
 	vertical-align: super;
     font-size: 0.7em;
+	letter-spacing: 0px;
     line-height: 0;
     cursor: pointer;
+	letter-spacing: 0;
 }
 
 .small_font {
 	font-size: 0.78em;	
 	line-height: 1.42;	
+	letter-spacing: 0;
 }
 
 .uppercase {
@@ -274,6 +290,7 @@ b, strong {
 	height: 60px;
 	text-transform: uppercase;
 	font-size: 0.89em;
+	letter-spacing: 0;
 	// position: absolute;
 	// top: -58px;
 
@@ -323,6 +340,8 @@ b, strong {
 	// border: 1px solid green;
 	min-height: 100vh;
 	font-size: 1.8em;
+	line-height: 1.28;
+	letter-spacing: 0;
 }
 
 .intro_wrapper > p {
@@ -376,6 +395,7 @@ video#introvid {
 	text-align: center;
 	font-size: 0.78em;
 	text-transform: uppercase;
+	letter-spacing: 0;
 }
 
 .yellow_intro_section {
@@ -387,10 +407,13 @@ video#introvid {
 		color: black;
 		border-bottom: 1px solid black;
 	}
-	img {
-		height: auto;
-		margin-bottom: 4px;
-		max-width: 100%;
+	li {
+		margin-bottom: 18px;
+		img {
+			height: auto;
+			margin-bottom: 4px;
+			max-width: 100%;
+		}
 	}
 	li:last-child {
 		margin-top: 24px;
@@ -474,25 +497,22 @@ video#introvid {
 .contents_sub_section_header {
 	// border-bottom: 1px solid white;
 	position: relative;
+	font-family: $plantin;
 }
 
 .contents_number {
 	// border: 1px solid orange;
+	font-size: 1.33em;
 	display: inline-block;
 	vertical-align: top;
 	position: absolute;
 	z-index: 99;
-	// border-top: 1px solid $contents-grey;
-	// border-left: 1px solid $contents-grey;
-	// border-bottom: 1px solid white;
-	// border-right: 1px solid white;
 	width: 50px;
 	height: calc( 100% - 10px );
 	top: 0px;
 	left: -1px;
 	text-align: center;
 	padding-top: 10px;
-	font-size: 1.33em;
 	span {
 		position: absolute;
     	left: 55%;
@@ -503,16 +523,15 @@ video#introvid {
 
 .contents_sub_section_title {
 	border: 1px solid white;
-	font-family: $plantin;
 	font-size: 0.78em;
 	border-bottom: 0px;
 	display: inline-block;
 	vertical-align: top;
 	padding: 14px;
-	// padding-left: 64px;
 	margin-left: 50px;
 	width: calc( 100% - 80px);
 	min-height: 22px;
+	letter-spacing: 0;
 }
 
 .contents_sub_section:first-child .contents_sub_section_title {
@@ -550,13 +569,19 @@ video#introvid {
 	font-size: 1.3em;
 	margin-top: 24px;
     margin-bottom: 4px;
-   	font-family: $univers;
+   	font-family: $plantin;
+	letter-spacing: 0;
+}
+
+.contents_author {
+   	font-family: $plantin;	
 }
 
 .contents_category {
-   	font-family: $plantin;
+   	font-family: $univers;
 	font-size: 0.78em;
 	margin-top: 46px;
+	letter-spacing: 0;
 }
 
 #contents_image_wrapper {
@@ -756,7 +781,7 @@ video#introvid {
 		box-shadow: 0px 0px 30px rgba(0, 0, 0, 0);
 	}
 	iframe {
-		margin-bottom: 60px;
+		margin-bottom: 30px;
 	}
 }
 
@@ -795,6 +820,8 @@ video#introvid {
 		// margin-left: 71px;
 		.author_name {
 			font-size: 2em;
+			line-height: 1.28;
+			letter-spacing: 0px;
 		}
 	}
 	.white {
@@ -823,7 +850,8 @@ video#introvid {
 }
 
 .template {
-	// border-bottom: 1px solid #ccc;
+	// border: 1px solid #ccc;
+	margin-bottom: 136px;
 }
 
 .article_footnotes {
@@ -833,6 +861,7 @@ video#introvid {
 	// width: $six-cols;
 	width: 50%;
 	font-size: 0.78em;
+	letter-spacing: 0;
 	line-height: 1.57;
 	margin-top: 136px;
 	ul {
@@ -932,14 +961,17 @@ video#introvid {
 			width: 69.96%;
 		}
 	}
-	.interview_right {
-		margin-left: $five-cols;
-	}
 	img {
 		width: $seven-cols;
 	}
 	img.portrait, .caption_vertical {
 		width: $five-cols;
+	}
+	.interview_right {
+		margin-left: $five-cols;
+		.caption_vertical {
+			width: 69.86%;
+		}
 	}
 }
 
@@ -967,13 +999,33 @@ video#introvid {
 	}
 }
 
+.video_play_wrapper {
+	// border: 1px solid purple;
+	width: 100%;
+	position: absolute;
+	text-align: center;
+	img {
+		position: absolute;
+		top: 48%;
+		left: 50%;
+		transform: translateX(-50%) translateY(-50%);
+		margin: 0;
+		cursor: pointer;
+	}
+}
+
 .caption, .caption_vertical {
 	margin-top: -10px;
 	font-family: $univers;
 	font-size: 0.78em;
+	line-height: 1.28;
+	letter-spacing: 0;
 	color: $color-captions;
 	margin-bottom: 64px;
 	display: block;
+	p {
+		display: inline;
+	}
 }
 
 .glyph {
@@ -984,7 +1036,9 @@ video#introvid {
 	display: block;
 	font-family: $univers;
 	font-size: 0.78em;
+	line-height: 1.28;
 	color: $color-text;
+	letter-spacing: 0;
 }
 
 .quote {
@@ -998,9 +1052,15 @@ video#introvid {
 	margin-left: $margin-half;	
 }
 
+.first_line_indent {
+	display: block;
+	text-indent: $margin-half;		
+}
+
 .large_text {
 	display: block;
 	font-size: 1.44em;
+	letter-spacing: 0;
 	line-height: 1.3;
 	margin-bottom: 90px;
 	margin-bottom: 24px;
@@ -1009,30 +1069,36 @@ video#introvid {
 .list_one, .list_two, .large_list {
 	// border: 1px solid purple;
 	display: block;
-	margin-bottom: 8px;
 	span {
 		// border: 1px solid red;
 		display: inline-block;
 		vertical-align: top;
+		margin-bottom: 8px;
 	}
 	.list_marker {
-		width: $margin-half;
+		// width: $margin-half;
+		width: $margin-one;
+		height: 0;
 	}
 	.list_content {
 		// border: 1px solid orange;
-		width: 92%;
+		width: 90%;
 	}
 }
 
 .list_two {
 	display: block;
-	margin-left: $margin-half;
-
+	margin-left: $margin-one;
+	.list_marker {
+		// width: 4.48%;
+		width: 9.57%;
+	}
 }
 
 .large_list {
 	display: block;
 	font-size: 1.44em;
+	letter-spacing: 0;
 	line-height: 1.3;
 	.list_marker {
 		width: $margin-one;
@@ -1044,7 +1110,15 @@ video#introvid {
 } 
 
 .stix_symbols {
-    font-family: 'stix';	
+    font-family: 'stix';
+    font-size: 2em;
+	transform: translateY(-13.5px);	
+}
+
+.list_two {
+	.stix_symbols {
+		transform: translateY(-17px);	
+	}	
 }
 
 .stix_symbols_large {
@@ -1084,6 +1158,8 @@ h2 {
 }
 
 .large_text {
+	letter-spacing: 0.2px; 
+	line-height: 1.35em;
 	.wingdings {
 	    height: 24px;
 	    width: 24px;

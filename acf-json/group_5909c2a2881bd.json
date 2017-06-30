@@ -374,6 +374,24 @@
                             },
                             "width": "",
                             "height": ""
+                        },
+                        {
+                            "key": "field_595372a0494a8",
+                            "label": "Video Caption",
+                            "name": "video_caption",
+                            "type": "wysiwyg",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "tabs": "all",
+                            "toolbar": "full",
+                            "media_upload": 1
                         }
                     ],
                     "min": "",
@@ -400,6 +418,24 @@
                             },
                             "width": "",
                             "height": ""
+                        },
+                        {
+                            "key": "field_5953728d494a7",
+                            "label": "Video Caption",
+                            "name": "video_caption",
+                            "type": "wysiwyg",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "tabs": "all",
+                            "toolbar": "full",
+                            "media_upload": 1
                         }
                     ],
                     "min": "",
@@ -484,5 +520,5 @@
     ],
     "active": 1,
     "description": "",
-    "modified": 1498123700
+    "modified": 1498641490
 }

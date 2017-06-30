@@ -255,7 +255,12 @@ img {
 /* line 885, style.scss */
 .text_indent {
   display: block;
-  text-indent: 4.29%;
+  margin-left: 4.29%;
+}
+
+.first_line_indent {
+  display: block;
+  text-indent: 4.29%;    
 }
 
 /* line 890, style.scss */

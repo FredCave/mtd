@@ -478,7 +478,7 @@ var Home = {
 
 		var totalH = Math.max( leftH, rightH );
 
-		$("#contents_wrapper #contents_list").css( "height", totalH + 60 );
+		$("#contents_wrapper #contents_list").css( "height", totalH + 76 );
 
 	},
 

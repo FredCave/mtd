@@ -41,7 +41,12 @@ var Article = {
         $(".nav_arrow").on("click", function(e){
             
             // e.preventDefault();
-            $(".article_inner_wrapper").fadeOut(100);
+            $("#article_current div").fadeOut(100);
+            // STOP RUNNING TITLE FROM APPEARING ON NAV 
+            $("#nav_title").css("opacity","0");
+            setTimeout( function(){
+               $("#nav_title").css("opacity","1"); 
+            }, 1000 );
 
         });
 
@@ -166,8 +171,21 @@ var Article = {
         // ADD TARGET=_BLANK TO EXTERNAL LINKS
         $("#article_current a").each( function(){
 
-            if ( $(this).attr("href").indexOf("http") > -1 ) {
+            if ( $(this).attr("href").indexOf("http") > -1 && $(this).attr("href").indexOf("mindthedance") === -1 ) {
                 $(this).attr( "target", "_blank" ).addClass("external_link");
+            } else {
+
+                // TEMP HACK: IF SATELLITE
+                var href = $(this).attr("href");
+                console.log( 180, href );
+                if ( href.indexOf("article") > -1 && href.indexOf("articles") === -1 ) {
+                    var thisId = href.split("article/")[1].split("/")[0];
+                    console.log( 179, thisId );
+                    if ( thisId === 184 ) {
+                        $(this).attr( "target", "_blank" );
+                    }                    
+                }
+
             }
 
         });
@@ -212,6 +230,21 @@ var Article = {
         // IF TEMPLATE 6: RESIZE IFRAME
         this.resizeIframes();
 
+        // IF MORE THAN ONE TEMPLATE
+        if ( $("#article_current").find(".template").length > 1 ) {
+            // LOOP THROUGH TEMPLATES
+            $("#article_current").find(".template").each( function(i){
+                // IF NOT FIRST
+                if ( i > 0 ) {
+                    // IF FIRST ELEMENT IS IMG
+                    if ( $(this).children().eq(0).is("img") ) {
+                        // REMOVE TOP MARGIN
+                        $(this).children().eq(0).css("margin-top","0");
+                    }   
+                }
+            });
+        }
+
     },
 
     resizeIframes: function () {
@@ -221,12 +254,13 @@ var Article = {
         $("iframe").each( function(){
 
             var ratio = $(this).attr("width") / $(this).attr("height");
+            var thisH; 
 
             // IF IN TEMPLATE 6
             if ( $(this).parents(".article_template_6").length ) {
 
                 // GET RATIO
-                var thisH = $(".article_inner_wrapper").width() / ratio;
+                thisH = $(".article_inner_wrapper").width() / ratio;
                 $(this).css({
                     "height" : thisH
                 });
@@ -234,13 +268,38 @@ var Article = {
             } else if ( $(this).parents(".article_template_5").length ) {
 
                 // GET RATIO
-                var thisH = ( $(".article_inner_wrapper").width() / 2 - 36 ) / ratio;
+                thisH = ( $(".article_inner_wrapper").width() / 2 - 36 ) / ratio;
                 $(this).css({
                     "height" : thisH
                 });
                 console.log( 216, thisH );                
 
             }
+
+            // CREATE PLAYER OBJECT
+            var player = new Vimeo.Player( $(this)[0] );
+            console.log( 280, player );
+            player.on('play', function() {
+                console.log('played the video!');
+            });
+
+            // ADD PLAY BUTTON
+            var id = Math.ceil( Math.random() * 99 ),
+                playHtml = $("<div id='video_" + id + "' class='video_play_wrapper'><img src='" + TEMPLATE + "/assets/img/video_play.svg' /></div>");
+            $( playHtml ).insertBefore( $(this) );
+
+            $("#video_" + id).css({
+                "height"    : thisH,
+                "width"     : "100%"
+            })
+
+            // BIND BUTTON CLICK EVENT
+            $("#video_" + id + " img").on("click", function(){
+
+                player.play();
+                $(this).parent(".video_play_wrapper").fadeOut();
+
+            });
 
         });
 

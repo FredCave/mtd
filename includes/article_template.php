@@ -65,6 +65,9 @@
 
                             <div class="template <?php echo get_row_layout() ?>">
                                 <?php the_sub_field("video"); ?>
+                                <?php if ( get_sub_field("video_caption") ) { ?>
+                                    <div class="caption"><?php the_sub_field("video_caption"); ?></div>
+                                <?php } ?>
                             </div>                         
 
                         <?php else : ?>

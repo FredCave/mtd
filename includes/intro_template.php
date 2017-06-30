@@ -137,19 +137,22 @@ function mtd_colophon () {
                                 while ( have_rows("colophon_logos") ) : the_row( );
                                     $logo = get_sub_field("colophon_logo");
                                     $logo_url = $logo["url"];
-                                    // var_dump( $logo );
-                                    $logo_url = str_replace( "png", "svg", $logo["url"] ); ?>
-                                    <li><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></li>
-                                <?php 
+                                    $logo_url = str_replace( "png", "svg", $logo["url"] );     
+                                    // IF EU LOGO
+                                    if ( strpos( $logo_url, 'eu-1' ) !== false ) { ?>
+                                        <li><img class="colophon_eu_logo colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></li>
+                                        <?php // GET EU TEXT  
+                                        if ( get_field("colophon_eu_text") ) { ?>
+                                            <div class="colophon_eu_text">
+                                                <?php the_field("colophon_eu_text"); ?>
+                                            </div>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <li><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></li>
+                                    <?php }
                                 endwhile;
                                 echo "</ul>";
-                            } 
-                            // EU TEXT
-                            if ( get_field("colophon_eu_text") ) { ?>
-                                <div class="">
-                                    <?php the_field("colophon_eu_text"); ?>
-                                </div>
-                            <?php } ?>
+                            } ?>
                         </div>
                     </div>
                 </div>

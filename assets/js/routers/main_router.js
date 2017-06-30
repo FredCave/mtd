@@ -2,6 +2,12 @@ var app = app || {};
 
 app.MainRouter = Backbone.Router.extend({
 
+    initialize: function () {
+
+        console.log("Router init");
+
+    },
+
     introLoaded: false,
 
     // articleWrapper: false,
@@ -12,19 +18,19 @@ app.MainRouter = Backbone.Router.extend({
 
 	routes: {
 
-        "article/:id/:title": "showArticle",
+        "article/:id/:title(/)" : "showArticle",
 
-        "foreword"          : "showHome",
+        "foreword"              : "showHome",
 
-        "contents"          : "showHome",
+        "contents"              : "showHome",
 
-        "colophon"          : "showHome",
+        "colophon"              : "showHome",
 
-        "make-book"         : "showEditor", 
+        "make-book"             : "showEditor", 
 
         // "*other"            : "showHome"
 
-        ""                  : "showHome"
+        ""                      : "showHome"
 
     },
 

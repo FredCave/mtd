@@ -57,7 +57,7 @@
 		        </div>
 		        <div id="nav_book_editor">
 		        	<a href="#make-book">
-		        		<img src="<?php bloginfo('template_url'); ?>/assets/img/nav_book.svg" />		        				        				        	
+		        		<img src="<?php bloginfo('template_url'); ?>/assets/img/nav_book_2.svg" />		        				        				        	
 		        	</a>
 		        </div>
 		    </div>

@@ -40,7 +40,7 @@ var Editor = {
 
 			console.log("Generate book");
 
-			var thisHref = "generate/?art=" + self.savedArticles;
+			var thisHref = "_generate/?art=" + self.savedArticles;
             $(this).attr("href", thisHref);
 
 		});

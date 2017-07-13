@@ -128,15 +128,22 @@ var Home = {
 
 		this.navColourInit();
 
-		// SET CONTENTS HEIGHT HERE
-		this.contentsHeight();
 		this.htmlPrep();
 
 		this.contentsImgInit();
 
+		setTimeout( function (){
+
+			// SET CONTENTS HEIGHT HERE
+			self.contentsHeight();
+
+		}, 500 );
+
 		// LOAD CONTENTS IMAGES
 		setTimeout( function (){
+
 			self.loadContentsImgs();
+			
 		}, 2000 );
 
 	},
@@ -273,7 +280,7 @@ var Home = {
 
 		var bgColour, textColour;
 		if ( direction === "enter" ) {
-			bgColour = "white";
+			bgColour = "#fffef8";
 			textColour = "#212121";
 		} else if (  direction === "exit" ) {
 			bgColour = "";
@@ -391,6 +398,7 @@ var Home = {
 			html += "</ul>";
 
 			$("#contents_image").append( html );
+			$("#contents_image_wrapper").fadeIn();
 
 		} else {	
 			console.log("Articles not loaded.");
@@ -462,6 +470,7 @@ var Home = {
 			if ( i < 3 ) {
 
 				leftH += $(this).outerHeight() + 40;
+				// console.log( 465, $(this).outerHeight() );
 
 			// LAST 3 
 			} else {

@@ -72,7 +72,10 @@ var Article = {
         // DOWNLOAD PDF
         $("#article_current").on("click", ".download_pdf", function(e){
 
-            var thisHref = "generate/?art=" + self.currentArticle;
+            var thisHref = "_generate/?art=" + self.currentArticle;
+            
+            console.log( 77, thisHref );
+
             $(this).attr("href", thisHref);
 
         });
@@ -215,15 +218,72 @@ var Article = {
             // IF CONTAINS IMAGES
             if ( $(this).find("img").length ) {
 
+                // v2 //
+
+                // LOOP THROUGH IMAGES
+                // $(this).find("img").each( function(){
+
+                //     // FIND PRECEDING PARAGRAPH:
+                //     var img = $(this).parent("p"),
+                //         hook = img.prev(),
+                //         caption = null;
+                //     // IF CAPTION
+                //     if ( img.next(".caption").length ) {
+                //         caption = img.next(".caption");
+                //     }
+          
+                //     // APPEND IMAGE WRAPPER DIV TO PARAGRAPH
+                //     hook.addClass("image_hook_text");
+                //     img.append(caption).addClass("image_wrapper");
+
+                //     hook.add(img).wrapAll("<div class='image_hook'></div>");
+
+
+                // });
+
+                // WRAP TEXT ELEMENTS IN WRAPPER
+                // $(this).wrapInner( "<div class='text_wrapper'></div>");
+
+                // END OF v2 //
+
+                // v1 //                
+
                 var newWrapper = $("<div class='image_wrapper'></div>");
-                $(this).find("img").appendTo( newWrapper );
-                $(this).find(".caption").appendTo( newWrapper );
-                
+                // LOOP THROUGH IMAGES
+                $(this).find("img").each( function(){
+
+                    var img = $(this);
+
+                    if ( $(this).parent("p").length ) {
+                        img = $(this).parent("p");
+                    } else if ( $(this).parent("span").length ) {
+                        img = $(this).parent("span");
+                    }
+                    var caption = img.next(".caption");
+
+                    // GET OUTER HTML IN VARIABLE
+                    var html = img[0].outerHTML;
+                    console.log( 227, caption.length );
+                    if ( caption.length ) {
+                        html += caption[0].outerHTML;
+                    }
+                    
+                    img.hide();
+                    caption.hide();
+
+                    newWrapper.append( html );
+
+                    console.log( 228, html );
+
+                });
+        
             }
 
             // WRAP TEXT ELEMENTS IN WRAPPER
             $(this).wrapInner( "<div class='text_wrapper'></div>");
             $(this).append(newWrapper);
+
+            // END OF v1 //
 
         });
 

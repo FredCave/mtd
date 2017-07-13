@@ -197,6 +197,12 @@ function my_custom_styles( $init_array ) {
         // PARAGRAPH STYLES
 
         array(  
+            'title' => 'Image No Outline',  
+            'block' => 'span',  
+            'classes' => 'no_outline',
+            'wrapper' => true,
+        ), 
+        array(  
             'title' => 'Caption Horizontal Image',  
             'block' => 'span',  
             'classes' => 'caption',

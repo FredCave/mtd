@@ -223,6 +223,12 @@ img {
   transition: box-shadow 2s, -webkit-box-shadow 2s;
 }
 
+/* line 788, style.scss */
+.article .no_outline img {
+  -webkit-box-shadow: 0px 0px 30px transparent;
+          box-shadow: 0px 0px 30px transparent;
+}
+
 /* line 704, style.scss */
 .caption {
   margin-top: -10px;

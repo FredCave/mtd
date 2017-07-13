@@ -1,6 +1,23 @@
+COLUMNS
+
+FULL WIDTH IMAGES
+
+FOOTNOTES CAN'T BE IN COLUMNS – CAN START THEIR OWN COLUMN BLOCK
 
 
-— videos: play button reappears
+
+
+
+
+
+
+
+
+FONT-SIZE PDF 61% –> 11PT
+
+
+
+— videos: play button reappears ON VIDEO END
 
 
 

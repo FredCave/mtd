@@ -1,0 +1,243 @@
+/****************************************
+
+	NOTES: 
+	DEFAULT MARGINS ARE 16mm
+	BORDERS CAUSES BLACK BG BUG 
+
+****************************************/
+
+@page {
+	size: 21cm 29.7cm; 
+	margin: 10mm 25mm 10mm 35mm; 
+	margin-header: 0mm; 
+	margin-footer: 0mm; 
+	header: html_runningInfo;
+	background-image: url("http://localhost:8888/mind-the-dance/wp-content/themes/MTD/assets/img/pdf_background.png");
+	background-repeat: no-repeat;
+	background-image-resize: 6;
+	background-position: 0px 0px;
+}
+
+@page :first {
+	header: _blank;
+}
+
+.page_header {
+/*	border: 1px solid red;*/
+	text-align: right; 
+	width: 10cm; 
+	position: fixed;
+	top: 11mm;
+	left: -17mm;
+	rotate: -90;
+}
+
+.page_header span {
+	border: 1px solid red;
+	margin-left: 10mm;
+}
+
+/****************************************
+
+	CSS RESET
+
+****************************************/
+
+a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,caption,center,cite,code,dd,del,details,dfn,div,dl,dt,em,embed,fieldset,figcaption,figure,footer,form,h1,h2,h3,h4,h5,h6,header,hgroup,html,i,iframe,img,ins,kbd,label,legend,li,mark,menu,nav,object,ol,output,p,pre,q,ruby,s,samp,section,small,span,strike,strong,sub,summary,sup,table,tbody,td,tfoot,th,thead,time,tr,tt,u,ul,var,video{margin:0;padding:0;border:0;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:after,blockquote:before,q:after,q:before{content:'';content:none}table{border-collapse:collapse;border-spacing:0}
+
+/****************************************
+
+	FONTS
+
+****************************************/
+
+@font-face { 
+	font-family: "News Plantin";
+	font-weight: normal;
+	font-style: normal;
+	src: url("../assets/fonts/News Plantin.woff2") format("woff2"),
+		 url("../assets/fonts/News Plantin.woff") format("woff");
+}
+
+@font-face { 
+	font-family: "News Plantin";
+	font-weight: normal;
+	font-style: italic;
+	src: url("../assets/fonts/News Plantin Italic.woff2") format("woff2"),
+		 url("../assets/fonts/News Plantin Italic.woff") format("woff");
+}
+
+@font-face { 
+	font-family: "News Plantin";
+	font-weight: bold;
+	font-style: normal;
+	src: url("../assets/fonts/News Plantin Bold.woff2") format("woff2"),
+		 url("../assets/fonts/News Plantin Bold.woff") format("woff");
+}
+
+@font-face { 
+	font-family: "News Plantin";
+	font-weight: bold;
+	font-style: italic;
+	src: url("../assets/fonts/News Plantin Bold Italic.woff2") format("woff2"),
+		 url("../assets/fonts/News Plantin bold Italic.woff") format("woff");
+}
+
+@font-face { 
+	font-family: "Univers";
+	font-weight: normal;
+	font-style: normal;
+	src: url("../assets/fonts/universltstd-webfont.woff2") format("woff2"),
+		 url("../assets/fonts/universltstd-webfont.woff") format("woff");
+}
+
+@font-face { 
+	font-family: "Univers";
+	font-weight: normal;
+	font-style: italic;
+	src: url("../assets/fonts/universltstd-obl-webfont.woff2") format("woff2"),
+		 url("../assets/fonts/universltstd-obl-webfont.woff") format("woff");
+}
+
+@font-face {
+    font-family: 'stix';
+    src: url('../assets/fonts/stixgeneral-webfont.woff2') format('woff2'),
+         url('../assets/fonts/stixgeneral-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'mtdwingdings';
+    src: url('../assets/fonts/wingdings-webfont.woff2') format('woff2'),
+         url('../assets/fonts/wingdings-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/****************************************
+
+	GENERAL
+
+****************************************/
+
+body {
+	width: 100%;
+	min-height: 100%;
+	font-family: "Univers", courier, sans-serif;			
+	font-size: 11pt;
+	line-height: 1.28;
+	overflow-x: hidden;
+	color: #212121;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.white, .serif {
+	font-family: "newsplantin", serif;	
+}
+
+.template {
+/*	border: 2px dashed green;*/
+	margin-bottom: 136px;
+}
+
+a {
+	color: #212121;
+	text-decoration: none;
+}
+
+h1 {
+	font-weight: normal;
+	font-size: 3em;
+	line-height: 1.1;
+}
+
+h2 {
+	font-weight: normal;
+	font-size: 2em;
+	line-height: 1.28;
+	margin-bottom: 52px;
+}
+
+h3 {
+	font-size: 1.333em;
+	line-height: 1.25;
+}
+
+h4 {
+	font-weight: normal;
+	line-height: 1.15;
+	text-transform: uppercase;
+}
+
+h5 {
+	font-weight: normal;
+	text-transform: uppercase;	
+}
+
+i, em {
+	font-style: italic;
+}
+
+p {
+	margin-bottom: 24px;
+}
+
+img {
+	margin: 56px 0 0px 0;
+	margin-top: 0;
+}
+
+.footnote_link {
+	font-family: "Univers", courier, sans-serif;
+	vertical-align: super;
+/*	transform: translateY(-10px);*/
+    font-size: 0.7em;
+    line-height: 0;
+}
+
+.caption, .caption_vertical {
+	margin-top: 0px;
+	font-family: "Univers", courier, sans-serif;
+	font-size: 0.78em;
+	line-height: 1.28;
+	letter-spacing: 0;
+	color: #757575;
+	margin-bottom: 64px;
+	text-indent: 60px;
+}
+
+.top_wrapper {
+	margin-bottom: 17mm;
+/*	margin-left: 17mm;*/
+}
+
+.top_wrapper h1 {
+	margin-bottom: 2mm;
+}
+
+.top_wrapper .author_name {
+	font-size: 2em;
+}
+
+.template {
+	border: 1px solid #ccc;
+	line-stacking-shift: disregard-shifts;
+}
+
+.article_template_2 {
+	margin-bottom: 136px;
+}
+
+.template_margin {
+	border: 1px solid red;
+	margin-bottom: 136px;	
+}
+
+.article_footnotes ul {
+	font-size: 0.78em;
+/*	margin-left: 17mm;	*/
+	list-style-type: decimal;
+}
+

@@ -1,5 +1,10 @@
 <?php
 
+/* 
+LINE 8791 ANNOTATED OUT – FRED 
+LINE 14554 MODIFIED – FRED
+*/
+
 // ******************************************************************************
 // Software: mPDF, Unicode-HTML Free PDF generator                              *
 // Version:  6.0        based on                                                *
@@ -8786,7 +8791,7 @@ function _putannots() {	// mPDF 5.7.2
 				$annot='';
 				$rect=sprintf('%.3F %.3F %.3F %.3F',$pl[0],$pl[1],$pl[0]+$pl[2],$pl[1]-$pl[3]);
 				$annot .= '<</Type /Annot /Subtype /Link /Rect ['.$rect.']';
-				$annot .= ' /Contents '.$this->_UTF16BEtextstring($pl[4]);
+				// $annot .= ' /Contents '.$this->_UTF16BEtextstring($pl[4]);
 				$annot .= ' /NM '.$this->_textstring(sprintf('%04u-%04u', $n, $key));
 				$annot .= ' /M '.$this->_textstring('D:'.date('YmdHis'));
 				$annot .= ' /Border [0 0 0]';
@@ -14549,7 +14554,8 @@ function WriteHTML($html,$sub=0,$init=true,$close=true) {
 		$this->bufferoutput = false; 
 
 /*-- CSS-POSITION --*/
-		if (count($this->fixedPosBlockSave) && $sub != 4) {
+		// if (count($this->fixedPosBlockSave) && $sub != 4) {
+		if ( count($this->fixedPosBlockSave) ) {
 		  foreach($this->fixedPosBlockSave AS $fpbs) {
 			$old_page = $this->page;
 			$this->page = $fpbs[2];

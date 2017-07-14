@@ -1,50 +1,50 @@
-var Lightbox = {
+// var Lightbox = {
 
-	lightboxVisible: false,
+// 	lightboxVisible: false,
 
-	init: function () {
+// 	init: function () {
 
-		console.log("Lightbox.init");
+// 		console.log("Lightbox.init");
 
-		this.bindEvents();
+// 		this.bindEvents();
 
-	},
+// 	},
 
-	bindEvents: function () {
+// 	bindEvents: function () {
 
-		console.log("Lightbox.bindEvents");
+// 		console.log("Lightbox.bindEvents");
 
-		var self = this;
+// 		var self = this;
 
-		$(".image").on("click", function(){
+// 		$(".image").on("click", function(){
 
-			self.lightboxInit( $(this) );
+// 			self.lightboxInit( $(this) );
 
-		});
+// 		});
 
-	},
+// 	},
 
-	lightboxInit: function ( img ) {
+// 	lightboxInit: function ( img ) {
 
-		console.log("Lightbox.lightboxInit");
+// 		console.log("Lightbox.lightboxInit");
 
-		this.lightboxVisible = true;
+// 		this.lightboxVisible = true;
 
-		// SHOW WRAPPER
-		$("#lightbox_wrapper").fadeIn(1000);
+// 		// SHOW WRAPPER
+// 		$("#lightbox_wrapper").fadeIn(1000);
 
-		// ADD CLICKED IMG TO WRAPPER
-		img.clone().css({
-			"width"		: "",
-			"height"	: "",
-			"position"	: "",
-			"opacity"	: 0
-		}).appendTo( $("#lightbox_inner_wrapper") );
-		// RESIZE SRC
-		this.imgCalc( $("#lightbox_inner_wrapper img") );
-		// FADE IN
-		$("#lightbox_inner_wrapper img").css("opacity","1");
+// 		// ADD CLICKED IMG TO WRAPPER
+// 		img.clone().css({
+// 			"width"		: "",
+// 			"height"	: "",
+// 			"position"	: "",
+// 			"opacity"	: 0
+// 		}).appendTo( $("#lightbox_inner_wrapper") );
+// 		// RESIZE SRC
+// 		this.imgCalc( $("#lightbox_inner_wrapper img") );
+// 		// FADE IN
+// 		$("#lightbox_inner_wrapper img").css("opacity","1");
 
-	}
+// 	}
 
-}
+// }

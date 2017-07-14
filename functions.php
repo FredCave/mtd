@@ -240,7 +240,7 @@ function my_custom_styles( $init_array ) {
         ), 
         array(  
             'title' => 'Quote',  
-            'block' => 'span', 
+            'block' => 'div', 
             'classes' => 'quote',
             'wrapper' => true,
         ),   
@@ -276,7 +276,7 @@ function my_custom_styles( $init_array ) {
         ),  
         array(  
             'title' => 'Large List',  
-            'block' => 'span', 
+            'block' => 'div', 
             'classes' => 'large_list',
             'wrapper' => true,
         ),       

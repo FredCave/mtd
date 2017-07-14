@@ -136,20 +136,43 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 
 ****************************************/
 
-html, body {
+html {
 	width: 100%;
-	min-height: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+body {
+	width: 100%;
+	height: 100%;
 	font-family: $univers;
 	font-size: 18px;
 	@media print {
 		font-size: 11pt;
 	}
 	line-height: 1.28;
-	overflow-x: hidden;
+	position: absolute;
+	// overflow-y: scroll;
 	color: $color-text;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	background-color: $color-white;	
+	margin: 0;
+}
+
+.top_level_wrapper {
+	border: 1px solid green;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	overflow-x: hidden;
+	overflow-y: scroll;
+	display: none;
+}
+
+#intro_scroll_wrapper {
+	display: block;
 }
 
 a, a:visited {
@@ -162,7 +185,7 @@ a.external_link {
 	border-bottom: 1px solid black;
 }
 
-.nav_section {
+.top_level_section {
 	display: none;
 }
 
@@ -286,6 +309,7 @@ b, strong {
 	// border: 1px solid green;
 	position: relative;
 	top: -60px;
+	height: 60px;
 }
 
 #intro_nav {
@@ -863,7 +887,7 @@ video#introvid {
 }
 
 .template {
-	border: 1px solid #ccc;
+	// border: 1px solid #ccc;
 	margin-bottom: 136px;
 }
 
@@ -919,10 +943,18 @@ video#introvid {
 }
 
 .article_template_2 {
-	// border: 1px solid yellow;
-	p, h2, h4 {
+	// border: 1px solid orange;
+	p, h2, h4, .large_list {
 		width: $eight-cols;
 		margin-left: $margin-two;
+		.large_list {
+			// TO AVOID DOUBLING MARGINS
+			width: 100%;
+			margin-left: 0;
+		}
+	}
+	.large_list.list_two {
+		margin-left: 22%;
 	}
 	img, .caption {
 		width: $ten-cols;
@@ -1396,4 +1428,51 @@ h2 {
 
 }
 
+/****************************************
+
+	TMP 
+
+****************************************/
+
+.top_level_wrapper { // INTRO, ARTICLES, EDITOR
+	// border: 2px solid purple;
+	overflow-x: hidden;
+}
+
+#intro_scroll_wrapper {
+	#intro_sections { // AJAX WRAPPER
+		margin-top: -60px;
+	}
+	section {
+		// border: 1px solid red;
+		min-height: 100vh;
+	}	
+	#video_section {
+		background-color: blue;
+		height: 100vh;
+		transition: height 0s;
+	}
+	#intro_foreword {
+		background-color: cyan;
+		height: 100vh;
+	}
+	#intro_contents {
+		background-color: green;
+		height: 3281px;
+	}
+	#intro_colophon {
+		background-color: yellow;
+		height: 2193px;
+	}
+}
+
+#article_scroll_wrapper {
+	background-color: grey;
+	min-height: 100vh;
+}
+
+#editor_scroll_wrapper {
+	background-color: red;	
+	min-height: 100vh;
+}
 

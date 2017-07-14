@@ -1,157 +1,157 @@
-var Editor = {
+// var Editor = {
 	
-	savedArticles: [],
+// 	savedArticles: [],
 
-	init: function () {
+// 	init: function () {
 
-		console.log("Editor.init");
+// 		console.log("Editor.init");
 
-		this.bindEvents();
+// 		this.bindEvents();
 
-		this.showSection();
+// 		this.showSection();
 
-	},
+// 	},
 
-	showSection: function () {
+// 	showSection: function () {
 
-		console.log("Editor.showSection");
+// 		console.log("Editor.showSection");
 
-		// GET ANY SAVED BOOKS
-		this.loadArticleCheck();
+// 		// GET ANY SAVED BOOKS
+// 		this.loadArticleCheck();
 
-	},
+// 	},
 
-	bindEvents: function () {
+// 	bindEvents: function () {
 
-		console.log("Editor.bindEvents");
+// 		console.log("Editor.bindEvents");
 
-		var self = this;
+// 		var self = this;
 
-		$("#editor").on( "click", "#editor_close", function (){
+// 		$("#editor").on( "click", "#editor_close", function (){
 			
-			console.log("Editor close.");
-			window.history.back();
+// 			console.log("Editor close.");
+// 			window.history.back();
 
-		});
+// 		});
 
-		$("#editor_button a").on( "click", function(e) {
+// 		$("#editor_button a").on( "click", function(e) {
 
-			// e.preventDefault();
+// 			// e.preventDefault();
 
-			console.log("Generate book");
+// 			console.log("Generate book");
 
-			var thisHref = "_generate/?art=" + self.savedArticles;
-            $(this).attr("href", thisHref);
+// 			var thisHref = "_generate/?art=" + self.savedArticles;
+//             $(this).attr("href", thisHref);
 
-		});
+// 		});
 
-		// ONCE ARTICLE DATA LOADED (IF NEEDED)
-		$(document).on("dataloaded", function(){
+// 		// ONCE ARTICLE DATA LOADED (IF NEEDED)
+// 		$(document).on("dataloaded", function(){
 			
-			self.loadArticles();
+// 			self.loadArticles();
 
-		});
+// 		});
 
-	},
+// 	},
 
-	template: _.template( $('#editor_article_template').html(), {variable: 'data'} ),
+// 	template: _.template( $('#editor_article_template').html(), {variable: 'data'} ),
 
-	loadArticleCheck: function () {
+// 	loadArticleCheck: function () {
 
-		console.log("Editor.loadArticleCheck");
+// 		console.log("Editor.loadArticleCheck");
 
-		if ( App.articles === "" ) {
-			console.log( 56, "Articles not loaded." );
-			// LOAD ARTICLE DATA
-			App.loadArticleData();
-		} else {
-			console.log(60);
-			this.loadArticles();
-		}
+// 		if ( App.articles === "" ) {
+// 			console.log( 56, "Articles not loaded." );
+// 			// LOAD ARTICLE DATA
+// 			App.loadArticleData();
+// 		} else {
+// 			console.log(60);
+// 			this.loadArticles();
+// 		}
 
-	},
+// 	},
 
-	loadArticles: function () {
+// 	loadArticles: function () {
 
-		console.log("Editor.loadArticles");
+// 		console.log("Editor.loadArticles");
 
-		var self = this,
-			articles = this.savedArticles,
-			articleData = App.articles;
+// 		var self = this,
+// 			articles = this.savedArticles,
+// 			articleData = App.articles;
 
-		console.log( 73, articles, articleData );
+// 		console.log( 73, articles, articleData );
 
-		// IF NO ARTICLES
-		if ( articles.length < 1 ) {
-			$("#editor_articles").append("You currently have no saved articles.");
+// 		// IF NO ARTICLES
+// 		if ( articles.length < 1 ) {
+// 			$("#editor_articles").append("You currently have no saved articles.");
 			
-			// DISABLE GENERATE PDF BUTTON
-			$("#editor_button").css({
-				"opacity" 			: 0,
-				"pointer-events" 	: "none"
-			}); 
+// 			// DISABLE GENERATE PDF BUTTON
+// 			$("#editor_button").css({
+// 				"opacity" 			: 0,
+// 				"pointer-events" 	: "none"
+// 			}); 
 
-			return;
-		} else {
-			$("#editor_articles").empty();
-			$("#editor_button").css({
-				"opacity" 			: "",
-				"pointer-events" 	: ""
-			}); 		
-		}
+// 			return;
+// 		} else {
+// 			$("#editor_articles").empty();
+// 			$("#editor_button").css({
+// 				"opacity" 			: "",
+// 				"pointer-events" 	: ""
+// 			}); 		
+// 		}
 
-		// LOOP THROUGH SAVED ARTICLES
-		_.each( this.savedArticles, function( id ) {
+// 		// LOOP THROUGH SAVED ARTICLES
+// 		_.each( this.savedArticles, function( id ) {
 
-			// GET DATA FROM ARTICLE DATA		    				
-			_.each( articleData, function( art ) {
+// 			// GET DATA FROM ARTICLE DATA		    				
+// 			_.each( articleData, function( art ) {
 
-				self.data = art;
+// 				self.data = art;
 
-				if ( art.ID === id ) {
+// 				if ( art.ID === id ) {
 
-					console.log( 79, art );
+// 					console.log( 79, art );
 
-					$("#editor_articles").append( self.template( self.data ) );
+// 					$("#editor_articles").append( self.template( self.data ) );
 
-				}
+// 				}
 
-			});
+// 			});
 
-		});		
+// 		});		
 
-		$( "#editor_articles" ).sortable({
-			cursor: "move",
-			placeholder: "sortable-placeholder",
-			stop: function( event, ui ) {
+// 		$( "#editor_articles" ).sortable({
+// 			cursor: "move",
+// 			placeholder: "sortable-placeholder",
+// 			stop: function( event, ui ) {
 				
-				// UPDATE ARTICLE ORDER
-				self.updateOrder( $( "#editor_articles" ).sortable('toArray') );
+// 				// UPDATE ARTICLE ORDER
+// 				self.updateOrder( $( "#editor_articles" ).sortable('toArray') );
 
-			}
-		}).disableSelection();
+// 			}
+// 		}).disableSelection();
 
-	},
+// 	},
 
-	updateOrder: function ( array ) {
+// 	updateOrder: function ( array ) {
 
-		console.log("Editor.updateOrder");
+// 		console.log("Editor.updateOrder");
 
-		var self = this;
+// 		var self = this;
 
-		// CLEAR EXISTING ARRAY
-		this.savedArticles = [];
+// 		// CLEAR EXISTING ARRAY
+// 		this.savedArticles = [];
 
-		// LOOP THROUGH INPUT ARRAY
-		_.each( array, function( art ) {
+// 		// LOOP THROUGH INPUT ARRAY
+// 		_.each( array, function( art ) {
 
-			// GET ID + APPEND TO ARRAY
-			self.savedArticles.push( art.split("-")[2] );
+// 			// GET ID + APPEND TO ARRAY
+// 			self.savedArticles.push( art.split("-")[2] );
 
-		});
+// 		});
 
-		console.log( 119, this.savedArticles );
+// 		console.log( 119, this.savedArticles );
 
-	}
+// 	}
 
-}
+// }

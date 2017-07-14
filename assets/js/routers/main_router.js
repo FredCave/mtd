@@ -62,11 +62,14 @@ app.MainRouter = Backbone.Router.extend({
 
         this.navManager("intro");
 
+        // IF SECTIONS NOT YET LOADED
         if ( !this.introLoaded ) {
 
             if ( section !== "intro" ) {
+                // LOAD AND THEN NAV TO
                 Home.init( section );                
             } else {
+                // LOAD AS NORMAL
                 Home.init(); 
             }
 

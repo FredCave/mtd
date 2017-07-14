@@ -30,6 +30,8 @@
             if ( get_row_layout() === "article_template_2" ) : ?>
 
                 <columns column-count="1" vAlign="justify" column-gap="0" />
+
+                    <div class="template_2_spacer_top"></div>
                     
                     <div class="template <?php echo get_row_layout() ?> <?php the_sub_field("article_template_serif"); ?>">
                         <?php the_sub_field("content"); ?>
@@ -42,7 +44,9 @@
                 <columns column-count="2" vAlign="justify" column-gap="6" />
                     
                     <div class="template <?php echo get_row_layout() ?> <?php the_sub_field("article_template_serif"); ?>">
-                        <?php the_sub_field("content"); ?>
+                        <?php 
+                        the_sub_field("content"); 
+                        ?>
                     </div>
 
                 <!-- </columns> -->

@@ -160,21 +160,6 @@ body {
 	margin: 0;
 }
 
-.top_level_wrapper {
-	border: 1px solid green;
-	height: 100%;
-	width: 100%;
-	position: absolute;
-	top: 0;
-	overflow-x: hidden;
-	overflow-y: scroll;
-	display: none;
-}
-
-#intro_scroll_wrapper {
-	display: block;
-}
-
 a, a:visited {
 	text-decoration: none;
 	color: $color-links;
@@ -183,10 +168,6 @@ a, a:visited {
 a.external_link {
 	color: $color-text;
 	border-bottom: 1px solid black;
-}
-
-.top_level_section {
-	display: none;
 }
 
 section {
@@ -398,7 +379,7 @@ video#introvid {
     -moz-transform: translateX(-50%) translateY(-50%);
     -webkit-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
-    background: url("assets/img/video_fallback.jpg") no-repeat;
+    background: url("../assets/img/video_fallback.jpg") no-repeat;
     background-size: cover; 
 }
 
@@ -445,6 +426,12 @@ video#introvid {
 			height: auto;
 			margin-bottom: 4px;
 			max-width: 100%;
+		}
+		a {
+			border-bottom: 0px;	
+		}
+		a:hover {
+			border-bottom: 1px solid black;
 		}
 	}
 	li:last-child {
@@ -577,7 +564,7 @@ video#introvid {
 
 #contents_list {
 	// border: 1px solid yellow;
-    margin-bottom: -100px;
+    // margin-bottom: -100px;
 }
 
 #contents_list li {
@@ -588,7 +575,7 @@ video#introvid {
 	// border: 1px solid yellow;	
 }
 
-#contents_list .contents_sub_section_contents li:last-child {
+#contents_list .contents_sub_section_contents a:last-child li {
 	border-bottom: 0px;	
 }
 
@@ -612,28 +599,26 @@ video#introvid {
 .contents_category {
    	font-family: $univers;
 	font-size: 0.78em;
-	margin-top: 46px;
+	margin-top: 24px;
 	letter-spacing: 0;
 }
 
 #contents_image_wrapper {
-	// border: 1px solid green;
-	// margin-left: 64px;
-	// height: 3200px; // TMP
-	height: 100%;
-	width: 50%;
-	position: absolute;
-	top: 100px;
-	right: 0;
+	// background: rgba(0,255,255,0.2);
+	height: calc( 100% + 60px );
+	width: 100%;
+	position: relative;
+	top: -60px;
 	display: none;
 }
 
 #contents_image {
 	// border: 1px solid blue;
-	height: calc( 100vh - 136px); 
+	height: calc( 100vh - 120px );
+	max-height: 865px; 
 	width: 100%;
 	position: absolute;
-	top: 96px;
+	top: 60px;
 	text-align: center;
 }
 
@@ -688,6 +673,9 @@ video#introvid {
 	min-height: 100vh;
 	height: 100%;
 	transition: color 2s;
+
+	// display: none;
+
 }
 
 #article_nav {
@@ -782,20 +770,35 @@ video#introvid {
 	background-color: transparent !important;
 }
 
+.next_article, 
+.prev_article {
+	border: 1px solid purple;
+	left: 100%;
+	top: 0;
+	width: 100%;
+}
+
+.prev_article {
+	left: -100%;
+}
+
 .article {
 	// border: 1px solid lightgray;
 	width: 100%;
 	// max-width: 1440px;
-	margin: 0 auto 160px auto;
+	min-height: 100vh;
+	margin: 0 auto 0px auto;
 	padding-top: 120px;
-	position: relative;
+	padding-bottom: 160px;
+	position: absolute;
+	transition: left 2s;
 	.article_inner_wrapper {
 		// border: 1px solid orange;
 		max-width: 1224px;
 		width: calc( 100% - 142px );
 		margin: 0 auto;
 		position: relative;
-		display: none;
+		// display: none;
 	}
 	h2 {
 		margin-bottom: 52px;
@@ -1434,12 +1437,19 @@ h2 {
 
 ****************************************/
 
-.top_level_wrapper { // INTRO, ARTICLES, EDITOR
-	// border: 2px solid purple;
+.top_level_wrapper {
+	border: 1px solid green;
+	height: 100%;
+	width: 100%;
+	position: absolute;
+	top: 0;
 	overflow-x: hidden;
+	overflow-y: scroll;
+	display: none;
 }
 
 #intro_scroll_wrapper {
+	display: block;
 	#intro_sections { // AJAX WRAPPER
 		margin-top: -60px;
 	}
@@ -1448,31 +1458,29 @@ h2 {
 		min-height: 100vh;
 	}	
 	#video_section {
-		background-color: blue;
+		// background-color: blue;
 		height: 100vh;
 		transition: height 0s;
-	}
-	#intro_foreword {
-		background-color: cyan;
-		height: 100vh;
-	}
-	#intro_contents {
-		background-color: green;
-		height: 3281px;
-	}
-	#intro_colophon {
-		background-color: yellow;
-		height: 2193px;
 	}
 }
 
 #article_scroll_wrapper {
-	background-color: grey;
-	min-height: 100vh;
+	// background-color: cyan;
+	// min-height: 100vh;
 }
 
 #editor_scroll_wrapper {
 	background-color: red;	
 	min-height: 100vh;
+}
+
+#loading {
+	position: fixed;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background-color: $color-white;
 }
 

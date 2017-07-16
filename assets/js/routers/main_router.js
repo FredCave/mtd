@@ -10,8 +10,6 @@ app.MainRouter = Backbone.Router.extend({
 
     introLoaded: false,
 
-    // articleWrapper: false,
-
     editorLoaded: false,
 
     currentArticle: "",
@@ -34,21 +32,21 @@ app.MainRouter = Backbone.Router.extend({
 
     },
 
-    navManager: function ( section ) {
+    wrapperManager: function ( section ) {
 
-        console.log("MainRouter.navManager", section);
+        console.log("MainRouter.wrapperManager", section);
 
         if ( section === "intro" ) {
 
-            $("#intro").fadeIn(1000).siblings(".nav_section").fadeOut(1000);
+            $("#intro_scroll_wrapper").fadeIn(1000).siblings(".top_level_wrapper").fadeOut(1000);
 
         } else if ( section === "article" ) {
 
-            $("#articles").fadeIn(1000).siblings(".nav_section").fadeOut(1000);
+            $("#article_scroll_wrapper").fadeIn(1000).siblings(".top_level_wrapper").fadeOut(1000);
 
         } else if ( section === "editor" ) {
 
-            $("#editor").fadeIn(1000).siblings(".nav_section").fadeOut(1000);
+            $("#editor_scroll_wrapper").fadeIn(1000).siblings(".top_level_wrapper").fadeOut(1000);
 
         }
 
@@ -60,7 +58,7 @@ app.MainRouter = Backbone.Router.extend({
 
         var section = Backbone.history.fragment;
 
-        this.navManager("intro");
+        this.wrapperManager("intro");
 
         // IF SECTIONS NOT YET LOADED
         if ( !this.introLoaded ) {
@@ -80,7 +78,7 @@ app.MainRouter = Backbone.Router.extend({
             // NAVIGATE TO SECTION
             console.log( 36, section );
 
-            Home.navTo( section );
+            HomeNav.scrollTo( section );
 
         }
 
@@ -90,9 +88,9 @@ app.MainRouter = Backbone.Router.extend({
 
         console.log("MainRouter.showArticle", id);
         
-        this.navManager("article");
+        this.wrapperManager("article");
 
-        Article.init( id );
+        Article.loadArticle( id );
 
     },
 
@@ -100,7 +98,7 @@ app.MainRouter = Backbone.Router.extend({
 
         console.log("MainRouter.showEditor");
 
-        this.navManager("editor");
+        this.wrapperManager("editor");
 
         if ( !this.editorLoaded ) {
             Editor.init();

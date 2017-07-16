@@ -21,7 +21,7 @@
             $article->author        = get_field("article_author");
             $article->image         = get_field("article_preview_image");
             $article->serif         = get_field("article_bg_color");
-            
+
             $data[] = $article;
 
         endwhile;

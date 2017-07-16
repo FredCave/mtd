@@ -68,27 +68,27 @@ function mtd_contents_list () {
                             // WITH COMMAS
                             $articletags = strip_tags( get_the_tag_list('',', ','') );
                             // STRIP COMMAS FOR CLASSNAMES
-                            ?>
-                            <li data-id="<?php the_ID(); ?>" class="<?php echo strtolower ( str_replace( ",", "", $articletags ) ); ?>">
-                            <?php 
                             global $post;
-                            $image = get_field("article_preview_image");
                             ?>
-                                <a href="#article/<?php the_ID(); ?>/<?php echo $post->post_name; ?>">
+                            <a href="#article/<?php the_ID(); ?>/<?php echo $post->post_name; ?>">                               
+                                <li data-id="<?php the_ID(); ?>" class="<?php echo strtolower ( str_replace( ",", "", $articletags ) ); ?>">
+                                <?php 
+                                $image = get_field("article_preview_image");
+                                ?>
                                     <p class="contents_title">
-                                        <?php if ( get_field("article_full_title") ) {
-                                            the_field("article_full_title");
-                                        } else {
-                                            the_title();
-                                        } ?>
-                                    </p>
-                                </a>
-                                <p class="contents_author"><?php the_field("article_author"); ?></p>
-                                <?php if ( $articletags !== "" ) : ?>
-                                    <p class="contents_category"><?php echo $articletags; ?></p>
-                                <?php endif; ?>
-
-                            </li>
+                                            <?php if ( get_field("article_full_title") ) {
+                                                the_field("article_full_title");
+                                            } else {
+                                                the_title();
+                                            } ?>
+                                        </p>
+                                    
+                                    <p class="contents_author"><?php the_field("article_author"); ?></p>
+                                    <?php if ( $articletags !== "" ) : ?>
+                                        <p class="contents_category"><?php echo $articletags; ?></p>
+                                    <?php endif; ?>
+                                </li>
+                            </a>
                         <?php endwhile;
                         wp_reset_postdata();
                     endif; ?>
@@ -147,9 +147,14 @@ function mtd_colophon () {
                                                 <?php the_field("colophon_eu_text"); ?>
                                             </div>
                                         <?php } ?>
-                                    <?php } else { ?>
-                                        <li><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></li>
-                                    <?php }
+                                    <?php } else { 
+                                        // IF IDODCE LOGO
+                                        if ( $logo["title"] === "idocde" ) { ?>
+                                            <li><a href="http://idocde.net" target="_blank"><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></a></li>
+                                        <?php } else { ?>
+                                            <li><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></li>
+                                        <?php } 
+                                    }
                                 endwhile;
                                 echo "</ul>";
                             } ?>
@@ -167,12 +172,12 @@ function mtd_colophon () {
 ?>
 
 <!-- FOREWORD -->
-<section id="" class="intro_section" data-anchor="foreword">
+<section id="intro_foreword" class="intro_section" data-anchor="foreword">
     <?php mtd_foreword(); ?>
 </section>
 
 <!-- CONTENTS -->
-<section id="" class="intro_section grey_intro_section" data-anchor="contents">
+<section id="intro_contents" class="intro_section grey_intro_section" data-anchor="contents">
     
     <div id="contents_wrapper" class="content_wrapper">
 
@@ -184,7 +189,7 @@ function mtd_colophon () {
 
         </div>
 
-        <div class="">
+        <div class="mtd_column">
             <div id="contents_image_wrapper">
                 <div id="contents_image"></div>
             </div>
@@ -195,6 +200,6 @@ function mtd_colophon () {
 </section>
 
 <!-- AUTHORS / COLOPHON -->
-<section id="" class="intro_section yellow_intro_section" data-anchor="colophon">
+<section id="intro_colophon" class="intro_section yellow_intro_section" data-anchor="colophon">
     <?php mtd_colophon(); ?>
 </section>

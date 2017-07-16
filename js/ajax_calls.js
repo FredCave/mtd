@@ -57,7 +57,7 @@ AjaxCalls = {
 		    	// SAVE ARTICLE DATA TO APP OBJECT
 		    	App.articles = data;
 
-		    	console.log( 60, App.articles );
+		    	// console.log( 60, App.articles );
 
 		    	$(document).trigger("dataloaded");
 
@@ -69,9 +69,9 @@ AjaxCalls = {
 
 	},
 
-	loadArticle: function ( article_id ) {
+	loadArticle: function ( article_id, target ) {
 
-		console.log("AjaxCalls.loadArticle", article_id);
+		console.log("AjaxCalls.loadArticle", article_id, target);
 
 		var self = this;
 
@@ -81,12 +81,11 @@ AjaxCalls = {
 		        "action" : "article",
 		        "id" : article_id
 		    },
-		    // dataType: "json",
 		    success:function(data) {
 
 		    	data = self.responseTrim( data );
 
-		    	Article.ajaxSuccess( data );
+		    	Article.ajaxSuccess( data, article_id, target );
 
 		    },
 		    error: function(errorThrown){

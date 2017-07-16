@@ -1,151 +1,92 @@
-/********************************
-
-	– SNAP TO ON SCROLL
-		+ ON SECTION CHANGE: UPDATE URL
-
-********************************/
-
 var app = app || {};
 
 var Home = {
 	
-	videoHidden: false, 
+	pageLoaded: false, 
 
-	sectionTopLimit: 0,
+	videoHidden: false,
 
-	sectionBottomLimit: 0, 
-
-	sectionIndex: 0,
-
-	winH: $(window).height(),  
-
-	scrollDetect: true,
+	imgsLoaded: false,  
 
 	init: function ( section ) {
 
 		console.log("Home.init", section);
 
-		this.section = section;
+		var self = this;
 
+		// INIT NAV PINNING USING WAYPOINTS
 		this.pinNav();
 
-		// IF INIT WITH SECTION
+		// IF STANDARD INIT 
 		if ( section === "" ) {
+
 			// IF MAIN HOME: PLAY VIDEO
 			if ( $("#introvid").length ) {
 				$("#introvid")[0].play();		
 			}
-			this.setLimits();
-		} else {
-			this.navTo( section );
-		}
+			// FADE IN PAGE
+			_.delay( function(){
+				self.hideLoading();
+				// LOAD INTRO SECTIONS
+				AjaxCalls.introSection();
+			}, 500 );
 
-		this.bindEvents();
+		} else {
+
+			console.log( 30, section );
+
+			// RECORD CURRENT SECTION FOR USE AFTER AJAXSUCCESS
+			this.section = section;
+			// LOAD INTRO SECTIONS AND THEN FADE IN
+			AjaxCalls.introSection();
+		
+			console.log( 37, this.section );
+
+		}
 
 	},
 
 	bindEvents: function () {
 
+		// BOUND AFTER AJAX LOAD
+
 		console.log("Home.bindEvents");
 
 		var self = this;
 
-		$(".intro_nav").on( "click", function(e) {
-			e.preventDefault();
-			console.log( 31, $(this).attr("data-link") );	
-			document.location.hash = $(this).attr("data-link");		
+		// WHEN VIDEO ENDED
+		$("#introvid").on("ended", function(){
+			self.hideVideo();
 		});
 
-		var winTop, winBottom;
+		$("#contents_list li").on( "mouseover", function(){
+			// GET ID
+			var thisId = $(this).attr("data-id");
+			// SHOW IMAGE
+			$("#contents_image li").css("opacity","0");
+			$("#contents_image").find("#preview-" + thisId).css("opacity","1");
+		});
 
-		$("#intro_scroll_wrapper").on("scroll", _.throttle( function(){
-			
-			if ( self.scrollDetect ) {
+		$("#contents_list li").on( "mouseout", function(){
+			// HIDE IMAGE
+			// $("#contents_image li").css("opacity","0");
+		});
 
-				winTop = $(this).scrollTop();
-				winBottom = winTop + self.winH;
-
-				// COMPARE TO CURRENT SECTION LIMITS – UPLOADED EACH TIME SECTION CHANGES
-
-				console.log( winTop, winBottom, self.sectionTopLimit, self.sectionBottomLimit );
-
-					// IF APPROACHING TOP
-				// if ( winTop < self.sectionTopLimit ) {
-
-				// 	var prev = $("#intro_scroll_wrapper section").eq( self.sectionIndex - 1 ).attr("id");
-				// 	console.log( 63, "Scroll up.", prev, self.sectionIndex );
-				// 	self.scrollDetect = true;
-				// 	setTimeout( function(){
-				// 		self.scrollDetect = true;
-				// 	}, 1500 );
-				// 	if ( self.scrollDetect ) {
-				// 		document.location.hash = prev.split("_")[1];	
-				// 	}
-
-				// } else if ( winBottom > self.sectionBottomLimit ) {
-				// 	// ELSE IF APPROACHING BOTTOM
-
-				// 	var next = $("#intro_scroll_wrapper section").eq( self.sectionIndex + 1 ).attr("id");
-				// 	console.log( 68, "Scroll bottom.", next, self.sectionIndex );
-				// 	self.scrollDetect = false;
-				// 	setTimeout( function(){
-				// 		self.scrollDetect = true;
-				// 	}, 1500 );
-				// 	if ( self.scrollDetect ) {
-				// 		document.location.hash = next.split("_")[1];	
-				// 	}
-
-				// }
-
-			}
-		
-		}, 500 ));
-
-		$(window).on("resize", _.throttle( function(){
-
-			self.setLimits();
-
-		}, 500));
+		$(window).on( "resize", _.throttle( function() {
+			// self.contentsHeight(); // STILL NECESSARY????
+		}, 500 ) );
 
 	},
 
-	setLimits: function () {
+	hideLoading: function () {
 
-		console.log("Home.setLimits");
+		console.log("Home.hideLoading");
 
-		// GET CURRENT POS
-		var currentPos = $("#intro_scroll_wrapper").scrollTop(),
-			winH = $(window).height();
+		HomeNav.init();
 
-		console.log( 73, currentPos );
-		var currTop = 0, 
-			currBottom = currTop + winH,
-			top, bottom, 
-			index = 0;
+		$("#loading").fadeOut( 1000 );
 
-		// LOOP THROUGH SECTIONS
-		$("#intro_scroll_wrapper section").each( function(){
-
-			top = $(this).offset().top;
-			bottom = top + $(this).height();
-
-			if ( currentPos >= top && currentPos < bottom ) {
-
-				console.log( 82, $(this).attr("id"), top, bottom );	
-				currTop = top + currentPos;
-				currBottom = bottom + currentPos;		
-				self.sectionIndex = index;	
-
-			}
-
-			index++;
-
-		});
-
-		console.log( 117, "Saved currTop + currBottom", currTop, currBottom );
-
-		this.sectionTopLimit = Math.ceil( currTop + ( winH / 4 ) );
-		this.sectionBottomLimit = Math.ceil( currBottom + ( winH / 4 ) );
+		this.pageLoaded = true;
 
 	},
 
@@ -156,7 +97,7 @@ var Home = {
 		this.sticky = new Waypoint.Sticky({
 			element: $("#intro_nav")[0],
 			context: $("#intro_scroll_wrapper"),  
-			handler: function(direction) {
+			handler: function (direction) {
 		    	// BUG FIX
 		    	// CHECK IF PAGE HAS SCROLLED
 		    	// if ( $(window).scrollTop() === 0 ) {
@@ -167,38 +108,9 @@ var Home = {
 
 	},
 
-	navTo: function ( section ) {
-
-		console.log("Home.navTo", section);
-
-		var self = this;
-
-		if ( $('#intro_'+ section).length ) {
-
-			var target = $('#intro_'+ section), 
-				targetTop = target.offset().top;
-
-			console.log( 111, target, targetTop );
-
-			$("#intro_scroll_wrapper").animate({
-				scrollTop: targetTop
-			}, 1000, function () {
-				setTimeout( function(){
-					if ( !self.videoHidden ) {
-						self.hideVideo();
-					}
-				}, 500 );
-			} );
-
-		}
-
-	},
-
 	hideVideo: function () {
 
 		console.log("Home.hideVideo");
-
-		var self = this;
 
 		// PAUSE VIDEO
 		if ( $("#introvid").length ) {
@@ -210,8 +122,6 @@ var Home = {
 		var videoH = $("#video_section").height(),
 			currentPos = $("#intro_scroll_wrapper").scrollTop();
 		
-		console.log( 110, videoH, currentPos );
-
 		$("#video_section").css({
 			"height" : 		0,
 			"min-height" :  0
@@ -236,13 +146,145 @@ var Home = {
 			Waypoint.refreshAll()
 			$(window).trigger('resize');
 
-			console.log( 211, "Set limits." );
-			self.setLimits();
+			HomeNav.setLimits();
 
 		}, 1100 );
 
+		// STOP FROM RUNNING ONCE VIDEO IS HIDDEN
 		this.videoHidden = true;
 
-	}
+	},
+
+	ajaxSuccess: function () {
+
+		console.log("Home.ajaxSuccess");
+
+		var self = this;
+
+		this.bindEvents();
+
+		// NAVIGATE TO SECTION
+		HomeNav.scrollTo( this.section );
+
+		// this.htmlPrep();
+
+		setTimeout( function(){
+
+			// LOAD CONTENTS IMAGES
+			self.loadContentsImgs();
+			self.contentsImgInit();
+
+			// // FADE IN
+			// _.defer( function(){
+			// 	if ( !Home.pageLoaded ) {
+			// 		self.hideLoading();	
+			// 	}		
+			// });
+
+		}, 1300 );
+
+	},
+
+	loadContentsImgs: function () {
+
+		console.log("Home.loadContentsImgs");
+
+		var articles = App.articles;
+		if ( articles.length ) {
+			var html = "<ul>",
+				img,
+				wrapperH = $("#contents_image").height();
+			// LOOP THROUGH ARTICLES
+			_.each( articles, function( art ) {				
+				var src;
+				// IF IMAGE EXISTS
+				if ( art.image ) {
+					// GET IMG SIZE
+					if ( wrapperH <= 300 ) { // THUMB
+						src = art.image.sizes.thumbnail;
+					} else if ( wrapperH > 300 && wrapperH <= 600 ) { // MEDIUM
+						src = art.image.sizes.medium;
+					} else if ( wrapperH > 600 && wrapperH <= 900 ) { // MEDIUM-LARGE
+						src = art.image.sizes.medium_large;
+					} else if ( wrapperH > 900 && wrapperH <= 1200 ) { //  LARGE
+						src = art.image.sizes.large;
+					} else { // EXTRA-LARGE
+						src = art.image.sizes.extralarge;
+					}
+					img = "<img src='" + src + "' />";
+					html += "<li id='preview-" + art.ID + "' >" + img + "</li>";
+				}
+			});
+			html += "</ul>";
+			$("#contents_image").append( html );
+			$("#contents_image_wrapper").fadeIn();
+		} else {	
+			console.log("Articles not loaded.");
+		}
+
+	},
+
+	contentsImgInit: function () {
+
+		console.log("Home.contentsImgInit");
+
+		var self = this;
+
+		var imgInview = new Waypoint.Inview({
+			element: $('#contents_image_wrapper')[0], 
+			context: $("#intro_scroll_wrapper"), 
+			entered: function( direction ) {
+				// END FIX
+				self.contentsImgUnfix( direction );
+			},
+			exit: function( direction ) {
+				// START FIX
+				self.contentsImgFix();
+			},
+		});
+
+		// SHOW RANDOM IMAGE
+		var imgs = $('#contents_image ul').children().length,
+			randIndex = Math.floor( Math.random() * imgs );
+		$("#contents_image li").eq(randIndex).css("opacity","1");
+
+	},
+
+	contentsImgFix: function () {
+
+		console.log("Home.contentsImgFix");
+
+		// GET PARENT WIDTH
+		var parentW = $("#contents_image_wrapper").width();
+
+		$("#contents_image").css({
+			"position" : "fixed",
+			"width" : parentW,
+			"top" : ""
+		});
+
+	},
+
+	contentsImgUnfix: function ( direction ) {
+
+		console.log("Home.contentsImgUnfix");
+
+		var top, bottom;
+		if ( direction === "up" ) {
+			top = "";
+			bottom = "";
+		} else {
+			// GET CURRENT TOP POSITION
+			top = "initial";
+			bottom = 60;
+		}
+
+		$("#contents_image").css({
+			"position" : "",
+			"top" : top,
+			"bottom" : bottom
+		});
+
+	},
 
 }

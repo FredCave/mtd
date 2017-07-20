@@ -33,18 +33,18 @@ var Home = {
 
 		} else {
 
-			console.log( 30, section );
-
 			// RECORD CURRENT SECTION FOR USE AFTER AJAXSUCCESS
 			this.section = section;
 			// LOAD INTRO SECTIONS AND THEN FADE IN
 			AjaxCalls.introSection();
 		
-			console.log( 37, this.section );
-
 		}
 
+		HomeNav.init();
+
 	},
+
+	scrollTop: 0, 
 
 	bindEvents: function () {
 
@@ -71,10 +71,6 @@ var Home = {
 			// HIDE IMAGE
 			// $("#contents_image li").css("opacity","0");
 		});
-
-		$(window).on( "resize", _.throttle( function() {
-			// self.contentsHeight(); // STILL NECESSARY????
-		}, 500 ) );
 
 	},
 
@@ -118,7 +114,7 @@ var Home = {
 			$("#introvid")[0].pause();
 		}
 
-		// REDUCE HEIGHT OF WRAAPPER
+		// REDUCE HEIGHT OF WRAPPER
 		var videoH = $("#video_section").height(),
 			currentPos = $("#intro_scroll_wrapper").scrollTop();
 		
@@ -162,6 +158,8 @@ var Home = {
 		var self = this;
 
 		this.bindEvents();
+
+		ScrollSnap.init();
 
 		// NAVIGATE TO SECTION
 		HomeNav.scrollTo( this.section );

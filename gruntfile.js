@@ -8,7 +8,7 @@ module.exports = function ( grunt ) {
 				expand: true,
 				cwd: 'assets/js/',
 				src: '**',
-				dest: 'assets/js/dest/',
+				dest: 'assets/js/_dest/',
 				flatten: true,
 				filter: 'isFile',
 			},
@@ -16,7 +16,7 @@ module.exports = function ( grunt ) {
 		uglify: {
 			dev: {
 				// beautify: true,
-				src: "assets/js/dest/*.js",
+				src: "assets/js/_dest/*.js",
 				dest: "js/scripts.min.js"
 			}
 		},

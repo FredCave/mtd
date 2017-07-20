@@ -1,49 +1,55 @@
-// var app = app || {};
+var app = app || {};
 
-// var App = {
+var App = {
 
-// 	articles: "",
+	articles: "",
 
-// 	articlesLoaded: false,
+	articlesLoaded: false,
 
-// 	init: function () {
+	init: function () {
 
-// 		console.log("App.init");
+		console.log("App.init");
 
-// 		// SCROLL TO TOP
-// 		$("html,body").animate({
-// 			scrollTop: 0 
-// 		}, 10 );
+		// SCROLL TO TOP
+		$("html,body").animate({
+			scrollTop: 0 
+		}, 10 );
 
-// 		this.loadArticleData();
+		this.loadArticleData();
 
-// 	},
+	},
 
-// 	loadArticleData: function () {
+	loadArticleData: function () {
 
-// 		console.log("App.loadArticleData");
+		console.log("App.loadArticleData");
 
-// 		// CHECK IF NOT YET LOADED
-// 		if ( !this.articlesLoaded ) {
+		// CHECK IF NOT YET LOADED
+		if ( !this.articlesLoaded ) {
 			
-// 			this.articlesLoaded = true;
-// 			AjaxCalls.loadArticleData();
+			AjaxCalls.loadArticleData();
+			this.loadSatelliteData();
+			this.articlesLoaded = true;
 
-// 		}
+		}
 
-// 	}
+	},
 
-// }
+	loadSatelliteData: function () {
 
-// $(document).on( "ready", function (){
+		console.log("App.loadSatelliteData");
+		
+		// LOAD SATELLITE IDs
+		AjaxCalls.loadSatelliteData();
 
-// 	console.log("Ready");
+	}
 
-//     var appRouter = new app.MainRouter();
-//     Backbone.history.start({});
+}
 
-//     console.log( 45, Backbone.history.fragment );
+$(document).on( "ready", function (){
 
-//     App.init();
+	new app.MainRouter();
+	Backbone.history.start({});
 
-// });
+	App.init();
+
+});

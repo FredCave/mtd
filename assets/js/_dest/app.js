@@ -26,10 +26,20 @@ var App = {
 		// CHECK IF NOT YET LOADED
 		if ( !this.articlesLoaded ) {
 			
-			this.articlesLoaded = true;
 			AjaxCalls.loadArticleData();
+			this.loadSatelliteData();
+			this.articlesLoaded = true;
 
 		}
+
+	},
+
+	loadSatelliteData: function () {
+
+		console.log("App.loadSatelliteData");
+		
+		// LOAD SATELLITE IDs
+		AjaxCalls.loadSatelliteData();
 
 	}
 
@@ -37,9 +47,9 @@ var App = {
 
 $(document).on( "ready", function (){
 
-    var appRouter = new app.MainRouter();
-    Backbone.history.start({});
+	new app.MainRouter();
+	Backbone.history.start({});
 
-    App.init();
+	App.init();
 
 });

@@ -5,7 +5,33 @@
         'p'			=>  intval ( $id )
     ) );    
     if ( $articles_query->have_posts() ) :
-        while ( $articles_query->have_posts() ) : $articles_query->the_post(); ?>
+        while ( $articles_query->have_posts() ) : $articles_query->the_post(); 
+
+            // GET ANY DOWNLOAD FILES
+            if ( get_field("downloads") ) {
+                $dl_array = array();
+                $downloads = get_field("downloads");
+                foreach ( $downloads as $dl ) {
+                    array_push( $dl_array, $dl["file"] );
+                }
+                // IF MY PERSONAL TECHING MAP
+                if ( get_the_ID() === 48 ) {
+                    // ONE FILE
+                    $pattern_array = array("*download_file_1*","*download_img_1*");
+                    $images = array( get_bloginfo('template_url') . "/assets/img/download_map.svg" );
+                    $replacement_array = array_merge( $dl_array, $images );   
+                } elseif ( get_the_ID() === 49 ) {
+                    // THREE FILES
+                    $pattern_array = array("*download_file_1*","*download_file_2*","*download_file_3*","*download_img_1*","*download_img_2*","*download_img_3*");
+                    $images = array( 
+                        get_bloginfo('template_url') . "/assets/img/download_linear.svg", 
+                        get_bloginfo('template_url') . "/assets/img/download_detailed.svg", 
+                        get_bloginfo('template_url') . "/assets/img/download_ducks.svg"
+                    );
+                    $replacement_array = array_merge( $dl_array, $images );                      
+                }
+
+            } ?>
 
             <div class="top_wrapper">
 
@@ -57,15 +83,29 @@
                                     <?php the_sub_field("content"); ?>
                                 </div>
                                 <div class="mtd_column">
-                                    <?php the_sub_field("video"); ?>
+                                    <div class="fix_wrapper">
+                                        <?php 
+                                        // PREVIEW IMAGE OBJECT
+                                        $image = get_sub_field("video_image");
+                                        mtd_video_preview( $image );
+                                        the_sub_field("video"); 
+                                        ?>
+                                    </div>
                                 </div>
                             </div>
 
                         <?php elseif ( get_row_layout() === "article_template_6" ) : ?>
 
                             <div class="template <?php echo get_row_layout() ?>">
-                                <?php the_sub_field("video"); ?>
-                                <?php if ( get_sub_field("video_caption") ) { ?>
+                                <?php 
+                                // PREVIEW IMAGE OBJECT
+                                $image = get_sub_field("video_image");
+                                mtd_video_preview( $image );
+                                // MAIN VIDEO
+                                the_sub_field("video"); ?>
+                                <?php 
+                                // CAPTION
+                                if ( get_sub_field("video_caption") ) { ?>
                                     <div class="caption"><?php the_sub_field("video_caption"); ?></div>
                                 <?php } ?>
                             </div>                         
@@ -73,7 +113,15 @@
                         <?php else : ?>
     
                             <div class="template <?php echo get_row_layout() ?> <?php the_sub_field("article_template_serif"); ?>">
-                                <?php the_sub_field("content"); ?>
+                                <?php 
+                                $content = get_sub_field("content"); 
+                                // IF DOWNLOADS FIELD HAS CONTENT
+                                if ( get_field("downloads") ) {
+                                    echo preg_replace( $pattern_array, $replacement_array, $content );                                        
+                                } else {
+                                    echo $content;
+                                }
+                                ?>
                             </div>
 
                         <?php endif;
@@ -86,9 +134,16 @@
 
             <!-- FOOTNOTES -->
             <?php if ( get_field("article_footnotes") ): ?>
-                <div class="article_footnotes">
-                    <?php the_field("article_footnotes"); ?>
-                </div><!-- END OF .TEMPLATE -->
+                <div class="article_footnotes_wrapper">
+                    <div class="footnotes_close">
+                        <img src="<?php bloginfo( 'template_url' ); ?>/assets/img/footnotes_close.svg" />
+                    </div>
+                    <div class="scroll_wrapper">
+                        <div class="article_footnotes">
+                            <?php the_field("article_footnotes"); ?>
+                        </div>
+                    </div>
+                </div>
             <?php endif; ?>
 
         <?php endwhile;

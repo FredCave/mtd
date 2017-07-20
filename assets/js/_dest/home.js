@@ -17,10 +17,10 @@ var Home = {
 		// INIT NAV PINNING USING WAYPOINTS
 		this.pinNav();
 
-		// IF STANDARD INIT 
+		// IF NORMAL LOAD ON VIDEO
 		if ( section === "" ) {
 
-			// IF MAIN HOME: PLAY VIDEO
+			// 	PLAY VIDEO
 			if ( $("#introvid").length ) {
 				$("#introvid")[0].play();		
 			}
@@ -33,18 +33,17 @@ var Home = {
 
 		} else {
 
-			console.log( 30, section );
-
 			// RECORD CURRENT SECTION FOR USE AFTER AJAXSUCCESS
 			this.section = section;
-			// LOAD INTRO SECTIONS AND THEN FADE IN
+			// LOAD INTRO SECTIONS
+			// THIS CALLS HIDELOADING
 			AjaxCalls.introSection();
 		
-			console.log( 37, this.section );
-
 		}
 
 	},
+
+	scrollTop: 0, 
 
 	bindEvents: function () {
 
@@ -72,17 +71,11 @@ var Home = {
 			// $("#contents_image li").css("opacity","0");
 		});
 
-		$(window).on( "resize", _.throttle( function() {
-			// self.contentsHeight(); // STILL NECESSARY????
-		}, 500 ) );
-
 	},
 
 	hideLoading: function () {
 
 		console.log("Home.hideLoading");
-
-		HomeNav.init();
 
 		$("#loading").fadeOut( 1000 );
 
@@ -118,7 +111,7 @@ var Home = {
 			$("#introvid")[0].pause();
 		}
 
-		// REDUCE HEIGHT OF WRAAPPER
+		// REDUCE HEIGHT OF WRAPPER
 		var videoH = $("#video_section").height(),
 			currentPos = $("#intro_scroll_wrapper").scrollTop();
 		
@@ -163,10 +156,12 @@ var Home = {
 
 		this.bindEvents();
 
-		// NAVIGATE TO SECTION
-		HomeNav.scrollTo( this.section );
+		HomeNav.init();
 
-		// this.htmlPrep();
+		// NAVIGATE TO SECTION
+		if ( this.section !== undefined ) {
+			HomeNav.scrollTo( this.section );			
+		}
 
 		setTimeout( function(){
 
@@ -174,12 +169,12 @@ var Home = {
 			self.loadContentsImgs();
 			self.contentsImgInit();
 
-			// // FADE IN
-			// _.defer( function(){
-			// 	if ( !Home.pageLoaded ) {
-			// 		self.hideLoading();	
-			// 	}		
-			// });
+			// FADE IN
+			_.defer( function(){
+				if ( !Home.pageLoaded ) {
+					self.hideLoading();	
+				}
+			});
 
 		}, 1300 );
 

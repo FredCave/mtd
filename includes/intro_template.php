@@ -41,7 +41,13 @@ function mtd_contents_list () {
     $num = 1;
 
     foreach ( $cats as $cat ) {        
-        if ( $cat->cat_name !== "Uncategorized" && $cat->cat_name !== "Satellite" ) { ?>
+        if ( $cat->cat_name !== "Uncategorized" && $cat->cat_name !== "Satellite" ) { 
+
+            if ( $num === 1 ) { ?>
+                <div class="contents_sub_col_left contents_sub_col">
+            <?php } else if ( $num === 4 ) { ?>
+                <div class="contents_sub_col_right contents_sub_col">
+            <?php } ?>
             
             <div class="contents_sub_section">
                
@@ -96,6 +102,12 @@ function mtd_contents_list () {
                 </div>
 
             </div><!-- END OF .CONTENTS_SUB_SECTION -->
+
+            <?php 
+            // END OF SUB_COLS
+            if ( $num === 1 || $num === 4 ) { ?>
+                </div>
+            <?php } ?>
 
         <?php
     // END OF CAT LOOP

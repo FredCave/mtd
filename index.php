@@ -69,11 +69,13 @@
 		        </div>
 		    </div>
 
-		    <div id="article_wrapper_1" class="prev_article article"></div>
+		    <?php /* <div id="article_wrapper_1" class="prev_article article white"></div> */ ?>
 
-		    <div id="article_wrapper_2" class="current_article article"></div>
+		    <div id="article_wrapper_2" class="current_article article white"></div> 
 
-		    <div id="article_wrapper_3" class="next_article article"></div>
+		    <?php /* <div id="article_wrapper_3" class="next_article article white"></div> */ ?>
+
+		    <div id="split_wrapper" class="article"></div>
 
 	    </div>
 
@@ -82,7 +84,7 @@
 	<!-- EDITOR -->
 
 	<div id="editor_scroll_wrapper" class="top_level_wrapper">
-
+		<?php include("includes/editor.php"); ?>
 	</div>
 
 	<!-- LOADING -->	

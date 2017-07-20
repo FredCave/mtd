@@ -69,6 +69,31 @@ AjaxCalls = {
 
 	},
 
+	loadSatelliteData: function () {
+
+		console.log("AjaxCalls.loadSatelliteData");
+
+		var self = this;
+
+		$.ajax({
+		    url: myAjax.ajaxurl,
+		    data: {
+		        "action" : "satellitedata"
+		    },
+		    dataType: "json",
+		    success:function(data) {
+
+		    	// SAVE DATA TO APP OBJECT
+		    	App.satellites = data;
+
+		    },
+		    error: function(errorThrown){
+		        console.log(errorThrown);
+		    }
+		}); 		
+
+	},
+
 	loadArticle: function ( article_id, target ) {
 
 		console.log("AjaxCalls.loadArticle", article_id, target);

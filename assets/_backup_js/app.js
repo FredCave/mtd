@@ -28,8 +28,18 @@ var App = {
 			
 			this.articlesLoaded = true;
 			AjaxCalls.loadArticleData();
+			this.loadSatelliteData();
 
 		}
+
+	},
+
+	loadSatelliteData: function () {
+
+		console.log("App.loadSatelliteData");
+
+		// JUST LOAD SATELLITE IDs
+		AjaxCalls.loadSatelliteData();
 
 	}
 

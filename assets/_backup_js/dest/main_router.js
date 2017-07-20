@@ -39,10 +39,16 @@ app.MainRouter = Backbone.Router.extend({
         if ( section === "intro" ) {
 
             $("#intro_scroll_wrapper").fadeIn(1000).siblings(".top_level_wrapper").fadeOut(1000);
+            // ARTICLES SCROLL TO TOP
+            $("#article_scroll_wrapper").animate({
+                scrollTop : 0
+            }, 500 );
 
         } else if ( section === "article" ) {
 
             $("#article_scroll_wrapper").fadeIn(1000).siblings(".top_level_wrapper").fadeOut(1000);
+            // INTRO SCROLL TO CONTENTS
+            HomeNav.scrollToContents();
 
         } else if ( section === "editor" ) {
 
@@ -90,7 +96,7 @@ app.MainRouter = Backbone.Router.extend({
         
         this.wrapperManager("article");
 
-        Article.loadArticle( id );
+        Article.callArticle( id );
 
     },
 

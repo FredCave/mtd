@@ -99,6 +99,28 @@ add_image_size( 'ultralarge', 1600, 1600 );
 //     endif;
 // }
 
+// VIDEO PREVIEW IMAGE
+function mtd_video_preview ( $image ) {
+    if( !empty($image) ): 
+        $width = $image['sizes'][ 'thumbnail-width' ];
+        $height = $image['sizes'][ 'thumbnail-height' ];
+        $thumb = $image['sizes'][ "thumbnail" ]; // 300
+        $medium = $image['sizes'][ "medium" ]; // 600
+        $large = $image['sizes'][ "large" ]; // 900
+        $extralarge = $image['sizes'][ "extralarge" ]; // 1200
+        $ultralarge = $image['sizes'][ "ultralarge" ]; // 1600
+        echo "<div 
+            class='preview_image' 
+            data-thm='" . $thumb . "' 
+            data-med='" . $medium . "' 
+            data-lrg='" . $large . "' 
+            data-xlg='" . $extralarge . "' 
+            data-ulg='" . $ultralarge . "'>
+            </div>";
+    endif;
+}
+
+
 // AJAX CALLS
 
 add_action( 'wp_ajax_intro', 'mtd_intro' );
@@ -136,6 +158,17 @@ add_action( 'wp_ajax_nopriv_articledata', 'mtd_article_data' );
 function mtd_article_data () {
 
     echo include( "includes/article_data.php" );
+
+    wp_die();
+        
+}
+
+add_action( 'wp_ajax_satellitedata', 'mtd_satellite_data' );
+add_action( 'wp_ajax_nopriv_satellitedata', 'mtd_satellite_data' );
+
+function mtd_satellite_data () {
+
+    echo include( "includes/satellite_data.php" );
 
     wp_die();
         
@@ -285,6 +318,12 @@ function my_custom_styles( $init_array ) {
             'block' => 'span', 
             'classes' => 'after_wingdings',
             'wrapper' => false
+        ), 
+        array(  
+            'title' => 'Image Align',  
+            'block' => 'div', 
+            'classes' => 'align_to',
+            'wrapper' => true
         ), 
 
         // CHARACTER STYLES

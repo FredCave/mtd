@@ -790,17 +790,17 @@ video#introvid {
 
 ****************************************/
 /* line 758, style.scss */
-.title_wrapper {
-  font-family: "Univers", sans-serif;
-}
-
-/* line 762, style.scss */
 .white {
   background-color: #fffef8;
 }
-/* line 764, style.scss */
+/* line 760, style.scss */
 .white .title_wrapper {
   font-family: "News Plantin", serif;
+}
+
+/* line 765, style.scss */
+.title_wrapper.grey {
+  font-family: "Univers", sans-serif;
 }
 
 /* line 769, style.scss */

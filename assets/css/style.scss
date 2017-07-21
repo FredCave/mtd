@@ -755,15 +755,15 @@ video#introvid {
 
 ****************************************/
 
-.title_wrapper {
-	font-family: $univers;	
-}
-
 .white {
 	background-color: $color-white;
 	.title_wrapper {
 		font-family: $plantin;
 	}
+}
+
+.title_wrapper.grey {
+	font-family: $univers;	
 }
 
 .grey {

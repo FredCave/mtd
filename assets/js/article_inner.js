@@ -1,7 +1,82 @@
 var app = app || {};
 
-var ArticlePrep = {
+var ArticleInner = {
 	
+    init: function ( wrapper ) {
+
+        console.log("ArticleInner.init");
+
+        this.bindEvents();
+        this.prep( wrapper );
+
+    },
+
+    bindEvents: function () {
+
+        console.log("ArticleInner.bindEvents");
+   
+        var self = this;
+
+        $(".current_article").off("click");
+        $("#split_wrapper").off("click");
+
+        // INTERNAL LINKS
+        $(".current_article").on("click", ".internal_link", function(e) {
+            e.preventDefault();
+            self.internalLink( $(this) );
+        });
+
+        // ANCHOR LINKS
+        $(".current_article").on("click", ".anchor_link", function(e) {
+            e.preventDefault();
+            self.anchorLink( $(this) );
+        });       
+
+        // ONCE ARTICLE IS LOADED
+        $("#split_wrapper").on("split_loaded", function(){
+            self.splitAnim();
+        });
+   
+        // CLOSE SATELLITE VIEW
+        $("#split_wrapper").on("click", ".split_close", function(){
+            // RESET SPLIT
+            self.splitReset();
+        });
+
+        // SPLIT TO FULL
+        $(".current_article").on("click", ".split_close", function() {
+            self.splitToFull();
+        }); 
+
+        // ADD TO BOOK
+        $(".current_article").on("click", ".add_to_book", function(e){
+            e.preventDefault();
+            self.addToBook();
+        });
+
+        // DOWNLOAD PDF
+        $(".current_article").on("click", ".download_pdf", function(e){
+            var thisHref = "_generate/?art=" + Articles.currentArticle;
+            console.log( 60, thisHref );
+            $(this).attr("href", thisHref);
+        });
+
+        // FOOTNOTES 
+        $(".current_article").on("click", ".footnote_link", function(){
+            self.viewFootnotes();
+        });
+
+        $(".current_article").on("click", ".footnotes_close", function(){
+            self.closeFootnotes();
+        });  
+
+        // RUNNING TITLE SHOW/HIDE
+        $(".current_article").on("scroll", _.throttle( function(){
+            Articles.titleCheck( $(this).scrollTop() );
+        }, 500 ));
+
+    }, 
+
 //     imageSizes: function () {
 
 //         console.log("Article.imageSizes");
@@ -21,7 +96,7 @@ var ArticlePrep = {
 
     prep: function ( wrapper ) {
 
-        console.log("ArticlePrep.prep");
+        console.log("ArticleInner.prep");
 
         // PREP VIDEOS
         this.videosPrep();
@@ -159,7 +234,7 @@ var ArticlePrep = {
 
     videosPrep: function () {
 
-        console.log("Article.videosPrep");
+        console.log("ArticleInner.videosPrep");
 
         var self = this;
 
@@ -232,7 +307,7 @@ var ArticlePrep = {
 
     getPreviewSrc: function ( preview ) {
 
-        console.log("Article.getPreviewSrc");
+        console.log("ArticleInner.getPreviewSrc");
 
         var width = preview.width(), 
             src;
@@ -308,7 +383,7 @@ var ArticlePrep = {
 
        articleFivePrep: function () {
 
-        console.log("Article.articleFivePrep");
+        console.log("ArticleInner.articleFivePrep");
 
         var self = this;
 
@@ -334,7 +409,7 @@ var ArticlePrep = {
 
     videoFix: function () {
 
-        console.log("Home.videoFix");
+        console.log("ArticleInner.videoFix");
 
         // GET PARENT WIDTH
         var parentW = $(".mtd_column").width();
@@ -349,7 +424,7 @@ var ArticlePrep = {
 
     videoUnfix: function ( direction ) {
 
-        console.log("Home.videoUnfix");
+        console.log("ArticleInner.videoUnfix");
 
         var top, bottom;
 

@@ -110,7 +110,7 @@ AjaxCalls = {
 
 		    	data = self.responseTrim( data );
 
-		    	Article.ajaxSuccess( data, article_id, target );
+		    	Articles.ajaxSuccess( data, article_id, target );
 
 		    },
 		    error: function(errorThrown){

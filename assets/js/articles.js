@@ -1,4 +1,4 @@
-var Article = {
+var Articles = {
 	
 	firstTime: true,
 
@@ -6,7 +6,7 @@ var Article = {
 
 	init: function () {
 
-		console.log("Article.init");
+		console.log("Articles.init");
 
 		this.bindWrapperEvents();
 
@@ -17,7 +17,7 @@ var Article = {
 
 	bindWrapperEvents: function () {
 
-		console.log("Article.bindWrapperEvents");
+		console.log("Articles.bindWrapperEvents");
 
 		var self = this;
 
@@ -69,74 +69,9 @@ var Article = {
 
 	},
 
-    bindCurrentEvents: function () {
-
-        console.log("Article.bindCurrentEvents");
-   
-        var self = this;
-
-        $(".current_article").off("click");
-        $("#split_wrapper").off("click");
-
-        // INTERNAL LINKS
-        $(".current_article").on("click", ".internal_link", function(e) {
-            e.preventDefault();
-            self.internalLink( $(this) );
-        });
-
-        // ANCHOR LINKS
-        $(".current_article").on("click", ".anchor_link", function(e) {
-            e.preventDefault();
-            self.anchorLink( $(this) );
-        });       
-
-        // ONCE ARTICLE IS LOADED
-        $("#split_wrapper").on("split_loaded", function(){
-            self.splitAnim();
-        });
-   
-        // CLOSE SATELLITE VIEW
-        $("#split_wrapper").on("click", ".split_close", function(){
-            // RESET SPLIT
-            self.splitReset();
-        });
-
-        // SPLIT TO FULL
-        $(".current_article").on("click", ".split_close", function() {
-            self.splitToFull();
-        }); 
-
-        // ADD TO BOOK
-        $(".current_article").on("click", ".add_to_book", function(e){
-            e.preventDefault();
-            self.addToBook();
-        });
-
-        // DOWNLOAD PDF
-        $(".current_article").on("click", ".download_pdf", function(e){
-            var thisHref = "_generate/?art=" + self.currentArticle;
-            $(this).attr("href", thisHref);
-        });
-
-        // FOOTNOTES 
-        $(".current_article").on("click", ".footnote_link", function(){
-            self.viewFootnotes();
-        });
-
-        $(".current_article").on("click", ".footnotes_close", function(){
-            self.closeFootnotes();
-        });  
-
-        // RUNNING TITLE SHOW/HIDE
-        $(".current_article").on("scroll", _.throttle( function(){
-            self.titleCheck( $(this).scrollTop() );
-        }, 500 ));
-
-    }, 
-
 	callArticle: function ( id, split ) {
 
-		console.log("Article.callArticle", id);
+		console.log("Articles.callArticle", id);
 
 		// IF NOT DONE: INIT ARTICLES
 		if ( this.firstTime ) {
@@ -167,7 +102,7 @@ var Article = {
 
     ajaxSuccess: function ( data, id, target ) {
 
-        console.log("Article.ajaxSuccess", id, target);
+        console.log("Articles.ajaxSuccess", id, target);
 
         // LOAD DATA INTO WRAPPER
 
@@ -191,9 +126,8 @@ var Article = {
 
 		this.colourManager( data, target );
 
-        ArticlePrep.prep( wrapper );
-        // REBIND EVENTS
-        // this.bindCurrentEvents();
+        // PREP + BIND EVENTS
+        ArticleInner.init( wrapper );
 
         // SHOW ARTICLE CONTENT
         $(".current_article").fadeIn( 1000 );
@@ -216,7 +150,7 @@ var Article = {
 
     articleDataCheck: function () {
 
-        console.log("Article.articleDataCheck");
+        console.log("Articles.articleDataCheck");
 
         if ( App.articles === "" ) {
             // LOAD ARTICLE DATA
@@ -229,7 +163,7 @@ var Article = {
 
     loadTitle: function ( id ) {
 
-        console.log("Article.loadTitle", id );
+        console.log("Articles.loadTitle", id );
 
         var articles = App.articles,
         	self = this;
@@ -250,7 +184,7 @@ var Article = {
 
     loadNextPrev: function ( id ) {
 
-        console.log("Article.loadNextPrev", id );
+        console.log("Articles.loadNextPrev", id );
 
 		var articles = App.articles,
 			arrayPos;
@@ -294,7 +228,7 @@ var Article = {
 
 	colourManager: function ( data, target ) {
 
-		console.log("Article.colourManager", target);
+		console.log("Articles.colourManager", target);
 
 		var bgColour = data.split("article_inner_wrapper")[1].split("\"")[0].trim(),
 			wrapper;
@@ -327,7 +261,7 @@ var Article = {
 
 	// animArticle: function ( id, direction ) {
 
-	// 	console.log("Article.animArticle", direction);
+	// 	console.log("Articles.animArticle", direction);
 
  //        var self = this,
  //            target;
@@ -382,7 +316,7 @@ var Article = {
 
     splitAnim: function () {
 
-        console.log("Article.splitAnim");
+        console.log("Articles.splitAnim");
 
         $("#split_wrapper").css({
             "left" : "50%", 
@@ -411,7 +345,7 @@ var Article = {
 
     splitReset: function () {
 
-        console.log("Article.splitReset");
+        console.log("Articles.splitReset");
 
         $(".split_close").css({
             "position" : "absolute",
@@ -441,7 +375,7 @@ var Article = {
 
     splitToFull: function () {
 
-        console.log("Article.splitToFull");
+        console.log("Articles.splitToFull");
 
         var self = this;
 
@@ -487,7 +421,7 @@ var Article = {
 
     internalLink: function ( click ) {
 
-        console.log("Article.internalLink");
+        console.log("Articles.internalLink");
 
         // GET ID
         var hash = click[0].hash,
@@ -508,7 +442,7 @@ var Article = {
 
     anchorLink: function ( click ) {
 
-        console.log("Article.anchorLink");
+        console.log("Articles.anchorLink");
 
         var anchor = click.attr("href"),
             target = $(anchor).position().top + $(".article_inner_wrapper").position().top;
@@ -521,7 +455,7 @@ var Article = {
 
     addToBook: function () {
 
-        console.log("Article.addToBook");
+        console.log("Articles.addToBook");
 
         // CHECK IF THIS ID ALREADY IN SAVED BOOKS ARRAY
         if ( $.inArray( parseInt(this.currentArticle), Editor.savedArticles ) === -1 ) {
@@ -534,7 +468,7 @@ var Article = {
 
     viewFootnotes: function () {
 
-        console.log("Article.viewFootnotes");
+        console.log("Articles.viewFootnotes");
 
         // SHOW CLOSE BUTTON
         $(".current_article .footnotes_close").show();
@@ -572,7 +506,7 @@ var Article = {
 
     closeFootnotes: function () {
 
-        console.log("Article.closeFootnotes");
+        console.log("Articles.closeFootnotes");
 
         // ANIMATE OUT
         $(".article_footnotes_wrapper").css({
@@ -604,7 +538,7 @@ var Article = {
 
     titleCheck: function ( scroll ) {
 
-        console.log("Article.titleCheck", scroll );
+        console.log("Articles.titleCheck", scroll );
 
         var limit = $(".current_article .top_wrapper").outerHeight() + parseInt ( $(".current_article").css("padding-top") ) - 100 ;
         if ( scroll > limit ) {

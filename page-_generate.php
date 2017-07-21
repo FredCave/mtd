@@ -1,5 +1,7 @@
 <?php 
 
+    /* <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url'); ?>/css/print.css"> */
+
 	// GET SELECTED ARTICLES FROM QUERY
 	$arts = get_query_var( 'art' );
 	$ids = [];
@@ -52,6 +54,8 @@
     // END OUTPUT BUFFER + APPEND TO HTML VARIABLE
     ob_end_clean();
     $html .= $content;
+
+    // echo $html;
 
     $filename = $title .= ".pdf";
 

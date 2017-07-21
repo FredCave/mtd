@@ -94,7 +94,7 @@ app.MainRouter = Backbone.Router.extend({
         
         this.wrapperManager("article");
 
-        Article.callArticle( id );
+        Articles.callArticle( id );
 
     },
 

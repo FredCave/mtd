@@ -1,6 +1,6 @@
 <?php
 
-
+// LINE 70 – MODIFIED (USE SUBSTITUTIONS)
 
 // PAGING
 $this->mirrorMargins = 0;
@@ -66,7 +66,8 @@ $this->autoArabic = true;
 
 $this->autoLangToFont = false;		// mPDF 6.0 (similar to old useLang)
 
-$this->useSubstitutions = false;		// Substitute missing characters in UTF-8(multibyte) documents - from other fonts
+// MODIFIED
+$this->useSubstitutions = true;		// Substitute missing characters in UTF-8(multibyte) documents - from other fonts
 $this->falseBoldWeight = 5;			// Weight for bold text when using an artificial (outline) bold; value 0 (off) - 10 (rec. max)
 
 // CONFIGURATION

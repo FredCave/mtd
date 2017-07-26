@@ -48,6 +48,7 @@ $this->fonttrans = array(
 	'damase' 		=> 'mph2bdamase',
 	'newsplantin' 	=> 'newsplantin',
 	'univers'		=> 'univers',
+	'stix'			=> 'stix',
 );
 
 /*
@@ -85,17 +86,20 @@ starting at 1, as they appear in the .ttc file e.g.
 */
 
 $this->fontdata = array(
+	"stix" => array(
+		'R' => "STIXGeneral.ttf",
+		),	
 	"newsplantin" => array(
-		'R' => "mtd_news_plantin.otf",
+		'R' => "MTD_news_plantin.ttf",
 		'B' => "mtd_news_plantin_bold.otf",
-		'I' => "mtd_news_plantin_italic.otf",
+		'I' => "MTD_news_plantin_italic.ttf",
 		'BI' => "mtd_news_plantin_bold_italic.otf",
 		// 'useOTL' => 0xFF,
 		),
 	"univers" => array(
-		'R' => "mtd_UniversLTStd.otf",
+		'R' => "MTD_UniversLTStd.ttf",
 		'B' => "mtd_UniversLTStd-Bold.otf",
-		'I' => "mtd_UniversLTStd-Obl.otf",
+		'I' => "MTD_UniversLTStd-Obl.ttf",
 		'BI' => "mtd_UniversLTStd-BoldObl.otf",
 		// 'useOTL' => 0xFF,
 		),
@@ -334,7 +338,7 @@ $this->BMPonly = array(
 //     (Otherwise the order is irrelevant)
 // Use the mPDF font-family names i.e. lowercase and no spaces (after any translations in $fonttrans)
 // Always include "sans-serif", "serif" and "monospace" etc.
-$this->sans_fonts = array('dejavusanscondensed','sans','sans-serif','cursive','fantasy','dejavusans','freesans','liberationsans', 
+$this->sans_fonts = array('univers','dejavusanscondensed','sans','sans-serif','cursive','fantasy','dejavusans','freesans','liberationsans', 
 				'arial','helvetica','verdana','geneva','lucida','arialnarrow','arialblack','arialunicodems',
 				'franklin','franklingothicbook','tahoma','garuda','calibri','trebuchet','lucidagrande','microsoftsansserif',
 				'trebuchetms','lucidasansunicode','franklingothicmedium','albertusmedium','xbriyaz','albasuper','quillscript',

@@ -25,19 +25,28 @@
 				</div>
 			</div>
 
-			<!-- SELECTED ARTICLES -->
-			<ul id="editor_articles">
+			<div id="editor_no_articles"><p>You currently have no saved articles.</p></div>
 
-			</ul>
+			<!-- SELECTED ARTICLES -->
+
+			<ul id="editor_articles_wrapper"></ul>			
+			<ul id="editor_articles"></ul>
+			
+
 		</div>
 
 	</div><!-- END OF .CONTENT_WRAPPER -->
 
 	<!-- VIDEO – OUTSIDE OF CONTENT WRAPPER -->
 	<div id="editor_video" class="">
+
+		
+
 	</div>
 	
 </div>
+
+<?php /* // data.full_title !== "" ? data.full_title : data.title */ ?>
 
 <script id="editor_article_template" type="text/template">
 
@@ -47,8 +56,8 @@
 			<img src="<?php bloginfo('template_url'); ?>/assets/img/editor_article_close.svg" />
 		</div>
 
-		<p><%= data.full_title !== "" ? data.full_title : data.title %></p>
-		<p><%= data.author %></p>
+		<p class="editor_article_title"><%= data.title %></p>
+		<p class="editor_article_author"><%= data.author %></p>
 
 	</div>
 

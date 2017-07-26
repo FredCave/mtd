@@ -38,19 +38,57 @@ app.MainRouter = Backbone.Router.extend({
 
         if ( section === "intro" ) {
 
-            $("#intro_scroll_wrapper").fadeIn(1000).siblings(".top_level_wrapper").fadeOut(1000);
-            // ARTICLES SCROLL TO TOP
-            $("#article_scroll_wrapper").animate({
-                scrollTop : 0
+            $("#intro_scroll_wrapper").css({
+                "display"   : "block", 
+                "opacity" : "1"
+            });            
+
+            $("#article_scroll_wrapper").css({
+                "opacity" : "0",
+            });
+
+            setTimeout( function(){
+                    
+                $("#article_scroll_wrapper").css({
+                    "display"   : "none", 
+                    "z-index"   : ""    
+                });
+
+                if ( !Home.pageLoaded ) {
+                    HomeNav.colourManager();
+                }
+
             }, 500 );
 
         } else if ( section === "article" ) {
 
-            $("#article_scroll_wrapper").fadeIn(1000).siblings(".top_level_wrapper").fadeOut(1000);
-            // INTRO SCROLL TO CONTENTS
-            // HomeNav.scrollToContents();
+            $("html").css("background-color","#fffef8");
+
+            $("#article_nav").css({
+                "background-color"  : "transparent",
+                "box-shadow"        : "none"
+            });
+
+            $("#article_scroll_wrapper").css({
+                "display"   : "block", 
+                "z-index"   : "999"
+            });
+
+            setTimeout( function(){
+                $("#article_scroll_wrapper").css({
+                    "opacity" : "1" 
+                }).siblings(".top_level_wrapper").css({
+                    "opacity" : "0"
+                });
+
+                // SET NAV COLOUR
+                Articles.colourManager();
+
+            }, 500 );
 
         } else if ( section === "editor" ) {
+
+            $("html").css("background-color","#fffef8");
 
             $("#editor_scroll_wrapper").fadeIn(1000).siblings(".top_level_wrapper").fadeOut(1000);
 
@@ -66,35 +104,29 @@ app.MainRouter = Backbone.Router.extend({
 
         this.wrapperManager("intro");
 
-        // IF SECTIONS LOADED
-        if ( this.introLoaded ) {
+        console.log( 105, Home.pageLoaded );
 
-            // NAVIGATE TO SECTION
-            console.log( "MainRouter.showIntro", section );
-            HomeNav.scrollTo( section );
-
+        if ( !Home.pageLoaded ) {
+            console.log( 108, "Clear hash." );
+            // CLEAR HASH
+            Backbone.history.navigate( "", {trigger: false} );  
         } else {
-
-            if ( section !== "intro" ) {
-                // LOAD AND THEN NAV TO
-                Home.init( section );                
-            } else {
-                // LOAD AS NORMAL
-                Home.init(); 
-            }
-            this.introLoaded = true;
-
+            console.log( 113, "Don't clear hash." );   
         }
+
+        Home.init();
 
     },
 
     showArticle: function ( id ) {
 
         console.log("MainRouter.showArticle", id);
+
+        Articles.currentArticle = id;
         
         this.wrapperManager("article");
 
-        Articles.callArticle( id );
+        Articles.loadArticle( id );
 
     },
 
@@ -104,12 +136,7 @@ app.MainRouter = Backbone.Router.extend({
 
         this.wrapperManager("editor");
 
-        if ( !this.editorLoaded ) {
-            Editor.init();
-            this.editorLoaded = true;
-        } else {
-            Editor.showSection();
-        }
+        Editor.init();
 
     }
 

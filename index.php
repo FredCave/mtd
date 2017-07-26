@@ -6,9 +6,10 @@
 
 	    <!-- VIDEO -->
 	    <section id="video_section" class="" data-anchor="video">
-	        <video muted id="introvid" playsinline poster="<?php bloginfo('template_url'); ?>/assets/img/video_fallback.jpg">
-	            <source src="<?php bloginfo('template_url'); ?>/assets/vid/mind_the_dance.mp4" type="video/mp4">
+	        <video muted id="introvid" playsinline>
+	            <source src="" data-src="<?php bloginfo('template_url'); ?>/assets/vid/mind_the_dance.mp4" type="video/mp4">
 	        </video>
+			<div class="scroll_target"></div>
 	    </section>
 
 		<!-- NAV -->				
@@ -25,16 +26,9 @@
 		</div>
 
 		<div id="intro_sections">
-			<?php /*
-			AJAX LOADED HERE
-			STRUCTURE: 
-			<!-- FOREWORD -->
-			<section id="intro_foreword" class="intro_section"></section>
-			<!-- CONTENTS -->
-			<section id="intro_contents" class="intro_section"></section>
-			<!-- COLOPHON -->
-			<section id="intro_colophon" class="intro_section"></section>
-			*/ ?>
+
+			<?php include( "includes/intro_template.php" ); ?>
+			
 		</div>
 
 	</div>

@@ -1,23 +1,25 @@
 <?php 
 
-    /* <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url'); ?>/css/print.css"> */
-
 	// GET SELECTED ARTICLES FROM QUERY
 	$arts = get_query_var( 'art' );
 	$ids = [];
 	if ( $arts === "" ) {
 		return;
 	}
-		// IF COMMAS: SPLIT
+		// IF MULTIPLE ARTICLES: SPLIT
 	if ( strpos($arts, ',') !== false ) {
 		$ids = explode ( "," , $arts );
+        $multiple_articles = true;
 	} else {
 		$ids[] = intval ( $arts );
+        $multiple_articles = false;
 	}
 
     require_once __DIR__ . '/mpdf/mpdf.php';
 
     $mpdf = new mPDF();
+    $mpdf->charset_in='UTF-8';
+    $mpdf->SHYlang = 'en';
     $html = "";
     $title = "";
 
@@ -32,18 +34,11 @@
     if ( $articles_query->have_posts() ) :
         while ( $articles_query->have_posts() ) : $articles_query->the_post();
 
-    		// $html .= "<span style='font-family:univers; font-size:5em'>";
-
-			// $html .= get_the_ID();
-   //          $html .= $post->post_name;
+            // GET TITLE FOR FILENAME
             $title = get_the_title();
-   //          $html .= get_the_title();
-   //          $html .= get_field("full_title");
 
             // TEMPLATE SAVED TO BUFFER
             include("includes/pdf_template.php");
-
-            // $html .= "</span>";
             
         endwhile;
         wp_reset_postdata();
@@ -57,7 +52,11 @@
 
     // echo $html;
 
-    $filename = $title .= ".pdf";
+    if ( $multiple_articles ) {
+        $filename = "Mind The Dance.pdf"; 
+    } else {
+        $filename = $title .= ".pdf";        
+    }
 
     $stylesheet = file_get_contents( get_bloginfo("template_url") . '/css/print.css');
 

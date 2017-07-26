@@ -56,6 +56,7 @@
                         <a href="" class="add_to_book">
                             <img src="<?php bloginfo('template_url'); ?>/assets/img/button_add.svg" />
                         </a>
+                        <div class="added_indicator"></div>
                     </div>
 
                     <div class="article_button">
@@ -72,7 +73,7 @@
 
                 <!-- CONTENT -->
 
-    			<?php
+    			<?php 
                 if ( have_rows("article_templates") ):
                     while ( have_rows("article_templates") ) : the_row(); ?>
 
@@ -95,26 +96,28 @@
                             </div>
 
                         <?php elseif ( get_row_layout() === "article_template_6" ) : ?>
-
+                            
                             <div class="template <?php echo get_row_layout() ?>">
                                 <?php 
                                 // PREVIEW IMAGE OBJECT
                                 $image = get_sub_field("video_image");
                                 mtd_video_preview( $image );
-                                // MAIN VIDEO
-                                the_sub_field("video"); ?>
-                                <?php 
+                                // MAIN VIDEO: TO BE LAZYLOADED
+                                $video = get_sub_field("video");
+                                echo str_replace( "src=", "data-src=", $video );
+                                
                                 // CAPTION
                                 if ( get_sub_field("video_caption") ) { ?>
                                     <div class="caption"><?php the_sub_field("video_caption"); ?></div>
                                 <?php } ?>
                             </div>                         
-
+                            
                         <?php else : ?>
-    
+
                             <div class="template <?php echo get_row_layout() ?> <?php the_sub_field("article_template_serif"); ?>">
-                                <?php 
+                                <?php  
                                 $content = get_sub_field("content"); 
+                                echo str_replace( "<pagebreak>", "", $content );
                                 // IF DOWNLOADS FIELD HAS CONTENT
                                 if ( get_field("downloads") ) {
                                     echo preg_replace( $pattern_array, $replacement_array, $content );                                        
@@ -130,7 +133,7 @@
                 endif;
                 ?>
 
-            </div><!-- END OF .ARTICLE_WRAPPER -->
+            </div><!-- END OF .ARTICLE_INNER_WRAPPER -->
 
             <!-- FOOTNOTES -->
             <?php if ( get_field("article_footnotes") ): ?>
@@ -144,6 +147,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="article_footnotes_clone"></div>
             <?php endif; ?>
 
         <?php endwhile;

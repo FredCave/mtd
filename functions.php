@@ -99,6 +99,13 @@ add_image_size( 'ultralarge', 1600, 1600 );
 //     endif;
 // }
 
+// MODIFY IMG SIZES ATTRIBUTE
+function adjust_image_sizes_attr( $sizes, $size ) {
+   $sizes = '(max-width: 768px) 100vw, (max-width: 1440px) 60vw, 800px';
+   return $sizes;
+}
+add_filter( 'wp_calculate_image_sizes', 'adjust_image_sizes_attr', 10 , 2 );
+
 // VIDEO PREVIEW IMAGE
 function mtd_video_preview ( $image ) {
     if( !empty($image) ): 

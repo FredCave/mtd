@@ -109,7 +109,7 @@ AjaxCalls = {
 		    success:function(data) {
 
 		    	data = self.responseTrim( data );
-
+		    	
 		    	Articles.ajaxSuccess( data, article_id, target );
 
 		    },

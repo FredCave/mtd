@@ -2,13 +2,17 @@ var Editor = {
 	
 	savedArticles: [],
 
+	firstSort: true, 
+
+	eventsBound: false, 
+
 	init: function () {
 
 		console.log("Editor.init");
 
 		this.bindEvents();
 
-		// this.showSection();
+		this.loadArticleCheck();
 
 	},
 
@@ -16,12 +20,17 @@ var Editor = {
 
 		console.log("Editor.bindEvents");
 
+		if ( this.eventsBound ) {
+			return;
+		}
+
 		var self = this;
 
-		$("#editor").on( "click", "#editor_close", function (){
+		$("#editor_close").on( "click", function (e) {
 			
+			e.preventDefault();
 			console.log("Editor close.");
-			window.history.back();
+			Backbone.history.navigate( "contents", {trigger: true} );
 
 		});
 
@@ -43,18 +52,17 @@ var Editor = {
 
 		});
 
+		$(window).on( "resize", _.throttle( function(){
+
+			self.updateWrapperHeight();
+
+		}, 1000 ));
+
+		this.eventsBound = true;
+
 	},
 
-	showSection: function () {
-
-		console.log("Editor.showSection");
-
-		// GET ANY SAVED BOOKS
-		this.loadArticleCheck();
-
-	},
-
-// 	template: _.template( $('#editor_article_template').html(), {variable: 'data'} ),
+	template: _.template( $('#editor_article_template').html(), {variable: 'data'} ),
 
 	loadArticleCheck: function () {
 
@@ -81,61 +89,59 @@ var Editor = {
 
 		// IF NO ARTICLES
 		if ( articles.length < 1 ) {
-			$("#editor_articles").append("<p>You currently have no saved articles.</p>");
-			
-			// DISABLE GENERATE PDF BUTTON
-			$("#editor_button").css({
-				"opacity" 			: 0,
-				"pointer-events" 	: "none"
-			}); 
-
-			// return;
+			$("#editor_no_articles").fadeIn();			
+			$("#editor_button_wrapper").hide(); 
 		} else {
-			$("#editor_articles").empty();
-			$("#editor_button").css({
-				"opacity" 			: "",
-				"pointer-events" 	: ""
-			}); 		
+			$("#editor_no_articles").hide();
+			$("#editor_button_wrapper").fadeIn();  		
 		}
 
-		console.log( 101, Home.pageLoaded );
-
+		$("#editor_articles").empty();
 		// LOOP THROUGH SAVED ARTICLES
 		_.each( this.savedArticles, function( id ) {
 
 			// GET DATA FROM ARTICLE DATA		    				
 			_.each( articleData, function( art ) {
-
 				self.data = art;
-
 				if ( art.ID === id ) {
-
-					console.log( 79, art );
-
-					// $("#editor_articles").append( self.template( self.data ) );
-
+					$("#editor_articles").append( self.template( self.data ) );
 				}
-
 			});
 
 		});		
 
-		console.log( 123, Home.pageLoaded );
+		// SET HEIGHT OF WRAPPER
+		this.updateWrapperHeight();
 
 		// IF INIT FROM EDITOR
 		if ( !Home.pageLoaded ) {
-
 			Home.hideLoading();	
 		}
 
 		$( "#editor_articles" ).sortable({
 			cursor: "move",
 			placeholder: "sortable-placeholder",
+			containment: "#editor_articles_wrapper", 
+			start: function( event, ui ) {
+				// FIX PLACEHOLDER HEIGHT
+				ui.placeholder.height( ui.item.height() );
+				// FIRST SORT BUG FIX
+				if ( self.firstSort ){  
+					ui.item.css({
+						"margin-top" : 0 - $("#editor_scroll_wrapper").scrollTop()
+					});
+				}
+    		}, 
 			stop: function( event, ui ) {
-				
+				// FIRST SORT BUG FIX
+				if ( self.firstSort ){  
+					ui.item.css({
+						"margin-top" : ""
+					});
+					self.firstSort = false;
+				}				
 				// UPDATE ARTICLE ORDER
 				self.updateOrder( $( "#editor_articles" ).sortable('toArray') );
-
 			}
 		}).disableSelection();
 
@@ -152,13 +158,19 @@ var Editor = {
 
 		// LOOP THROUGH INPUT ARRAY
 		_.each( array, function( art ) {
-
 			// GET ID + APPEND TO ARRAY
 			self.savedArticles.push( art.split("-")[2] );
-
 		});
 
-		console.log( 119, this.savedArticles );
+		// console.log( 119, this.savedArticles );
+
+	},
+
+	updateWrapperHeight: function () {
+
+		console.log("Editor.updateWrapperHeight");
+
+		$("#editor_articles_wrapper").height( $("#editor_articles").height() + 64 );
 
 	}
 

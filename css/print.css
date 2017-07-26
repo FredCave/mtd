@@ -8,15 +8,15 @@
 
 @page {
 	size: 21cm 29.7cm; 
-	margin: 10mm 25mm 10mm 35mm; 
+	margin: 10mm 30mm 10mm 30mm; 
 	margin-header: 0mm; 
 	margin-footer: 0mm; 
 	header: html_runningInfo;
-/*	background-image: url("http://mindthedance.com/test/wp-content/themes/MTD/assets/img/pdf_background.png");*/
-	background-image: url("http://localhost:8888/mind-the-dance/wp-content/themes/MTD/assets/img/pdf_background.png");
+/*	background-image: url("http://localhost:8888/mind-the-dance/wp-content/themes/MTD/assets/img/pdf_background.png");
+	background-image: url("http://mindthedance.com/test/wp-content/themes/MTD/assets/img/pdf_background.png");
 	background-repeat: no-repeat;
 	background-image-resize: 4; 
-	background-position: 0px 0px;
+	background-position: 0px 0px;*/
 }
 
 @page :first {
@@ -29,7 +29,7 @@
 	width: 29cm; 
 	position: fixed;
 	top: 11mm;
-	left: -17mm;
+	right: -10mm;
 	rotate: -90;
 	font-size: 8.68pt;
 }
@@ -126,7 +126,7 @@ a,abbr,acronym,address,applet,article,aside,audio,b,big,blockquote,body,canvas,c
 body {
 	width: 100%;
 	min-height: 100%;
-	font-family: "Univers", courier, sans-serif;			
+	font-family: "Univers", sans-serif;			
 	font-size: 11pt;
 	line-height: 1.28;
 	overflow-x: hidden;
@@ -135,13 +135,8 @@ body {
 	-moz-osx-font-smoothing: grayscale;
 }
 
-.white, .serif {
-	font-family: "newsplantin", serif;	
-}
-
-.template {
-/*	border: 2px dashed green;*/
-	margin-bottom: 136px;
+div {
+/*	border: 1px solid pink;*/
 }
 
 a {
@@ -156,10 +151,24 @@ h1 {
 }
 
 h2 {
+/*	border: 1px solid red;*/
 	font-weight: normal;
 	font-size: 2em;
 	line-height: 1.28;
-	margin-bottom: 52px;
+	margin-bottom: 32px;
+	margin-top: 0mm;
+	vertical-align: 1mm;
+}
+
+h2.class_plan {
+/*	border: 1px solid orange;*/
+	margin-bottom: 12px;
+}
+
+h2.manual {
+/*	border: 1px solid orange;*/
+	margin-bottom: 12px;
+	letter-spacing: -0.01em;
 }
 
 h3 {
@@ -171,6 +180,7 @@ h4 {
 	font-weight: normal;
 	line-height: 1.15;
 	text-transform: uppercase;
+	margin-bottom: 16px;
 }
 
 h5 {
@@ -181,24 +191,55 @@ h5 {
 }
 
 i, em {
+/*	border: 1px solid blue;*/
 	font-style: italic;
+	font-size: 104%;
+}
+
+.sansserif i,
+.sansserif em,
+.article_footnotes i,
+.article_footnotes em, 
+.caption i, 
+.caption em,
+.comment i, 
+.comment em {
+	font-size: 100%;	
 }
 
 p {
-	margin-bottom: 24px;
+/*	border: 1px solid purple;*/
+	margin-bottom: 12px;
+}
+
+span {
+/*	border: 1px solid blue;	*/
 }
 
 img {
-	margin: 56px 0 6.5mm 0;
+/*	border: 1px solid green;*/
+	margin: 10mm 0 3.5mm 0;
 	margin-top: 0;
 }
 
+.stix_symbols {
+	font-family: "stix";
+	border-right: 10px solid white;
+}
+
+.stix_symbols_large {
+/*	border: 2px solid orange;*/
+	font-family: "stix";
+	font-size: 2.88em;
+	border-right: 10px solid white;
+}
+
 .footnote_link {
-	font-family: "Univers", courier, sans-serif;
+	font-family: "univers", sans-serif; 
 	vertical-align: super;
-/*	transform: translateY(-10px);*/
     font-size: 0.7em;
     line-height: 0;
+    border-left: 1px solid white;
 }
 
 .no_break {
@@ -208,19 +249,35 @@ img {
 
 .caption, .caption_vertical {
 /*	border: 1px solid red;*/
-	font-family: "Univers", courier, sans-serif;
+	font-family: "univers", sans-serif; 
 	font-size: 8.68pt;
 	line-height: 1.28;
 	letter-spacing: 0;
 	color: #757575;
-	margin: 0;
-	padding-bottom: 18mm;
-/*	text-indent: 60px;*/
+	margin-top: 0;
+	margin-bottom: 14mm;
+}
+
+.caption {
+/*	border: 1px solid red;*/
+	width: 100mm;
+}
+
+.caption_vertical {
+/*	border: 1px solid red;*/
+	width: 50%;
+}
+
+.article_template_2 .caption {
+	width: 150mm;	
+}
+
+.article_template_2 .caption_vertical {
+	width: 100mm;	
 }
 
 .top_wrapper {
 	margin-bottom: 17mm;
-/*	margin-left: 17mm;*/
 }
 
 .top_wrapper h1 {
@@ -231,34 +288,55 @@ img {
 	font-size: 2em;
 }
 
+.white, .serif {
+	font-family: "newsplantin", serif;	
+}
+
 .template {
-	border: 1px solid #ccc;
+/*	border: 1px solid #ccc;*/
 	line-stacking-shift: disregard-shifts;
+	margin: 0;
+	height: auto;
+/*	margin-bottom: 12px;*/
 }
 
 .article_template_2 {
 /*	border: 1px solid green;*/
-	margin: 20mm 0;
+/*	margin: 20mm 0 0;*/
 }
 
 .portrait_tmpl_2 {
+/*	border: 1px solid blue;*/
 	height: 150mm;
 	width: auto;
 }
 
 .portrait {
+/*	border: 1px solid green;*/
 	height: 100mm;
 	width: auto;
 }
 
 .landscape_tmpl_2 {
+/*	border: 1px solid green;*/
 	width: 150mm;
 	height: auto;
 }
 
 .landscape {
+/*	border: 1px solid red;*/
 	width: 100mm;
 	height: auto;
+}
+
+.square {
+/*	border: 1px solid purple;*/
+	width: 70mm;
+	height: auto;
+}
+
+.wp-image-284 {
+	width: 65mm;	
 }
 
 .template_2_spacer_top {
@@ -271,20 +349,58 @@ img {
 	margin-bottom: 136px;	
 }
 
+.article_footnotes_wrapper {
+/*	border: 1px solid blue;*/
+	margin-top: 28mm;
+	font-family: "univers", sans-serif; 
+}
+
+.post-56,
+.post-58 {
+/*	border: 1px solid green;*/
+	margin-top: 0mm;
+}
+
+.post-132 .article_footnotes {
+/*	border: 1px solid blue;*/
+}
+
+.list-1 {
+/*	border: 1px solid green;*/
+	margin-top: 8mm;
+}
+
+.article_footnotes_wrapper h5 {
+	font-size: 8.68pt;
+}
+
 .article_footnotes ul {
-	font-size: 0.78em;
+	/*border: 1px solid purple;*/
+	font-size: 8.68pt;
 	list-style-type: decimal;
+}
+
+.article_footnotes li {
+	margin-left: 15px;
+}
+
+.one_column {
+/*	border: 1px solid red;*/
+	margin-top: 48px;
+	width: 50%;
 }
 
 .quote {
 /*	border: 1px solid purple;*/
 	margin-left: 10mm;
+	margin-bottom: 12px;
 }
 
 .large_list {
 /*	border: 1px solid green;*/
 	font-size: 1.44em;
 	line-height: 1.3;
+	margin-bottom: 8px;
 }
 
 .large_text {
@@ -294,9 +410,81 @@ img {
 	line-height: 1.3;
 }
 
-.article_footnotes li {
-	margin-left: 15px;
+.large_text div {
+	font-size: 1.44em;
 }
 
+.text_indent {
+	margin-left: 8.57%;
+}
 
+.interview_left {
+/*	border: 1px solid purple;*/
+/*	width: 57.19%;*/
+	margin-bottom: 24px;
+}
 
+.interview_right {
+/*	width: 57.19%;
+	margin-left: 43%;*/
+	margin-top: 0;
+	margin-bottom: 24px;		
+}
+
+.interview_right .caption,
+.interview_right_last {
+	margin-bottom: 0px;		
+}
+
+img.interview_right {
+/*	border: 1px solid green;*/
+	margin-bottom: 14px;
+}
+
+.list_wrapper {
+	/*border: 1px solid gray;*/
+	margin-bottom: 4px;
+}
+
+.list_one, .list_two {
+/*	border: 1px solid blue;*/
+	margin-bottom: 8px;
+}
+
+.list_marker {
+/*	border: 1px solid red;*/
+	border-right: 10px solid white;
+/*	font-size: 1.4em;*/
+	vertical-align: 2px;
+}
+
+.list_marker_number {
+	vertical-align: 0px;
+}
+
+.first_line_indent {
+	text-indent: 8.57%;
+}
+
+.list_two {
+	margin-left: 8mm;
+}
+
+.list_two .list_marker {
+/*	font-size: 1.6em;*/
+}
+
+.option_marker {
+	font-size: 16pt;	
+}
+
+h2 .stix_symbols_large {
+	font-size: 16pt;	
+	vertical-align: 5.5px;
+}
+
+.comment {
+	font-family: "univers", sans-serif; 	
+	font-size: 8.68pt;
+	line-height: 1.28;
+}

@@ -1,5 +1,3 @@
-var app = app || {};
-
 var Home = {
 	
 	pageLoaded: false, 
@@ -14,32 +12,34 @@ var Home = {
 
 		var self = this;
 
+		// INIT SNAP TO
+		HomeNav.init();
+
 		// INIT NAV PINNING USING WAYPOINTS
 		this.pinNav();
 
-		// IF NORMAL LOAD ON VIDEO
-		if ( section === "" ) {
+		this.bindEvents();
 
-			// 	PLAY VIDEO
-			if ( $("#introvid").length ) {
-				$("#introvid")[0].play();		
-			}
-			// FADE IN PAGE
+		// 	PLAY VIDEO
+		if ( $("#introvid").length ) {
+			var src = $("#introvid").find("source").attr("data-src");
+			$("#introvid").find("source").attr( "src", src );
+			var video = $("#introvid").get(0);
+	        video.load();
+	        video.play();		
+		}
+		// FADE IN PAGE
+		_.delay( function(){
+		
+			self.hideLoading();
+			
+			// + LOAD CONTENTS IMAGES
 			_.delay( function(){
-				self.hideLoading();
-				// LOAD INTRO SECTIONS
-				AjaxCalls.introSection();
+				self.addWingdings();
+				self.loadContentsImgs();
 			}, 500 );
 
-		} else {
-
-			// RECORD CURRENT SECTION FOR USE AFTER AJAXSUCCESS
-			this.section = section;
-			// LOAD INTRO SECTIONS
-			// THIS CALLS HIDELOADING
-			AjaxCalls.introSection();
-		
-		}
+		}, 500 );
 
 	},
 
@@ -71,6 +71,12 @@ var Home = {
 			// $("#contents_image li").css("opacity","0");
 		});
 
+		$(window).on( "resize", _.throttle( function(e){
+
+			self.resizeImgs();
+
+		}, 1000 ));
+
 	},
 
 	hideLoading: function () {
@@ -89,7 +95,7 @@ var Home = {
 
 		this.sticky = new Waypoint.Sticky({
 			element: $("#intro_nav")[0],
-			context: $("#intro_scroll_wrapper"),  
+			// context: $("#intro_scroll_wrapper"),  
 			handler: function (direction) {
 		    	// BUG FIX
 		    	// CHECK IF PAGE HAS SCROLLED
@@ -113,14 +119,14 @@ var Home = {
 
 		// REDUCE HEIGHT OF WRAPPER
 		var videoH = $("#video_section").height(),
-			currentPos = $("#intro_scroll_wrapper").scrollTop();
+			currentPos = $(window).scrollTop();
 		
 		$("#video_section").css({
 			"height" : 		0,
 			"min-height" :  0
 		});
 		// SCROLL DOWN BY SAME AMOUNT AS VIDEO HEIGHT
-		$("#intro_scroll_wrapper").animate({
+		$("html,body").animate({
 			scrollTop: currentPos - videoH + 0 // 60 IS HEIGHT OF NAV
 		}, 10 );
 
@@ -139,8 +145,6 @@ var Home = {
 			Waypoint.refreshAll()
 			$(window).trigger('resize');
 
-			HomeNav.setLimits();
-
 		}, 1100 );
 
 		// STOP FROM RUNNING ONCE VIDEO IS HIDDEN
@@ -148,44 +152,17 @@ var Home = {
 
 	},
 
-	ajaxSuccess: function () {
-
-		console.log("Home.ajaxSuccess");
-
-		var self = this;
-
-		this.bindEvents();
-
-		HomeNav.init();
-
-		// NAVIGATE TO SECTION
-		if ( this.section !== undefined ) {
-			HomeNav.scrollTo( this.section );			
-		}
-
-		setTimeout( function(){
-
-			// LOAD CONTENTS IMAGES
-			self.loadContentsImgs();
-			self.contentsImgInit();
-
-			// FADE IN
-			_.defer( function(){
-				if ( !Home.pageLoaded ) {
-					self.hideLoading();	
-				}
-			});
-
-		}, 1300 );
-
-	},
-
 	loadContentsImgs: function () {
 
 		console.log("Home.loadContentsImgs");
 
-		var articles = App.articles;
-		if ( articles.length ) {
+		var articles = App.articles, 
+			self = this;
+
+		function loadImgs () {
+
+			console.log("Home.loadContentsImgs.loadImgs");
+
 			var html = "<ul>",
 				img,
 				wrapperH = $("#contents_image").height();
@@ -194,7 +171,14 @@ var Home = {
 				var src;
 				// IF IMAGE EXISTS
 				if ( art.image ) {
-					// GET IMG SIZE
+					// GET ALL DATA-SRCs
+					var dataTmb = art.image.sizes.thumbnail,
+						dataMed = art.image.sizes.medium, 
+						dataMlg = art.image.sizes.medium_large, 
+						dataLrg = art.image.sizes.large, 
+						dataXlg = art.image.sizes.extralarge;
+
+					// GET IMG SIZE FOR SRC
 					if ( wrapperH <= 300 ) { // THUMB
 						src = art.image.sizes.thumbnail;
 					} else if ( wrapperH > 300 && wrapperH <= 600 ) { // MEDIUM
@@ -206,15 +190,35 @@ var Home = {
 					} else { // EXTRA-LARGE
 						src = art.image.sizes.extralarge;
 					}
-					img = "<img src='" + src + "' />";
+					img = "<img ";
+					img += "data-tmb='" + dataTmb + "' ";
+					img += "data-med='" + dataMed + "' ";
+					img += "data-mlg='" + dataMlg + "' ";
+					img += "data-lrg='" + dataLrg + "' ";
+					img += "data-xlg='" + dataXlg + "' ";
+					img += "src='" + src + "' />";
 					html += "<li id='preview-" + art.ID + "' >" + img + "</li>";
 				}
 			});
 			html += "</ul>";
+
 			$("#contents_image").append( html );
 			$("#contents_image_wrapper").fadeIn();
+
+			self.contentsImgInit();
+
+		}
+
+		if ( articles.length ) {
+			loadImgs();
 		} else {	
 			console.log("Articles not loaded.");
+			App.loadArticleData();
+			$(document).on( "dataloaded", function(){
+				console.log( 220, "Data loaded." );
+				articles = App.articles;
+				loadImgs();
+			});
 		}
 
 	},
@@ -227,7 +231,7 @@ var Home = {
 
 		var imgInview = new Waypoint.Inview({
 			element: $('#contents_image_wrapper')[0], 
-			context: $("#intro_scroll_wrapper"), 
+			// context: $("#intro_scroll_wrapper"), 
 			entered: function( direction ) {
 				// END FIX
 				self.contentsImgUnfix( direction );
@@ -281,5 +285,53 @@ var Home = {
 		});
 
 	},
+
+	resizeImgs: function () {
+
+		console.log("Home.resizeImgs");
+
+		$("#contents_image img").each( function(){
+
+			// GET IMG HEIGHT
+			var imgH = $("#contents_image").height(),
+				src;
+
+			if ( imgH <= 300 ) { // THUMB
+				src = $(this).attr("data-tmb");
+			} else if ( imgH > 300 && imgH <= 600 ) { // MEDIUM
+				src = $(this).attr("data-med");
+			} else if ( imgH > 600 && imgH <= 900 ) { // MEDIUM-LARGE
+				src = $(this).attr("data-mlg");
+			} else if ( imgH > 900 && imgH <= 1200 ) { //  LARGE
+				src = $(this).attr("data-lrg");
+			} else { // EXTRA-LARGE
+				src = $(this).attr("data-xlg");
+			}
+
+			// UPDATE SRC + WIDTH
+			$(this).attr( "src", src );
+
+		});
+
+		// RESIZE WRAPPER
+		console.log( 313, $("#contents_image_wrapper").width() );
+		$("#contents_image").css({
+			"width" : $("#contents_image_wrapper").width()
+		})
+
+	},
+
+	addWingdings: function () {
+
+		console.log("Home.addWingdings");
+
+		// ADD GLYPHS TO WINGDING TEXTS
+        $("#contents_list li").each( function(){
+
+            $(this).find(".contents_category").prepend("<span class='wingdings'><img src='" + TEMPLATE + "/assets/img/wingding_glyph_white.svg' /></span> ");
+
+        });
+
+	}
 
 }

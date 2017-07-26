@@ -1,0 +1,94 @@
+##################################################
+
+	GENERAL
+
+##################################################
+
+– FAVICON
+
+##################################################
+
+	HOME
+
+##################################################
+
+##################################################
+
+	ARTICLES
+
+##################################################
+
+– FOOTNOTES
+
+– GENERAL STYLING FIX
+
+– SPLIT + SATELLITE STYLING
+
+– BETTER TOP BAR ANIMATION – HOW WAS IT BEFORE?
+
+– BULLETS MARGIN-RIGHT 18PX
+
+– IMAGES ON THE RIGHT COLUMN SHOULD ALIGN TO PARAGRAPH THEY’RE ATTACHED TO. (ADD “ASSIGN TO” CLASS)
+
+– LIGHTBOX
+
+##################################################
+
+	EDITOR / PDFs
+
+##################################################
+
+– SWITCH OVER ARTICLE SAVING TO LOCAL STORAGE
+
+– PDF HEADERS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+

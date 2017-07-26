@@ -1,34 +1,16 @@
-var app = app || {};
-
 var HomeNav = {
 
-	scrollDetect: true, 
+	winH: $(window).height(), 
 
-	scrollTop: 0, 
-
-	winH: $(window).height(),  
-
-	sections: [ "#video_section", "#intro_foreword", "#intro_contents", "#intro_colophon" ],
-	
-	currentSection: 0, 
-
-	winBottom: 0,
-
-	lastNumber: 0,
-
-	delta: 0,
-				
-	sensitivity: 10,
-
-	limits: [], 
+	scrolling: false, 
 
 	init: function () {
 
 		console.log("HomeNav.init");
 
-		this.setLimits();
-
 		this.bindEvents();
+
+		$("#intro_scroll_wrapper").sectionsnap();
 
 	},
 
@@ -38,30 +20,6 @@ var HomeNav = {
 
 		var self = this;
 
-		$(window).on( "resize", _.throttle( function(){
-
-			self.setLimits();
-			self.winH = $(window).height();
-
-		}, 500));
-
-		// UPDATE SCROLL VALUE
-		$("#intro_scroll_wrapper").on( "scroll", _.throttle( function(){
-		
-			self.scrollTop = $(this).scrollTop();
-		
-		}, 250 ));
-
-		$("#intro_scroll_wrapper").on( "mousewheel", _.throttle( function(e){
-
-			if ( !self.scrollDetect ) {
-				e.preventDefault();
-			} else {
-				self.wheelManager();				
-			}
-
-		}, 750 ));
-
 		// NAV LINKS CLICK
 		$(".intro_nav").on( "click", function(e) {
 			
@@ -70,93 +28,51 @@ var HomeNav = {
 
 		});
 
+		$(window).on( "resize", _.throttle( function(e){
+
+			self.winH = $(window).height();
+
+		}, 750 ));
+
+		$(window).on( "scroll", _.throttle( function(e){
+
+			self.hashCheck();
+
+		}, 250 ));
+
 	},
 
-	wheelManager: function () {
+	hashCheck: function () {
 
-		console.log("HomeNav.wheelManager");
-			
-		var self = this;
+		// console.log("HomeNav.hashCheck");
 
-		this.scrollTop = $(this).scrollTop();
-
-		// GET SCROLL DIRECTION
-		this.delta = this.scrollTop - this.lastNumber;
-	
-		var winBottom = this.scrollTop + this.winH;
-
-		// IF SCROLLING DOWN 
-		if ( this.delta > this.sensitivity ) {
-
-			// GET BOTTOM LIMIT OF CURRENT SECTION
-			var bottomLimit = this.limits[this.currentSection].bottom;
-			
-			console.log( "Down", winBottom, this.limits[this.currentSection].bottom + 100 );
-
-			console.log( 96, this.limits[this.currentSection + 1] );
-
-			if ( winBottom > bottomLimit + 80 && this.limits[this.currentSection + 1] !== undefined ) {
-
-				// PAUSE SCROLL DETECTION
-				this.scrollDetect = false;
-
-				var target = this.limits[this.currentSection + 1].top;
-
-				// UPDATE TOP BAR COLOUR
-				this.topBarColour( this.limits[this.currentSection + 1].id );
-
-				// ANIMATE
-				$("#intro_scroll_wrapper").animate({
-					scrollTop : target
-				}, 750, function(){
-					// self.setLimits();
-					self.currentSection++;
-					self.scrollDetect = true;
-					// IF VIDEO NOT YET HIDDEN
-					console.log( 110, "Current section: ", self.currentSection );
-					if ( !Home.videoHidden ) {
-						Home.hideVideo();
-					}				
-				});
-
-			}
-
-		// ELSE IF SCROLLING UP 
-		} else if ( this.delta < 0 - this.sensitivity ) {
-
-			// GET TOP LIMIT OF CURRENT SECTION
-			var topLimit = this.limits[this.currentSection].top;
-			
-			console.log( "Up", this.scrollTop, topLimit - 100 );
-
-			if ( this.scrollTop < topLimit - 80 ) {
-
-				// PAUSE SCROLL DETECTION
-				this.scrollDetect = false;
-
-				// TARGET IS BOTTOM OF PREVIOUS SECTION
-				var target = this.limits[this.currentSection - 1].bottom - this.winH;
-
-				// UPDATE TOP BAR COLOUR
-				self.topBarColour( this.limits[this.currentSection - 1].id );
-
-				// ANIMATE
-				$("#intro_scroll_wrapper").animate({
-					scrollTop : target
-				}, 750, function(){
-					// self.setLimits();
-					self.currentSection--;
-					self.scrollDetect = true;
-					console.log( 146, "Current section: ", self.currentSection );				
-				});
-
-			}
-
+		// PREVENT DURING SCROLLTO ANIMATION
+		if ( this.scrolling ) {
+			return;
 		}
 
-		this.lastNumber = this.scrollTop;
-		
-	}, 
+		// GET CURRENT HASH
+		var currHash = document.location.hash.substr(1),
+			self = this;
+
+		// GET CURRENT POSITION
+		var winTop = $(window).scrollTop();
+		$("#intro_scroll_wrapper").find("section").each( function(){
+
+			var thisTop = $(this).offset().top - 60, // 60 IS HEIGHT OF TOP BAR
+				thisBottom = thisTop + $(this).height();
+			if ( winTop > thisTop && winTop < thisBottom ) {
+				// IF CURRENT HASH !== VISIBLE SECTION
+				var thisSection = $(this).attr("data-anchor");
+				if ( currHash !== thisSection && thisSection !== "video" ) {
+					Backbone.history.navigate( thisSection, {trigger: false} );
+					self.colourManager( thisSection );
+				}
+			}
+
+		});
+
+	},
 
 	scrollTo: function ( section ) {
 
@@ -164,36 +80,27 @@ var HomeNav = {
 
 		var self = this;
 
-		// UPDATE CURRENT SECTION
-		var index = 0;
-		_.each( this.sections, function ( _section ) {
-			if ( _section.indexOf(section) > -1 ) {
-				self.currentSection = index;
-				console.log( 168, "Current section: ", self.currentSection );
-			}
-			index++;
-		});
-
 		if ( $('#intro_'+ section).length ) {
 
 			var target = $('#intro_'+ section), 
-				targetTop = target.offset().top + self.scrollTop;
+				targetTop = target.offset().top;
 
-			// UPDATE TOP BAR COLOUR
-			self.topBarColour( '#intro_'+ section );
+			this.scrolling = true;
 
 			// ANIMATE
-			$("#intro_scroll_wrapper").animate({
+			$("html,body").animate({
 				scrollTop: targetTop
 			}, 750, function () {
 				_.defer( function(){
-					// self.setLimits();
 					if ( !Home.videoHidden ) {
 						Home.hideVideo();
 					}
 					if ( !Home.pageLoaded ) {
 						Home.hideLoading();
-					}				
+					}			
+					// CALC COLOUR AT END OF ANIMATION
+					self.scrolling = false;	
+					self.colourManager( section );
 				});
 			} );
 
@@ -201,39 +108,35 @@ var HomeNav = {
 
 	},
 
-	setLimits: function () {
+	colourManager: function ( section ) {
 
-		console.log("HomeNav.setLimits");
+		console.log("HomeNav.colourManager", section);
 
-		// RECORD LIMITS FOR EACH SECTION
-		var limits = [],
-			section,
-			self = this;
+		// IF NOT FIRST TIME
+		if ( section === undefined && Home.videoHidden ) {
+			section = "foreword";
+		}
 
-		$("#intro_scroll_wrapper section").each( function(){
-			section = {};
-			section.id = "#" + $(this).attr("id");
-			section.top = $(this).offset().top + self.scrollTop;
-			section.bottom = section.top + $(this).height();
-			limits.push( section );
-		});		
+		console.log( 120, section );
 
-		this.limits = limits;
-		console.log( 221, limits[3].top,  limits[3].bottom );
-
-	},
-
-	topBarColour: function ( section ) {
-
-		console.log("HomeNav.topBarColour", section);
-
-// 		// SECTION === ID
-
-// 		var sectionColour = $(section).css("background-color")
-// 		$("#intro_nav").css({
-// 			"background-color" 	: sectionColour,
-// 			"box-shadow"		: "0px 2px 6px " + sectionColour
-// 		});
+		if ( section !== "video" ) {
+			var bgColour = $("#intro_" + section).css("background-color");
+			$("#intro_nav").css({
+				"background-color" 	: bgColour,
+				"box-shadow"		: "0px 2px 6px " + bgColour
+			});
+			$("html").css({
+				"background-color"	: bgColour
+			});
+		} else {
+			$("#intro_nav").css({
+				"background-color" 	: "",
+				"box-shadow"		: ""
+			});
+			$("html").css({
+				"background-color"	: "black"
+			});			
+		}
 
 	}
 

@@ -186,6 +186,7 @@ function mtd_colophon () {
 <!-- FOREWORD -->
 <section id="intro_foreword" class="intro_section" data-anchor="foreword">
     <?php mtd_foreword(); ?>
+    <div class="scroll_target" data-anchor="foreword"></div>
 </section>
 
 <!-- CONTENTS -->
@@ -208,10 +209,11 @@ function mtd_colophon () {
         </div>
 
     </div>
-
+    <div class="scroll_target" data-anchor="contents"></div>
 </section>
 
 <!-- AUTHORS / COLOPHON -->
 <section id="intro_colophon" class="intro_section yellow_intro_section" data-anchor="colophon">
     <?php mtd_colophon(); ?>
+    <div class="scroll_target" data-anchor="colophon"></div>
 </section>

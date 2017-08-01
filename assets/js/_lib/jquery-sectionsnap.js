@@ -86,6 +86,8 @@
 		}
 		// on window scroll
 		var windowScroll = function() {
+		
+
 			if ( animating ) 
 				return;
 			var st = $(window).scrollTop();

@@ -66,6 +66,18 @@ add_theme_support( 'post-thumbnails' );
 add_image_size( 'extralarge', 1200, 1200 );
 add_image_size( 'ultralarge', 1600, 1600 );
 
+// ATTEMPT AT FILTER RESPONISIVE IMAGE OUTPUT
+
+// function mtd_responsive_output ( $image, $meta, $id ) {
+    
+//     var_dump( $meta );
+//     // $output .= "test";
+//     // return $image;
+//     return null;
+
+// }
+// add_filter( 'wp_image_add_srcset_and_sizes', 'mtd_responsive_output' );
+
 // IMAGE OBJECT
 
 // function mtd_image_object( $image, $title, $saved_width, $saved_top, $saved_left, $saved_z_index ) {
@@ -368,6 +380,13 @@ function my_custom_styles( $init_array ) {
   
 } 
 add_filter( 'tiny_mce_before_init', 'my_custom_styles' );
+
+// STOP WP FROM STRIPPING NBSP
+function allow_nbsp_in_tinymce( $mceInit ) {
+    $mceInit['entities'] = '160,nbsp,38,amp,60,lt,62,gt';   
+    return $mceInit;
+}
+add_filter( 'tiny_mce_before_init', 'allow_nbsp_in_tinymce' );
 
 // MAKE STYLES VISIBLE IN EDITOR
 function my_theme_add_editor_styles() {

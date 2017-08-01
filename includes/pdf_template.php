@@ -2,12 +2,14 @@
 
     <htmlpageheader name="runningInfo" style="">
 
-        <div class="page_header" style=""><?php the_title(); ?>, <?php the_field("article_author"); ?> &nbsp; &nbsp; &nbsp; {PAGENO} / {nb}</div>
+        <?php /*<div class="page_header" style=""><?php the_title(); ?>, <?php the_field("article_author"); ?> &nbsp; &nbsp; &nbsp; {PAGENO} / {nb}</div> 
+        <div class="page_header" style="">Mind the Dance &nbsp; &nbsp; &nbsp; {PAGENO} / {nb}</div>*/ ?>
 
-    </htmlpageheader>
+    </htmlpageheader> 
+
 
     <div class="top_wrapper">
-
+    
         <!-- TITLE -->
         <div class="title_wrapper <?php the_field("article_bg_color"); ?>">
             <h1>
@@ -152,7 +154,10 @@
         } ?>
 
         </div>
-        <columns column-count="1" vAlign="" column-gap="0" />
-        <pagebreak>
+        
+        <?php if ( $multiple_articles ) : ?>
+            <columns column-count="1" vAlign="" column-gap="0" />
+            <pagebreak>
+        <?php endif; ?>
         
     <?php endif; ?>

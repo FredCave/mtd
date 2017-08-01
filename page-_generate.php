@@ -1,12 +1,15 @@
 <?php 
 
+    /* <link rel="stylesheet" type="text/css" href="<?php bloginfo('template_url'); ?>/css/print.css"> */
+    
+
 	// GET SELECTED ARTICLES FROM QUERY
 	$arts = get_query_var( 'art' );
 	$ids = [];
 	if ( $arts === "" ) {
 		return;
 	}
-		// IF MULTIPLE ARTICLES: SPLIT
+		// IF COMMAS: SPLIT
 	if ( strpos($arts, ',') !== false ) {
 		$ids = explode ( "," , $arts );
         $multiple_articles = true;
@@ -34,11 +37,18 @@
     if ( $articles_query->have_posts() ) :
         while ( $articles_query->have_posts() ) : $articles_query->the_post();
 
-            // GET TITLE FOR FILENAME
+    		// $html .= "<span style='font-family:univers; font-size:5em'>";
+
+			// $html .= get_the_ID();
+   //          $html .= $post->post_name;
             $title = get_the_title();
+   //          $html .= get_the_title();
+   //          $html .= get_field("full_title");
 
             // TEMPLATE SAVED TO BUFFER
             include("includes/pdf_template.php");
+
+            // $html .= "</span>";
             
         endwhile;
         wp_reset_postdata();
@@ -52,11 +62,7 @@
 
     // echo $html;
 
-    if ( $multiple_articles ) {
-        $filename = "Mind The Dance.pdf"; 
-    } else {
-        $filename = $title .= ".pdf";        
-    }
+    $filename = $title .= ".pdf";
 
     $stylesheet = file_get_contents( get_bloginfo("template_url") . '/css/print.css');
 

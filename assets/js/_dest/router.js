@@ -38,18 +38,26 @@ app.MainRouter = Backbone.Router.extend({
 
         if ( section === "intro" ) {
 
+            HomeNav.scrollBlocked = false;
+            $(".current_article").removeClass("prepped");
+
             $("#intro_scroll_wrapper").css({
                 "display"   : "block", 
                 "opacity" : "1"
             });            
 
-            $("#article_scroll_wrapper").css({
+            $(".article_element").css({
                 "opacity" : "0",
             });
 
             setTimeout( function(){
                     
-                $("#article_scroll_wrapper").css({
+                $(".article_element").css({
+                    "display"   : "none", 
+                    "z-index"   : ""    
+                });
+
+                $("#editor_scroll_wrapper").css({
                     "display"   : "none", 
                     "z-index"   : ""    
                 });
@@ -60,7 +68,15 @@ app.MainRouter = Backbone.Router.extend({
 
             }, 500 );
 
+            // IF INTRO ANIMATION ALREADY INIT: RESTART LOOP
+            console.log( 72, Home.animationInit );
+            if ( Home.animationInit ) {
+                Home.introAnimation( true );
+            }
+
         } else if ( section === "article" ) {
+
+            HomeNav.scrollBlocked = true;
 
             $("html").css("background-color","#fffef8");
 
@@ -69,16 +85,24 @@ app.MainRouter = Backbone.Router.extend({
                 "box-shadow"        : "none"
             });
 
-            $("#article_scroll_wrapper").css({
+            $(".article_element").css({
                 "display"   : "block", 
                 "z-index"   : "999"
             });
 
             setTimeout( function(){
-                $("#article_scroll_wrapper").css({
+                
+                $(".article_element").css({
                     "opacity" : "1" 
-                }).siblings(".top_level_wrapper").css({
+                });
+
+                $(".top_level_wrapper").not("#article_scroll_wrapper").css({
                     "opacity" : "0"
+                });
+
+                $("#editor_scroll_wrapper").css({
+                    "display"   : "none", 
+                    "z-index"   : ""    
                 });
 
                 // SET NAV COLOUR
@@ -86,11 +110,27 @@ app.MainRouter = Backbone.Router.extend({
 
             }, 500 );
 
+            // STOP INTRO ANIMATION
+            console.log( 112, Home.interval );
+            clearInterval( Home.interval );
+
         } else if ( section === "editor" ) {
+
+            HomeNav.scrollBlocked = true;
+            $(".current_article").removeClass("prepped");
 
             $("html").css("background-color","#fffef8");
 
-            $("#editor_scroll_wrapper").fadeIn(1000).siblings(".top_level_wrapper").fadeOut(1000);
+            $("#editor_scroll_wrapper").css({
+                "display"   : "block", 
+                "z-index"   : "999",
+                "opacity"   : "1"
+            }).siblings(".top_level_wrapper").fadeOut(1000);
+
+            $(".article_element").fadeOut(1000);
+
+            // STOP INTRO ANIMATION
+            clearInterval( Home.interval );
 
         }
 
@@ -109,12 +149,18 @@ app.MainRouter = Backbone.Router.extend({
         if ( !Home.pageLoaded ) {
             console.log( 108, "Clear hash." );
             // CLEAR HASH
-            Backbone.history.navigate( "", {trigger: false} );  
+            Backbone.history.navigate( "", {trigger: false} ); 
+            $("html,body").animate({
+                scrollTop : 0
+            }, 10 );
         } else {
-            console.log( 113, "Don't clear hash." );   
+            console.log( 113, "Don't clear hash." ); 
+            Backbone.history.navigate( section, {trigger: true} );   
         }
 
-        Home.init();
+        _.delay( function(){
+            Home.init();            
+        }, 250 );
 
     },
 

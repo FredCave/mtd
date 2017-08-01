@@ -11,6 +11,9 @@ function mtd_foreword () {
             
             <div id="foreword_wrapper" class="content_wrapper">
 
+                <div id="animation_wrapper"></div>
+
+                <?php /* 
                 <div class="intro_column_left mtd_column">
                     <h1 class="uppercase">Mind the Dance</h1>
                     <h1><br></h1>
@@ -18,11 +21,11 @@ function mtd_foreword () {
                     Documenting <br>
                     Contemporary Dance <br>
                     Teaching</h1>
-                </div>
+                </div> */ ?>
 
-                <div class="intro_column_right mtd_column">
+                <div class="foreword_text">
                     <?php the_content(); ?>
-                </div>
+                </div> 
 
             </div>
 

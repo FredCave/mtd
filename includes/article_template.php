@@ -14,7 +14,7 @@
                 foreach ( $downloads as $dl ) {
                     array_push( $dl_array, $dl["file"] );
                 }
-                // IF MY PERSONAL TECHING MAP
+                // IF MY PERSONAL TEACHING MAP
                 if ( get_the_ID() === 48 ) {
                     // ONE FILE
                     $pattern_array = array("*download_file_1*","*download_img_1*");
@@ -56,7 +56,6 @@
                         <a href="" class="add_to_book">
                             <img src="<?php bloginfo('template_url'); ?>/assets/img/button_add.svg" />
                         </a>
-                        <div class="added_indicator"></div>
                     </div>
 
                     <div class="article_button">
@@ -117,7 +116,8 @@
                             <div class="template <?php echo get_row_layout() ?> <?php the_sub_field("article_template_serif"); ?>">
                                 <?php  
                                 $content = get_sub_field("content"); 
-                                echo str_replace( "<pagebreak>", "", $content );
+                                $content = str_replace( "<pagebreak>", "", $content );
+                                // $content = str_replace( "srcset=", "data-srcset=", $content );
                                 // IF DOWNLOADS FIELD HAS CONTENT
                                 if ( get_field("downloads") ) {
                                     echo preg_replace( $pattern_array, $replacement_array, $content );                                        

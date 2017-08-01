@@ -1,17 +1,30 @@
 <div id="editor_wrapper">
 
-	<!-- TOP BAR -->
-	<div id="editor_top_bar">
-		<div id="editor_close">
-			<a href="">
-				<img src="<?php bloginfo('template_url'); ?>/assets/img/nav_close.svg" />
-			</a>
-		</div>
+	<!-- VIDEO – OUTSIDE OF CONTENT WRAPPER -->
+	<div id="editor_video_wrapper" class="">
+
+		<video id="editor_video" playsinline>
+	        <source src="" data-src="<?php bloginfo('template_url'); ?>/assets/media/mtd_bookeditor.mp4" type="video/mp4">
+	    </video>
+	
+		<div id="editor_play">
+			<img src="<?php bloginfo('template_url'); ?>/assets/img/video_play.svg" />
+ 		</div>
+
 	</div>
 	
-	<div id="" class="content_wrapper">
+	<div id="" class="editor_column_wrapper">
 
-		<div class="mtd_column">
+		<!-- TOP BAR -->
+		<div id="editor_top_bar">
+			<div id="editor_close">
+				<a href="">
+					<img src="<?php bloginfo('template_url'); ?>/assets/img/nav_close_.svg" />
+				</a>
+			</div>
+		</div>
+
+		<div class="editor_column">
 
 			<div id="editor_instructions">
 				<?php mtd_get_editor_text(); ?>
@@ -20,7 +33,7 @@
 			<div id="editor_button_wrapper">
 				<div id="editor_button">
 					<a target="_blank" href="">
-						<img src="<?php bloginfo('template_url'); ?>/assets/img/generate_pdf.svg" />
+						<img src="<?php bloginfo('template_url'); ?>/assets/img/mtd_generate.svg" />
 					</a>
 				</div>
 			</div>
@@ -36,13 +49,6 @@
 		</div>
 
 	</div><!-- END OF .CONTENT_WRAPPER -->
-
-	<!-- VIDEO – OUTSIDE OF CONTENT WRAPPER -->
-	<div id="editor_video" class="">
-
-		
-
-	</div>
 	
 </div>
 
@@ -50,7 +56,7 @@
 
 <script id="editor_article_template" type="text/template">
 
-	<div id="editor-item-<%= data.ID %>" class="editor_article">
+	<div id="editor-item-<%= data.ID %>" data-id="<%= data.ID %>" class="editor_article">
 
 		<div class="editor_article_close">
 			<img src="<?php bloginfo('template_url'); ?>/assets/img/editor_article_close.svg" />

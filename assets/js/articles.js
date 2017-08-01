@@ -24,7 +24,7 @@ var Articles = {
         // ONCE ARTICLE DATA LOADED (IF NEEDED)
         $(document).on("dataloaded", function(){
             
-            console.log( 27, "Article data loaded." );
+            // console.log( 27, "Article data loaded." );
             self.loadTitle( self.currentArticle );
 
         });
@@ -37,18 +37,13 @@ var Articles = {
 
         });
 
-        $(window).on("resize",  _.throttle( function(){
-            // RESIZE IFRAMES
-            $("iframe").each( function(){
-                self.resizeVideo( $(this) );
-            });
-        }, 1000 ));
-
 	},
 
 	loadArticle: function ( id, split ) {
 
 		console.log("Articles.loadArticle", id);
+
+        var self = this;
 
 		// IF NOT DONE: INIT ARTICLES
 		if ( this.firstTime ) {
@@ -56,24 +51,29 @@ var Articles = {
 			this.firstTime = false;
 		}
 
-        // HIDE CURRENT CONTENT
-        $(".current_article").fadeOut(200, function(){
-            $(".current_article").empty();
-        });
+        // IF NOT SPLIT: HIDE CURRENT CONTENT
+        if ( !split ) {
+            
+            $(".current_article").fadeOut( 200, function(){
+                $(".current_article").empty();
+                // SCROLL TO TOP
+                $("#article_scroll_wrapper").animate({
+                    scrollTop : 0
+                }, 100, function(){
 
-        // IF SPLIT
-        if ( split ) {
+                    // LOAD ARTICLE
+                    AjaxCalls.loadArticle( id );
+                    self.currentArticle = id;
+
+                });
+            });
+
+
+        } else {
+            
             AjaxCalls.loadArticle( id, "split" );
-        // CHECK IF REQUESTED ID IS IN NEXT OR PREV        
-  //       } else if ( $(".next_article").attr("data-id") === id ) {
-		// 	this.animArticle( id, "next" );
-		// } else if ( $(".prev_article").attr("data-id") === id ) {
-		// 	this.animArticle( id, "prev" );
-		} else {
-			// LOAD ARTICLE
-			AjaxCalls.loadArticle( id );
-			this.currentArticle = id;
-		}
+
+		} 
 
 	},
 
@@ -81,33 +81,24 @@ var Articles = {
 
         console.log("Articles.ajaxSuccess", id, target);
 
-        // LOAD DATA INTO WRAPPER
-
         var self = this,
         	wrapper;
 
-        // LOAD DATA
+        // LOAD DATA INTO WRAPPER
         if ( target === "split" ) {
             wrapper = $("#split_wrapper");
+            this.splitColourManager( id );
         } else {
 			wrapper = $(".current_article");
+            this.colourManager();
         }
 
-        // console.log( 187, data );
+        console.log( 86, "wrapper:", wrapper );
 
         wrapper.html( data ).attr("data-id",id);
-
-		this.colourManager();
-
+		
         // PREP + BIND EVENTS
         ArticleInner.init( wrapper );
-
-        // SHOW ARTICLE CONTENT
-        $(".current_article").fadeIn( 1000 );
-        // CHECK IF ARTICLE DATA
-        // UPDATE TITLE + NAV LINKS
-        this.currentArticle = id;
-        this.articleDataCheck();
 
         // IF INIT FROM ARTICLE
 		if ( !Home.pageLoaded ) {
@@ -117,6 +108,12 @@ var Articles = {
         // IF SPLIT: TRIGGER LOADED EVENT
         if ( target === "split" ) {
             $("#split_wrapper").trigger("split_loaded");
+        } else {
+            // SHOW ARTICLE CONTENT
+            $(".current_article").fadeIn( 1000 );
+            // CHECK IF ARTICLE DATA & UPDATE TITLE + NAV LINKS
+            this.currentArticle = id;
+            this.articleDataCheck();           
         }
 
     },
@@ -127,11 +124,12 @@ var Articles = {
 
         var self = this;
 
+        $(".current_article").removeClass("prepped");
+
         // STOP RUNNING TITLE FROM APPEARING ON NAV 
         $("#nav_title").css("opacity","0");
         $("#nav_title span").css("opacity","0");
         setTimeout( function(){
-           console.log( 57, "Run title check." );
            self.titleCheck();
         }, 1500 );                
 
@@ -179,8 +177,6 @@ var Articles = {
 		var articles = App.articles,
 			arrayPos;
 
-        console.log( 253, App.articles, id );
-
         // GET ARTICLE'S POSITION IN ARRAY
         var thisIndex = _.findIndex( articles, function( index ) { 
         	// console.log( 257, index );
@@ -195,9 +191,7 @@ var Articles = {
             prevPos = articles.length - 1;
         }
 
-        // console.log( 247, articles[ thisIndex ], articles[ nextPos ], articles[ prevPos ] );
-
-        // // PREPARE NAV LINKS
+        // PREPARE NAV LINKS
         $("#nav_right a").attr({
             "href"          : "#article/" + articles[ nextPos ].ID + "/" + articles[ nextPos ].slug,
             "data-title"    : articles[ nextPos ].title
@@ -207,18 +201,11 @@ var Articles = {
             "data-title"    : articles[ prevPos ].title
         });
 
-        // LOAD NEXT ARTICLE
-        // AjaxCalls.loadArticle( articles[ nextPos ].ID, "next" );
-        // _.defer( function(){
-        // 	// LOAD PREV ARTICLE
-        // 	AjaxCalls.loadArticle( articles[ prevPos ].ID, "prev" );      	
-        // });
-
     },
 
-	colourManager: function () {
+	colourManager: function ( wrapper ) {
 
-		console.log("Articles.colourManager");
+		console.log("Articles.colourManager", wrapper );
 
         var colour,
             self = this;
@@ -238,18 +225,16 @@ var Articles = {
 
             if ( colour === "grey" ) {
                 $(".current_article").addClass("grey");
-                $("#article_nav").addClass("grey").css({
-                    "background-color"  : "#eee",
-                    "box-shadow"        : "0px 2px 6px #eee"                 
-                });
+                $("#article_nav_grey").css({"opacity":"1"});
+                $("#article_nav_white").css({"opacity":"0"});
                 $("html").css("background-color", "#eee");
+
             } else if ( colour === "white" ) {
                 $(".current_article").removeClass("grey");
-                $("#article_nav").removeClass("grey").css({
-                    "background-color"  : "#fffef8",
-                    "box-shadow"        : "0px 2px 6px #fffef8"                
-                }); 
-                $("html").css("background-color", "#fffef8");       
+                $("#article_nav_grey").css({"opacity":"0"});
+                $("#article_nav_white").css({"opacity":"1"});
+                $("html").css("background-color", "#fffef8"); 
+
             }
 
         }
@@ -267,23 +252,65 @@ var Articles = {
 
 	},
 
+    splitColourManager: function ( id ) {
+
+        console.log("Articles.splitColourManager");
+
+        var colour;
+
+        // IF NORMAL ARTICLE:
+        // GET COLOUR FROM ARTICLE DATA  
+        _.each( App.articles, function( article ){
+            if ( parseInt(id) === article.ID ) {
+                colour = article.serif;
+                return;
+            }
+        }); 
+
+        console.log( 275, colour );
+
+        if ( colour === undefined ) {
+            colour = "white";
+        }
+
+        if ( colour === "grey" ) {
+            $("#split_wrapper").addClass("grey");
+        } else {
+            $("#split_wrapper").removeClass("grey");           
+        }
+
+    },
+
     splitAnim: function () {
 
         console.log("Articles.splitAnim");
-
-        $("#split_wrapper").css({
-            "left" : "50%", 
-            "width" : "50%"
-        });
-
-        $(".current_article").css({ 
-            "width" : "50%"
-        });
 
         // HIDE NAV BAR
         $("#article_nav").css({
             "top" : -80
         });
+
+        // SCROLL TO TOP: THEN ANIMATE
+        $("#split_wrapper").animate({
+            scrollTop: 0
+        }, 150, function (){
+            _.defer( function(){
+                $("#split_wrapper").addClass("mobile").css({
+                    "left" : "50%", 
+                    "width" : "50%"
+                });                
+            });
+        });
+
+        _.delay( function(){
+            $(".current_article").css({ 
+                "width" : "50%"
+            });          
+        }, 150 );
+
+        _.delay( function(){
+            $(".current_article").addClass("mobile"); 
+        }, 500 );
 
         // SHOW CLOSE BUTTON(S)
         if ( !$("#split_wrapper").hasClass("satellite") ) {
@@ -309,11 +336,16 @@ var Articles = {
             "left" : "", 
             "width" : ""
         });
+        _.delay( function(){
+            $("#split_wrapper").removeClass("mobile prepped").attr("data-id","");
+        }, 500 );
 
-        $(".current_article").css({ 
-            "width" : ""
-        });       
-
+        _.defer( function(){
+            $(".current_article").removeClass("mobile").css({ 
+                "width" : ""
+            });               
+        });
+    
         // REMOVE BUTTONS
         setTimeout( function(){
             $(".split_close").remove();
@@ -333,7 +365,7 @@ var Articles = {
         var self = this;
 
         // UPDATE URL
-        Backbone.history.navigate( $("#split_wrapper").attr("data-hash") , false );
+        Backbone.history.navigate( $("#split_wrapper").attr("data-hash") , {trigger:false} );
 
         $("#split_wrapper").css({
             "left" : "0%", 
@@ -344,6 +376,9 @@ var Articles = {
             "position" : "absolute",
             "left" : 36
         }); 
+
+        this.colourManager();
+
         // ONCE FULL : SWITCH CLASSES
         setTimeout( function(){
 
@@ -379,6 +414,16 @@ var Articles = {
         // GET ID
         var hash = click[0].hash,
             clickId = parseInt( hash.split("/")[1] );
+
+        // console.log( 389, clickId, $("#split_wrapper").attr("data-id") );
+
+        // CHECK IF NOT ALREADY LOADED
+        if ( clickId === parseInt( $("#split_wrapper").attr("data-id") ) ) {
+            // console.log( 391, "Already loaded." );
+            return;
+        }
+
+        // console.log( 378, hash );
         
         // CHECK IF SATELLITE
         if ( $.inArray( clickId, App.satellites ) > -1 ) {
@@ -395,12 +440,14 @@ var Articles = {
 
     anchorLink: function ( click ) {
 
-        console.log("Articles.anchorLink");
+        console.log("Articles.anchorLink", click);
 
         var anchor = click.attr("href"),
-            target = $(anchor).position().top + $(".article_inner_wrapper").position().top;
+            target = $(anchor).position().top + $(".article_inner_wrapper").position().top - 80;
 
-        $(".current_article").animate({
+        // console.log( 398, anchor, target );
+
+        $("#article_scroll_wrapper").animate({
             scrollTop : target
         }, 500 );
 
@@ -413,27 +460,28 @@ var Articles = {
         var currId = parseInt(this.currentArticle),
             saved = this.getStorageArticles();
 
-        // console.log( 463, saved );
+        console.log( 463, saved );
 
         // CHECK IF THIS ID ALREADY IN SAVED BOOKS ARRAY
-        if ( $.inArray( currId, Editor.savedArticles ) === -1 ) {
+        if ( $.inArray( currId.toString(), saved ) === -1 ) {
             
             // GET NUMBER OF ARTICLES ALREADY IN ARRAY
             var savedLength = Editor.savedArticles.length;
-            // savedLength++;
-            console.log( 466, savedLength );
+            // console.log( 466, $(".added_indicator"), savedLength );
             // SHOW UPDATED NUMBER 
-            $(".current_article").find(".added_indicator").text( "+ " + ( savedLength + 1 ) ).fadeIn( 500 );
+            $(".added_indicator").text( "+ " + ( savedLength + 1 ) ).fadeIn( 500 );
             
             // SAVE TO LOCAL STORAGE
             this.saveToStorage( currId );
 
             setTimeout( function(){
-                $(".current_article").find(".added_indicator").fadeOut( 2000 );
-            }, 1000 );
+                $(".added_indicator").fadeOut( 2000 );
+            }, 2000 );
 
         } else {
+            
             console.log("Already saved.");
+
         }
 
     },
@@ -442,17 +490,13 @@ var Articles = {
 
         console.log("Articles.saveToStorage");
 
-        console.log( 492, Editor.savedArticles );
-
-        Editor.savedArticles.push( id );
+        // Editor.savedArticles.push( id );
         
-        // GET EXISTING ITEMS
-        // var articles = {};
-        // articles.push( JSON.parse( this.getStorageArticles() ) );
-        // console.log( 498, $.type( articles ), articles );
-        // // PUSH AND THEN SAVE
-        // // articles.push( id );
-        // // localStorage.setItem( articles );  
+        // GET EXISTING ITEMS AS ARRAY
+        var articles = this.getStorageArticles();
+        // PUSH AND THEN SAVE TO LOCAL STORAGE
+        articles.push( id );
+        localStorage.setItem( "articles", articles ); 
 
     },
 
@@ -460,13 +504,15 @@ var Articles = {
 
         console.log("Articles.getStorageArticles");
 
-        return localStorage.articles;
+        var artString = localStorage.articles;
+
+        return artString.split(",");
 
     },
 
     titleCheck: function ( scroll ) {
 
-        console.log("Articles.titleCheck", scroll );
+        // console.log("Articles.titleCheck", scroll );
 
         var limit = $(".current_article .top_wrapper").outerHeight() + parseInt ( $(".current_article").css("padding-top") ) - 100 ;
        

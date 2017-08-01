@@ -2,83 +2,128 @@ var app = app || {};
 
 var ArticleInner = {
 	
-    init: function () {
+    footnotesVisible: false, 
+
+    init: function ( wrapper ) {
 
         console.log("ArticleInner.init");
 
-        this.bindEvents();
-        this.prep();
+        this.bindEvents( wrapper );
+        this.prep( wrapper );
 
     },
 
-    bindEvents: function () {
+    bindEvents: function ( wrapper ) {
 
         console.log("ArticleInner.bindEvents");
    
         var self = this;
 
-        $(".current_article").off("click");
-        $("#split_wrapper").off("click");
+        wrapper.off("click");
 
         // IMAGES LIGHTBOX
         // Lightbox.init( $(".current_article img") );
   
         // INTERNAL LINKS
-        $(".current_article").on("click", ".internal_link", function(e) {
-            e.preventDefault();
-            self.internalLink( $(this) );
+        wrapper.on("click", ".internal_link", function(e) {
+
+            // IF IN FOOTNOTES OPEN IN NEW TAB
+            if ( $(this).parents(".article_footnotes").length ) {
+                $(this).attr("target","_blank");
+            } else {
+                e.preventDefault();
+                Articles.internalLink( $(this) );                
+            }
+
         });
 
         // ANCHOR LINKS
-        $(".current_article").on("click", ".anchor_link", function(e) {
+        wrapper.on("click", ".anchor_link", function(e) {
             e.preventDefault();
-            self.anchorLink( $(this) );
+            Articles.anchorLink( $(this) );
         });       
 
         // ONCE ARTICLE IS LOADED
+        $("#split_wrapper").off("split_loaded");
         $("#split_wrapper").on("split_loaded", function(){
-            self.splitAnim();
+            _.defer( function(){
+                Articles.splitAnim();                
+            });
         });
    
         // CLOSE SATELLITE VIEW
+        $("#split_wrapper").off("click");
         $("#split_wrapper").on("click", ".split_close", function(){
             // RESET SPLIT
-            self.splitReset();
+            Articles.splitReset();
         });
 
         // SPLIT TO FULL
         $(".current_article").on("click", ".split_close", function() {
-            self.splitToFull();
+            Articles.splitToFull();
         }); 
 
         // ADD TO BOOK
-        $(".current_article").on("click", ".add_to_book", function(e){
+        wrapper.on("click", ".add_to_book", function(e){
             e.preventDefault();
             Articles.addToBook();
         });
 
         // DOWNLOAD PDF
-        $(".current_article").on("click", ".download_pdf", function(e){
-            var thisHref = "_generate/?art=" + Articles.currentArticle;
-            console.log( 60, thisHref );
-            $(this).attr("href", thisHref);
+        wrapper.on("click", ".download_pdf", function(e){
+
+            // e.preventDefault();
+            // var thisHref = "_generate/?art=" + Articles.currentArticle;
+            var article = ArticleLinks[Articles.currentArticle];
+            console.log( 79, article );
+            $(this).attr({
+                "target" : "_blank",
+                "href" : TEMPLATE + "/pdfs/" + article
+            });
+
+            // console.log( 60, thisHref );
+            // $(this).attr("href", thisHref);
         });
 
         // FOOTNOTES 
-        $(".current_article").on( "click", ".footnote_link", function() {
-            self.viewFootnotes();
+        wrapper.on( "click", ".footnote_link", function() {
+            if ( !self.footnotesVisible ) {
+                self.viewFootnotes();
+                self.footnotesVisible = true;
+            } else {
+                self.closeFootnotes();
+                self.footnotesVisible = false;
+            }
+
         });
 
-        $(".current_article").on("click", ".footnotes_close", function(){
+        $("#mobile_notes").off("click");
+        $("#mobile_notes").on( "click", function() {
+            self.viewFootnotes();
+            self.footnotesVisible = true;
+        });
+
+        wrapper.on("click", ".footnotes_close", function(){
+            // console.log( 80, "Close footnotes." );
             self.closeFootnotes();
+            self.footnotesVisible = false;
         });  
 
         // RUNNING TITLE SHOW/HIDE
+        $("#article_scroll_wrapper").off("scroll");
         $("#article_scroll_wrapper").on("scroll", _.throttle( function(){
-            
-            Articles.titleCheck( $(this).scrollTop() );
-
+            var scroll = $(this).scrollTop();
+            Articles.titleCheck( scroll );
         }, 500 ));
+
+        $(window).on("resize",  _.throttle( function(){
+            // RESIZE IFRAMES
+            $("iframe").each( function(){
+                self.resizeVideo( $(this) );
+            });
+            // IMAGE CHECK FOR TEMPLATE 3
+            self.hiddenCheck();
+        }, 1000 ));
 
     }, 
 
@@ -99,147 +144,207 @@ var ArticleInner = {
 
 //     },
 
-    prep: function () {
+    prep: function ( wrapper ) {
 
         console.log("ArticleInner.prep");
 
+        if ( wrapper.hasClass("prepped") ) {
+            return;
+        }
+
+        // CHECK IF FOOTNOTES IN ARTICLE
+        this.mobileNotesCheck();
+
+        wrapper.addClass("prepped");
+
+        var self = this;
+
         // PREP VIDEOS
-        this.videosPrep();
+        this.videosPrep( wrapper );
 
-        // // IF ARTICLE 5: 
-        // if ( wrapper.find(".article_template_5").length ) {
-        //     this.articleFivePrep();
-        // }
+        // STOP FOOTNOTE LINKS FROM WRAPPING
+        wrapper.find(".footnote_link").each( function(){
+            $(this).before("<span class='non_breaking'>&nbsp;</span>");
+        });
 
-        // // ADD TARGET=_BLANK TO EXTERNAL LINKS
-        // wrapper.find("a").each( function(){
+        // ADD TARGET=_BLANK TO EXTERNAL LINKS
+        wrapper.find("a").each( function(){
 
-        //     if ( !$(this).parents(".article_button").length ) {
-        //         if ( $(this).attr("href").indexOf("http") > -1 && $(this).attr("href").indexOf("mindthedance") === -1 ) {
-        //             $(this).attr( "target", "_blank" ).addClass("external_link");
-        //         } else if ( $(this).attr("href").substring(0,1) === "#" ) {
-        //             // INTERNAL HASH ANCHORS
-        //             $(this).addClass("anchor_link");
-        //         } else {
-        //             // EXCEPTION: PDFs
-        //             if ( $(this).attr("href").indexOf(".pdf") > -1 ) {
-        //                 $(this).attr( "target", "_blank" ).addClass("external_link");    
-        //             } else {
-        //                 // SPLIT SCREEN LINKS
-        //                 $(this).addClass("internal_link");
-        //             }
-        //         }
-        //     }
+            if ( !$(this).parents(".article_button").length ) {
+                if ( $(this).attr("href").indexOf("http") > -1 && $(this).attr("href").indexOf("mindthedance") === -1 ) {
+                    $(this).attr( "target", "_blank" ).addClass("external_link");
+                } else if ( $(this).attr("href").substring(0,1) === "#" ) {
+                    // INTERNAL HASH ANCHORS
+                    $(this).addClass("anchor_link");
+                } else {
+                    // EXCEPTION: PDFs
+                    if ( $(this).attr("href").indexOf(".pdf") > -1 ) {
+                        $(this).attr( "target", "_blank" ).addClass("external_link");    
+                    } else {
+                        // SPLIT SCREEN LINKS
+                        $(this).addClass("internal_link");
+                    }
+                }
+            }
 
-        // });
+        });
 
-        // // REMOVE TOP MARGIN FROM IMAGE IF FIRST ELEM IN ARTICLE
-        // wrapper.find(".template").each( function(i){
-        //     var firstChild = $(this).children().eq(0);
-        //     if ( firstChild.is("img") ) {
-        //         $(this).children().eq(0).css("margin-top","0");
-        //     } else if ( firstChild.is("p") ) {
-        //         if ( firstChild.children().eq(0).is("img") ) {
-        //             firstChild.children().eq(0).css("margin-top","0");
-        //         }
-        //     }
-        // });
+        // ADD GLYPHS TO CAPTIONS + UNWRAP
+        wrapper.find(".caption, .caption_vertical").each( function(){
 
-        // // ADD GLYPHS TO CAPTIONS + UNWRAP
-        // wrapper.find(".caption, .caption_vertical").each( function(){
+            if ( $(this).parent("p").length ) {
+                $(this).unwrap();
+            }
+            $(this).prepend("<span class='glyph'><img src='" + TEMPLATE + "/assets/img/stix_arrow.svg' /></span> ");
 
-        //     if ( $(this).parent("p").length ) {
-        //         $(this).unwrap();
-        //     }
-        //     $(this).prepend("<span class='glyph'>&#10230;</span> ");
+        });
 
-        // });
+        // ADD GLYPHS TO WINGDING TEXTS
+        wrapper.find(".after_wingdings").each( function(){
 
-        // // ADD GLYPHS TO WINGDING TEXTS
-        // wrapper.find(".after_wingdings").each( function(){
+            $(this).prepend("<span class='wingdings'><img src='" + TEMPLATE + "/assets/img/wingding_glyph.svg' /></span> ");
 
-        //     $(this).prepend("<span class='wingdings'><img src='" + TEMPLATE + "/assets/img/wingding_glyph.svg' /></span> ");
+        });
 
-        // });
+        // IF ARTICLE 3: EXTRACT IMAGE
+        wrapper.find(".article_template_3").each( function(){
 
-        // // IF ARTICLE 3: EXTRACT IMAGE
-        // wrapper.find(".article_template_3").each( function(){
+            // IF ALIGN TO MARKERS DEFINED
+            if ( $(this).find(".align_to").length ) {
 
-        //     // IF CONTAINS IMAGES
-        //     if ( $(this).find("img").length ) {
+                // LOOP THROUGH ANCHORS IN TEXT
+                $(this).find(".align_to").each( function (){
 
-        //         // v2 //
+                    var imgClass = $(this).attr("data-align");
 
-        //         // LOOP THROUGH IMAGES
-        //         // $(this).find("img").each( function(){
+                    // TAKE INTO ACCOUNT PARAGRAPH TAGS
+                    var img = $("." + imgClass);
+                    if ( img.parent("p").length ) {
+                        img = img.parent("p");
+                    } else if ( img.parent("span").length ) {
+                        img = img.parent("span");
+                    }
 
-        //         //     // FIND PRECEDING PARAGRAPH:
-        //         //     var img = $(this).parent("p"),
-        //         //         hook = img.prev(),
-        //         //         caption = null;
-        //         //     // IF CAPTION
-        //         //     if ( img.next(".caption").length ) {
-        //         //         caption = img.next(".caption");
-        //         //     }
-          
-        //         //     // APPEND IMAGE WRAPPER DIV TO PARAGRAPH
-        //         //     hook.addClass("image_hook_text");
-        //         //     img.append(caption).addClass("image_wrapper");
+                    // WRAP IMG + CAPTION
+                    if ( img.next(".caption")  ) {
+                        var caption = img.next(".caption"),
+                            toWrap = img.add( caption );
+                        toWrap.wrapAll("<div id='" + imgClass + "' class='img_align'></div>");
+                    } else {
+                        img = img.wrap("<div id='" + imgClass + "' class='img_align'></div>");
+                    }
 
-        //         //     hook.add(img).wrapAll("<div class='image_hook'></div>");
+                    // WRAP ANCHOR 
+                    $(this).wrap("<div class='anchor'></div>");
+                    $(this).parent(".anchor").append( $( "#" + imgClass ) );
 
+                });
 
-        //         // });
+                // WRAP TEXT ELEMENTS IN WRAPPER
+                $(this).wrapInner( "<div class='text_wrapper'></div>");
 
-        //         // WRAP TEXT ELEMENTS IN WRAPPER
-        //         // $(this).wrapInner( "<div class='text_wrapper'></div>");
+            } else {
 
-        //         // END OF v2 //
+                var imgWrapper = $("<div class='image_wrapper'></div>");
+            
+                // LOOP THROUGH IMAGES
+                $(this).find("img").each( function(){
 
-        //         // v1 //                
+                    var img = $(this);
 
-        //         var newWrapper = $("<div class='image_wrapper'></div>");
-        //         // LOOP THROUGH IMAGES
-        //         $(this).find("img").each( function(){
+                    if ( $(this).parent("p").length ) {
+                        img = $(this).parent("p");
+                    } else if ( $(this).parent("span").length ) {
+                        img = $(this).parent("span");
+                    }
+                    var caption = img.next(".caption");
 
-        //             var img = $(this);
-
-        //             if ( $(this).parent("p").length ) {
-        //                 img = $(this).parent("p");
-        //             } else if ( $(this).parent("span").length ) {
-        //                 img = $(this).parent("span");
-        //             }
-        //             var caption = img.next(".caption");
-
-        //             // GET OUTER HTML IN VARIABLE
-        //             var html = img[0].outerHTML;
-        //             if ( caption.length ) {
-        //                 html += caption[0].outerHTML;
-        //             }
+                    // GET OUTER HTML IN VARIABLE
+                    var html = img[0].outerHTML;
+                    if ( caption.length ) {
+                        html += caption[0].outerHTML;
+                    }
                     
-        //             img.hide();
-        //             caption.hide();
+                    img.addClass("hidden").hide();
+                    caption.hide();
 
-        //             newWrapper.append( html );
+                    imgWrapper.append( html );
 
-        //         });
+                });
         
-        //     }
+                // WRAP TEXT ELEMENTS IN WRAPPER
+                $(this).wrapInner( "<div class='text_wrapper'></div>");
+                $(this).append(imgWrapper);
 
-        //     // WRAP TEXT ELEMENTS IN WRAPPER
-        //     $(this).wrapInner( "<div class='text_wrapper'></div>");
-        //     $(this).append(newWrapper);
+                // END OF v1
 
-        //     // END OF v1 //
+            }
 
-        // });
+            self.hiddenCheck();
+
+        });
 
 
+    },
+
+    hiddenCheck: function () {
+
+        console.log("ArticleInner.hiddenCheck");
+
+        if ( $(window).width() > 768 ) {
+            $(".current_article").find(".hidden").hide(); 
+        } else {
+            $(".current_article").find(".hidden").show(); 
+        }
+
+    },
+
+    mobileNotesCheck: function () {
+
+        console.log("ArticleInner.mobileNotesCheck");
+
+        if ( $(".article_footnotes_wrapper").length && $(window).width() > 768 ) {
+            $("#mobile_notes").fadeIn( 1000 );
+        } else {
+            $("#mobile_notes").fadeOut( 1000 );
+        }
+
+    },
+
+    footnotesVisibleOnPage: function ( scroll ) {
+
+        console.log("ArticleInner.footnotesOnPageCheck");     
+        
+        // GET SCROLL POSITION
+        var scrollBottom = $("#article_scroll_wrapper").scrollTop() + $(window).height();
+
+        // GET FOOTNOTES POSITION  
+        var current = $(".current_article"), 
+            footnotesTop = current.find(".top_wrapper").outerHeight() + 
+                    parseInt( current.find(".top_wrapper").css("margin-top") ) +
+                    parseInt( current.find(".title_wrapper").css("margin-bottom") ) +
+                    current.find(".article_inner_wrapper").outerHeight() + 
+                    parseInt( current.find(".article_inner_wrapper").css("margin-bottom") );
+
+        if ( scrollBottom < footnotesTop ) {
+            // console.log( scrollBottom, footnotesTop, "Foonotes not visible.");
+            return false;
+        } else {
+            // console.log( scrollBottom, footnotesTop, "Foonotes visible.");
+            return true;
+        }
     },
 
     viewFootnotes: function () {
 
         console.log("ArticleInner.viewFootnotes");
+
+        var self = this;
+
+        // CHECK IF NOTES ALREADY OPEN OR ORIGINAL NOTES VISIBLE ON PAGE
+        if ( this.footnotesVisible || this.footnotesVisibleOnPage() ) {
+            return;
+        }
 
         // HIDE FOOTNOTES ON PAGE
         $(".article_footnotes_wrapper").css({
@@ -247,6 +352,7 @@ var ArticleInner = {
         });
 
         // CLONE TO NEW WRAPPER
+        $(".article_footnotes_clone").empty();
         $(".article_footnotes_wrapper").clone().appendTo(".article_footnotes_clone");
 
         // SHOW CLOSE BUTTON
@@ -257,6 +363,11 @@ var ArticleInner = {
             halfWin = $(window).height() / 2,
             newTop, newH, 
             bgColour = $(".current_article").css("background-color");
+
+        // IF MOBILE
+        if ( $(window).width() < 768 ) {
+            halfWin = $(window).height();
+        }
 
         // SET INITIAL HEIGHT
         clone.find(".article_footnotes_wrapper").css({
@@ -275,6 +386,11 @@ var ArticleInner = {
         newTop = halfWin;
         newH = halfWin;
 
+        if ( $(window).width() < 768 ) {
+            newTop = 60;
+            newH = halfWin;
+        }
+
         setTimeout( function(){
             // ANIMATE
             clone.find(".article_footnotes_wrapper").css({
@@ -288,6 +404,12 @@ var ArticleInner = {
     closeFootnotes: function () {
 
         console.log("ArticleInner.closeFootnotes");
+
+        var self = this;
+
+        $(".article_footnotes_wrapper").css({
+            "opacity" : ""
+        });
 
         // ANIMATE OUT
         var clone = $(".article_footnotes_clone");
@@ -313,18 +435,23 @@ var ArticleInner = {
 
             // HIDE CLOSE BUTTON
             clone.find(".footnotes_close").hide();
+            // AFTER ANIMATION
+            setTimeout( function(){
+                clone.empty();
+                self.footnotesVisible = false;
+            }, 250 );
 
         }, 1000 );
 
     }, 
 
-    videosPrep: function () {
+    videosPrep: function ( wrapper ) {
 
         console.log("ArticleInner.videosPrep");
 
         var self = this;
 
-        $("iframe").each( function(){
+        wrapper.find("iframe").each( function(){
 
             var iframe = $(this);
 
@@ -338,15 +465,13 @@ var ArticleInner = {
                 // CREATE PLAYER OBJECT
                 var player = new Vimeo.Player( $(this)[0] );
                 
-                console.log( 330, player );
-
                 // BIND EVENTS
                 player.on('play', function() {
-                    console.log('Video playing.');
+                    // console.log('Video playing.');
                 });
                 // ON END
                 player.on( 'ended', function() {
-                    console.log( 'Video ended.', $(player.element).prev() );
+                    // console.log( 'Video ended.', $(player.element).prev() );
                     $(player.element).prev(".video_play_wrapper").fadeIn();
                 });
 
@@ -402,8 +527,6 @@ var ArticleInner = {
         var width = preview.width(), 
             src;
 
-        console.log( 237, preview );  
-
         if ( width < 300 ) {
             src = preview.attr("data-thm");
         } else if ( width >= 300 && width < 600 ) {
@@ -416,8 +539,6 @@ var ArticleInner = {
             src = preview.attr("data-ulg");
         }
 
-        console.log( 254, src );
-
         return src;
 
     },
@@ -429,14 +550,14 @@ var ArticleInner = {
         var ratio = video.attr("width") / video.attr("height"), 
             thisH; 
 
-        console.log( 241, $(".article_inner_wrapper").width() );
+        // console.log( 241, $(".article_inner_wrapper").width() );
 
         // IF IN TEMPLATE 6
         if ( video.parents(".article_template_6").length ) {
 
             // GET RATIO
             thisH = $(".article_inner_wrapper").width() / ratio;
-            console.log( 246, video.parents(".article_template_6").width(), thisH );
+            // console.log( 246, video.parents(".article_template_6").width(), thisH );
             video.css({
                 "height" : thisH
             }).prev(".video_play_wrapper").css({
@@ -447,7 +568,7 @@ var ArticleInner = {
 
             // GET RATIO
             thisH = ( $(".article_inner_wrapper").width() / 2 - 36 ) / ratio;
-            console.log( 257, thisH );
+            // console.log( 257, thisH );
             video.css({
                 "height" : thisH
             }).prev(".video_play_wrapper").css({
@@ -458,7 +579,7 @@ var ArticleInner = {
 
         var image = video.parents(".iframe_wrapper").prev(".preview_image");
 
-        console.log( 290, video );
+        // console.log( 290, video );
 
         if ( image.length ) {
             var imageSrc = this.getPreviewSrc( image );

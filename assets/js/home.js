@@ -6,6 +6,10 @@ var Home = {
 
 	imgsLoaded: false,  
 
+	interval: "", 
+
+	animationInit: false, 
+
 	init: function ( section ) {
 
 		console.log("Home.init", section);
@@ -21,13 +25,16 @@ var Home = {
 		this.bindEvents();
 
 		// 	PLAY VIDEO
-		if ( $("#introvid").length ) {
+		if ( $("#introvid").length && $(window).width() > 768 ) {
 			var src = $("#introvid").find("source").attr("data-src");
 			$("#introvid").find("source").attr( "src", src );
 			var video = $("#introvid").get(0);
 	        video.load();
 	        video.play();		
+		} else {
+			this.hideVideo();
 		}
+
 		// FADE IN PAGE
 		_.delay( function(){
 		
@@ -77,6 +84,17 @@ var Home = {
 
 		}, 1000 ));
 
+		// SAFARI BUG FIX
+		$(window).on( "scroll", _.throttle( function(e){
+
+			if ( $(window).scrollTop() < $(window).height() ) {
+				$("#contents_image_wrapper").hide();
+			} else {
+				$("#contents_image_wrapper").show();				
+			}
+
+		}, 250 ));
+
 	},
 
 	hideLoading: function () {
@@ -107,9 +125,88 @@ var Home = {
 
 	},
 
+	introAnimation: function( restart ) {
+
+		console.log("Home.introAnimation");
+
+		var self = this,
+			winH = $(window).height();
+
+		// RESTART LOOP IF ALREADY INIT
+		if ( restart ) {
+			clearInterval( this.interval );
+			startLoop();
+		}
+
+		if ( !this.animationInit ) {
+
+			var delay = 1000;
+			_.delay( sceneOne, delay * 1 );
+			_.delay( sceneTwo, delay * 2 );
+			_.delay( sceneThree, delay * 3 );
+			_.delay( sceneFour, delay * 4 );
+			_.delay( sceneFive, delay * 5 );
+			_.delay( sceneSix, delay * 6 );
+
+			this.animationInit = true;
+
+		}
+
+		function sceneOne () {
+			$("#animation_wrapper").append("<h1>Mind The Dance</h1><h2 class='hidden'>A Guide to Documenting<br> Contemporary Dance Teaching</h2>");
+		}
+
+		function sceneTwo () {
+			$("#animation_wrapper").find("h2").removeClass("hidden");
+		}
+
+		function sceneThree () {
+			$("#animation_wrapper").find("h2").html("A Movement for Documenting<br> Contemporary Dance Teaching");
+		}
+
+		function sceneFour () {
+			$("#animation_wrapper").find("h2").html("A Movement for Documenting<br> Movement Teaching");
+		}
+
+		function sceneFive () {
+			$("#animation_wrapper").css({"top": winH / 4 });
+			startLoop();
+		}
+
+		function sceneSix () {
+			$(".foreword_text").css({
+				"opacity" 		: 1,
+				"margin-top" 	: ( winH / 2 ) - 96
+			}, 500 );
+		}
+
+		function startLoop () {
+			var step = 1;
+			self.interval = setInterval( function(){
+				console.log( "loop", step );
+				if ( step === 1 ) {
+					$("#animation_wrapper").find("h2").html("A Guide to Documenting<br> Movement Teaching");	
+				} else if ( step === 2 ) {
+					$("#animation_wrapper").find("h2").html("A Guide to Documenting<br> Contemporary Dance Teaching");
+				} else if ( step === 3 ) {
+					$("#animation_wrapper").find("h2").html("A Movement for Documenting<br> Contemporary Dance Teaching");
+				} else if ( step === 4 ) {
+					$("#animation_wrapper").find("h2").html("A Movement for Documenting<br> Movement Teaching");
+				}
+				step++;
+				if ( step >= 5 ) {
+					step = 1;
+				}
+			}, 2000 );
+		}
+
+	},
+
 	hideVideo: function () {
 
 		console.log("Home.hideVideo");
+
+		var self = this;
 
 		// PAUSE VIDEO
 		if ( $("#introvid").length ) {
@@ -145,10 +242,16 @@ var Home = {
 			Waypoint.refreshAll()
 			$(window).trigger('resize');
 
+			$("#introvid").remove();
+
 		}, 1100 );
 
 		// STOP FROM RUNNING ONCE VIDEO IS HIDDEN
 		this.videoHidden = true;
+
+		_.defer( function(){
+			self.introAnimation();
+		});
 
 	},
 
@@ -160,6 +263,11 @@ var Home = {
 			self = this;
 
 		function loadImgs () {
+
+			if ( self.imgsLoaded ) {
+				console.log( 165, "Imgs already loaded." );
+				return;
+			}
 
 			console.log("Home.loadContentsImgs.loadImgs");
 
@@ -205,6 +313,8 @@ var Home = {
 			$("#contents_image").append( html );
 			$("#contents_image_wrapper").fadeIn();
 
+			self.imgsLoaded = true;
+
 			self.contentsImgInit();
 
 		}
@@ -231,7 +341,7 @@ var Home = {
 
 		var imgInview = new Waypoint.Inview({
 			element: $('#contents_image_wrapper')[0], 
-			// context: $("#intro_scroll_wrapper"), 
+			// context: $(window), 
 			entered: function( direction ) {
 				// END FIX
 				self.contentsImgUnfix( direction );
@@ -254,12 +364,15 @@ var Home = {
 		console.log("Home.contentsImgFix");
 
 		// GET PARENT WIDTH
-		var parentW = $("#contents_image_wrapper").width();
+		var parentW = $("#contents_list").width();
+
+		console.log( 365, $("#contents_list").width() );
 
 		$("#contents_image").css({
 			"position" : "fixed",
 			"width" : parentW,
-			"top" : ""
+			"top" : "",
+			"margin-left" : ""
 		});
 
 	},
@@ -275,13 +388,14 @@ var Home = {
 		} else {
 			// GET CURRENT TOP POSITION
 			top = "initial";
-			bottom = 60;
+			bottom = 71;
 		}
 
 		$("#contents_image").css({
 			"position" : "",
 			"top" : top,
-			"bottom" : bottom
+			"bottom" : bottom,
+			"margin-left" : ""
 		});
 
 	},
@@ -314,9 +428,9 @@ var Home = {
 		});
 
 		// RESIZE WRAPPER
-		console.log( 313, $("#contents_image_wrapper").width() );
+		console.log( 313, $("#contents_list").width() );
 		$("#contents_image").css({
-			"width" : $("#contents_image_wrapper").width()
+			"width" : $("#contents_list").width()
 		})
 
 	},
@@ -325,11 +439,12 @@ var Home = {
 
 		console.log("Home.addWingdings");
 
+		if ( $("#contents_list").find(".wingdings").length ) {
+			return;
+		}
 		// ADD GLYPHS TO WINGDING TEXTS
         $("#contents_list li").each( function(){
-
             $(this).find(".contents_category").prepend("<span class='wingdings'><img src='" + TEMPLATE + "/assets/img/wingding_glyph_white.svg' /></span> ");
-
         });
 
 	}

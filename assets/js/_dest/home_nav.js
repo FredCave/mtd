@@ -4,13 +4,20 @@ var HomeNav = {
 
 	scrolling: false, 
 
+	scrollBlocked: false, 
+
 	init: function () {
 
 		console.log("HomeNav.init");
 
 		this.bindEvents();
 
-		$("#intro_scroll_wrapper").sectionsnap();
+		// IF NOT SFARI
+		var isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 && navigator.userAgent && !navigator.user;
+
+		if ( !isSafari ) {
+			$("#intro_scroll_wrapper").sectionsnap();
+		}
 
 	},
 
@@ -36,9 +43,25 @@ var HomeNav = {
 
 		$(window).on( "scroll", _.throttle( function(e){
 
-			self.hashCheck();
+			if ( !self.scrollBlocked ) {
+				self.hashCheck();
+			} else {
+				e.preventDefault();
+			}
 
 		}, 250 ));
+
+		// $("html").on( "scroll", _.throttle( function(e){
+
+		// 	console.log( 42, "HTML scrolling.");
+
+		// }, 100 ));	
+
+		// $("body").on( "scroll", _.throttle( function(e){
+
+		// 	console.log( 42, "Body scrolling.");
+
+		// }, 100 ));	
 
 	},
 
@@ -64,8 +87,15 @@ var HomeNav = {
 			if ( winTop > thisTop && winTop < thisBottom ) {
 				// IF CURRENT HASH !== VISIBLE SECTION
 				var thisSection = $(this).attr("data-anchor");
+				console.log( 90, "hashCheck", thisSection );
 				if ( currHash !== thisSection && thisSection !== "video" ) {
 					Backbone.history.navigate( thisSection, {trigger: false} );
+
+					// IF FOREWORD AND VIDEO NOT YET HIDDEN
+					if ( thisSection === "foreword" && !Home.videoHidden ) {
+						Home.hideVideo();
+					}
+
 					self.colourManager( thisSection );
 				}
 			}

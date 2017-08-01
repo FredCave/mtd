@@ -1,46 +1,41 @@
-##################################################
+SCROLLING GLITCHY IN ARTICLES
 
-	GENERAL
+MOBILE –
+	
+	DISABLE SLIDING BETWEEN SECTIONS ON MOBILE
+	
+	OVERFLOW-X? WINDOW MOVES AROUND SCREEN
+			
+	ARTICLE TOP BAR DISAPPEARS? OR IOS BAR DOESN'T DISAPPEAR?
+	
+	IN "MANUAL":
+		BULLETS TOO BIG, LIST 2 NOT ALIGNED
+		CAPTIONS NOT VISIBLE
+		
+	SPLIT DOESN'T OPEN ON MOBILE?? ON IPHONE 6 IT TRIES TO OPEN IT LIKE ON DESKTOP
+		
+	NOTES CLOSE ARROW – could you make this arrow slide up with the top of the NOTES
 
-##################################################
+	– INTRO NAV BAR
 
-– FAVICON
+PDFs FIX
 
-##################################################
+split – can we for the images that the "desktop size" is the max size? otherwise on large screens it looks odd when it switches
 
-	HOME
 
-##################################################
 
-##################################################
+– CHECK NAVIGATION + CLEANER
+	– ANIMATION IN/OUT OF EDITOR
 
-	ARTICLES
-
-##################################################
-
-– FOOTNOTES
-
-– GENERAL STYLING FIX
-
-– SPLIT + SATELLITE STYLING
+– INTRO NAV BAR CLEANER ANIMATION + HIGHLIGHT CURRENT
 
 – BETTER TOP BAR ANIMATION – HOW WAS IT BEFORE?
 
-– BULLETS MARGIN-RIGHT 18PX
-
-– IMAGES ON THE RIGHT COLUMN SHOULD ALIGN TO PARAGRAPH THEY’RE ATTACHED TO. (ADD “ASSIGN TO” CLASS)
-
 – LIGHTBOX
 
-##################################################
+TITLES DON'T WRAP (h2)
 
-	EDITOR / PDFs
-
-##################################################
-
-– SWITCH OVER ARTICLE SAVING TO LOCAL STORAGE
-
-– PDF HEADERS
+TOP BAR NOTES BUTTON TOGGLES NOTES
 
 
 
@@ -49,6 +44,12 @@
 
 
 
+
+LATER:
+
+???????
+
+– LAZYLOAD IMAGES
 
 
 

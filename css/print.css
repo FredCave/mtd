@@ -20,6 +20,7 @@
 }
 
 @page :first {
+	$page-break-before: always;
 	header: _blank;
 }
 
@@ -210,6 +211,10 @@ i, em {
 p {
 /*	border: 1px solid purple;*/
 	margin-bottom: 12px;
+}
+
+.web_spacer {
+	display: none;
 }
 
 span {

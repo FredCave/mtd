@@ -2,7 +2,7 @@
 <html <?php language_attributes(); ?> style="margin-top: 0px !important">
 
 <head>
-	<title>Mind The Dance</title>
+	<title>MIND THE DANCE</title>
     <meta name="description" content="<?php bloginfo('description'); ?>">
 	<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />

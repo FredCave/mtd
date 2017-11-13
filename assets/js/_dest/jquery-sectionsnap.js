@@ -26,7 +26,8 @@
 		}
 
 		// return the closest element (depending on direction)
-		var getClosestElement = function() {			
+		var getClosestElement = function() {	
+
 			var $list = $wrapper.find(settings.selector)
 			, wt = $(window).scrollTop()
 			, wh = $(window).height()
@@ -38,8 +39,13 @@
 				$list.each(function() {
 					var st = $(this).position().top;					
 					if ((st > wt) && (st <= wtd)) {
-						$target = $(this);
-						return false; // just to break the each loop
+						// console.log( 42, $(this).attr("id") );
+						// IF NOT TARGETING VIDEO SECTION
+						if ( $(this).attr("id") !== "video_section" ) {
+							$target = $(this);
+							return false; // just to break the each loop							
+						} 
+
 					}
 				});
 			} else {
@@ -49,8 +55,12 @@
 					// var st = $(this).position().top;		
 					var st = $(this).find(".scroll_target").offset().top;			
 					if ((st < wt) && (st >= wtd)) {
-						$target = $(this).find(".scroll_target");
-						return false; // just to break the each loop
+						// console.log( 58, $(this).attr("id") );
+						// IF NOT TARGETING VIDEO SECTION
+						if ( $(this).attr("id") !== "video_section" ) {
+							$target = $(this).find(".scroll_target");
+							return false; // just to break the each loop
+						}
 					}
 				});
 			}
@@ -59,9 +69,15 @@
 
 		// snap
 		var snap = function() {
+			
+			if ( HomeNav.introHidden ) {
+				return;
+			}
+
 			var $target = getClosestElement();
 			if ($target) {
 				animating = true;
+				HomeNav.scrollBlocked = true;
 				$('html, body').animate({
 					scrollTop: ($target.offset().top)
 				}, settings.animationTime, function() {
@@ -80,6 +96,7 @@
 						});
 					}
 
+					HomeNav.scrollBlocked = false;
 					animating = false;
 				});
 			}
@@ -87,7 +104,6 @@
 		// on window scroll
 		var windowScroll = function() {
 		
-
 			if ( animating ) 
 				return;
 			var st = $(window).scrollTop();

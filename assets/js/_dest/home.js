@@ -10,7 +10,17 @@ var Home = {
 
 	animationInit: false, 
 
+	eventsBound: false, 
+
+	objectInit: false,
+
 	init: function ( section ) {
+
+		if ( this.objectInit ) {
+			return;
+		}
+
+		this.objectInit = true;
 
 		console.log("Home.init", section);
 
@@ -56,6 +66,12 @@ var Home = {
 
 		// BOUND AFTER AJAX LOAD
 
+		if ( this.eventsBound ) {
+			return;
+		}
+
+		this.eventsBound = true;
+
 		console.log("Home.bindEvents");
 
 		var self = this;
@@ -73,27 +89,11 @@ var Home = {
 			$("#contents_image").find("#preview-" + thisId).css("opacity","1");
 		});
 
-		$("#contents_list li").on( "mouseout", function(){
-			// HIDE IMAGE
-			// $("#contents_image li").css("opacity","0");
-		});
-
 		$(window).on( "resize", _.throttle( function(e){
 
 			self.resizeImgs();
 
 		}, 1000 ));
-
-		// SAFARI BUG FIX
-		$(window).on( "scroll", _.throttle( function(e){
-
-			if ( $(window).scrollTop() < $(window).height() ) {
-				$("#contents_image_wrapper").hide();
-			} else {
-				$("#contents_image_wrapper").show();				
-			}
-
-		}, 250 ));
 
 	},
 
@@ -171,6 +171,8 @@ var Home = {
 		function sceneFive () {
 			$("#animation_wrapper").css({"top": winH / 4 });
 			startLoop();
+			// SHOW SECTION TITLE ON MOBILE
+			HomeNav.mobileNav( "init" );
 		}
 
 		function sceneSix () {
@@ -244,6 +246,9 @@ var Home = {
 
 			$("#introvid").remove();
 
+			// CALC CONTENTS IMG OFFSET HERE
+			self.contentsImgInit();
+
 		}, 1100 );
 
 		// STOP FROM RUNNING ONCE VIDEO IS HIDDEN
@@ -265,7 +270,6 @@ var Home = {
 		function loadImgs () {
 
 			if ( self.imgsLoaded ) {
-				console.log( 165, "Imgs already loaded." );
 				return;
 			}
 
@@ -315,7 +319,7 @@ var Home = {
 
 			self.imgsLoaded = true;
 
-			self.contentsImgInit();
+			// self.contentsImgInit();
 
 		}
 
@@ -339,18 +343,36 @@ var Home = {
 
 		var self = this;
 
-		var imgInview = new Waypoint.Inview({
-			element: $('#contents_image_wrapper')[0], 
-			// context: $(window), 
-			entered: function( direction ) {
-				// END FIX
-				self.contentsImgUnfix( direction );
-			},
-			exit: function( direction ) {
-				// START FIX
-				self.contentsImgFix();
-			},
-		});
+		// CALC SCROLL LIMITS
+		this.calcImgFixLimits();
+
+		var lastPos = 0;
+		$(window).on("scroll", _.throttle( function(){
+
+			var currentPos = $(this).scrollTop(),
+				direction = currentPos - lastPos,
+				topLimit = parseInt( $("#contents_image_wrapper").attr("data-top") ),
+				bottomLimit = parseInt( $("#contents_wrapper").attr("data-bottom") );
+				
+			// IF ABOVE TOP LIMIT
+			if ( currentPos < topLimit ) {
+				self.contentsImgUnfix( -1 );
+			} else if ( currentPos > topLimit && currentPos < bottomLimit ) {
+				self.contentsImgFix();	
+			} else if ( currentPos > bottomLimit ) {
+				self.contentsImgUnfix( 1 );
+			}
+
+			lastPos = currentPos;
+
+		}, 100 ));
+
+		$(window).on("resize", _.throttle( function(e){
+
+			// RECALCULATE IMG TOP POSITION
+			self.calcImgFixLimits();	
+
+		}, 500 ));
 
 		// SHOW RANDOM IMAGE
 		var imgs = $('#contents_image ul').children().length,
@@ -359,6 +381,19 @@ var Home = {
 
 	},
 
+	calcImgFixLimits: function () {
+
+		console.log("Home.calcImgFixLimits");
+
+		var imgPos = $("#contents_image_wrapper").offset().top - 72;
+		$("#contents_image_wrapper").attr( "data-top", imgPos );
+		var imgHeight = $("#contents_image").height(), 
+			imgBottom = 72 + imgHeight, 
+			bottomLimit = $("#contents_wrapper").offset().top + $("#contents_wrapper").height() - imgBottom;
+		$("#contents_wrapper").attr( "data-bottom", bottomLimit );
+
+	}, 
+
 	contentsImgFix: function () {
 
 		console.log("Home.contentsImgFix");
@@ -366,12 +401,10 @@ var Home = {
 		// GET PARENT WIDTH
 		var parentW = $("#contents_list").width();
 
-		console.log( 365, $("#contents_list").width() );
-
 		$("#contents_image").css({
 			"position" : "fixed",
 			"width" : parentW,
-			"top" : "",
+			"top" : 72,
 			"margin-left" : ""
 		});
 
@@ -379,23 +412,25 @@ var Home = {
 
 	contentsImgUnfix: function ( direction ) {
 
-		console.log("Home.contentsImgUnfix");
+		console.log( "Home.contentsImgUnfix");
 
 		var top, bottom;
-		if ( direction === "up" ) {
+		if ( direction < 0 ) {
+			// UP
 			top = "";
 			bottom = "";
 		} else {
-			// GET CURRENT TOP POSITION
+			// DOWN
 			top = "initial";
-			bottom = 71;
+			bottom = 72;
 		}
 
 		$("#contents_image").css({
 			"position" : "",
 			"top" : top,
 			"bottom" : bottom,
-			"margin-left" : ""
+			"margin-left" : "",
+			"width" : ""
 		});
 
 	},
@@ -428,7 +463,6 @@ var Home = {
 		});
 
 		// RESIZE WRAPPER
-		console.log( 313, $("#contents_list").width() );
 		$("#contents_image").css({
 			"width" : $("#contents_list").width()
 		})

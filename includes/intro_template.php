@@ -155,6 +155,7 @@ function mtd_colophon () {
                                     $logo_url = str_replace( "png", "svg", $logo["url"] );     
                                     // IF EU LOGO
                                     if ( strpos( $logo_url, 'eu-1' ) !== false ) { ?>
+
                                         <li><img class="colophon_eu_logo colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></li>
                                         <?php // GET EU TEXT  
                                         if ( get_field("colophon_eu_text") ) { ?>
@@ -162,10 +163,13 @@ function mtd_colophon () {
                                                 <?php the_field("colophon_eu_text"); ?>
                                             </div>
                                         <?php } ?>
+
                                     <?php } else { 
-                                        // IF IDODCE LOGO
-                                        if ( $logo["title"] === "idocde" ) { ?>
-                                            <li><a href="http://idocde.net" target="_blank"><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></a></li>
+                                        // IF IDODCE LOGO OR CC LOGO
+                                        if ( strpos( $logo_url, "idocde" ) !== false ) { ?>
+                                            <li class="idocde_icon"><a href="http://idocde.net" target="_blank"><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></a></li>
+                                        <?php } else if ( strpos( $logo_url, "cc_icon" ) !== false ) { ?>
+                                            <li class="cc_icon"><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></li>
                                         <?php } else { ?>
                                             <li><img class="colophon_logo" width="<?php echo $logo["width"]; ?>" height="<?php echo $logo["height"]; ?>" src="<?php echo $logo_url; ?>" /></li>
                                         <?php } 

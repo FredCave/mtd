@@ -26,6 +26,7 @@
 			        <li><a href="" data-link="colophon" class="intro_nav">Colophon</a></li>
 			    </ul>
 			    <span id="intro_nav_right"><a href="#make-book"><img src="<?php bloginfo('template_url'); ?>/assets/img/nav_book_2.svg" /></a></span>
+				<div id="intro_nav_mobile">Foreword</div>
 			</div>
 		</div>
 
@@ -57,8 +58,8 @@
 
 	<div id="article_nav" class="article_element">
 
-				<div id="article_nav_grey"></div>
-				<div id="article_nav_white"></div>
+				<div id="article_nav_grey" class="article_nav_colour"></div>
+				<div id="article_nav_white" class="article_nav_colour"></div>
 
 		        <div id="nav_close">
 		        	<a href="#contents">

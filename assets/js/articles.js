@@ -45,6 +45,8 @@ var Articles = {
 
         var self = this;
 
+        this.current_article = id;
+
 		// IF NOT DONE: INIT ARTICLES
 		if ( this.firstTime ) {
 			this.init();
@@ -126,6 +128,9 @@ var Articles = {
 
         $(".current_article").removeClass("prepped");
 
+        // HIDE BOTH COLOURS DURING TRANSITION
+        $(".article_nav_colour").hide();
+
         // STOP RUNNING TITLE FROM APPEARING ON NAV 
         $("#nav_title").css("opacity","0");
         $("#nav_title span").css("opacity","0");
@@ -158,7 +163,7 @@ var Articles = {
         $.each( articles, function ( i ) {
             if ( $(this)[0].ID === parseInt(id) ) {
                 $("#nav_title span").text( $(this)[0].title );
-                document.title = "Mind The Dance – " + $(this)[0].title;
+                document.title = "MIND THE DANCE – " + $(this)[0].title;
                 return; 
             }
         });
@@ -225,15 +230,17 @@ var Articles = {
 
             if ( colour === "grey" ) {
                 $(".current_article").addClass("grey");
-                $("#article_nav_grey").css({"opacity":"1"});
+                $("#article_nav_grey").show().animate({"opacity":"1"},500);
                 $("#article_nav_white").css({"opacity":"0"});
                 $("html").css("background-color", "#eee");
+                $("#article_scroll_wrapper").css("background-color", "#eee");
 
             } else if ( colour === "white" ) {
                 $(".current_article").removeClass("grey");
                 $("#article_nav_grey").css({"opacity":"0"});
-                $("#article_nav_white").css({"opacity":"1"});
+                $("#article_nav_white").show().animate({"opacity":"1"},500);
                 $("html").css("background-color", "#fffef8"); 
+                $("#article_scroll_wrapper").css("background-color", "#fffef8");
 
             }
 
@@ -304,7 +311,8 @@ var Articles = {
 
         _.delay( function(){
             $(".current_article").css({ 
-                "width" : "50%"
+                "width" : "50%",
+                "margin-left" : "0"
             });          
         }, 150 );
 
@@ -320,6 +328,52 @@ var Articles = {
         setTimeout( function(){
             $(".split_close").css("opacity","1");
         }, 1500 );
+
+        // IF GLOSSARY: SCROLL TO TERM
+        if ( $("#split_wrapper").attr("data-id") === "295" ) {
+            console.log( 334, "Glossary click." );
+            this.glossaryClick();
+        }
+
+    },
+
+    glossaryClick: function () {
+
+        console.log("Articles.glossaryClick");
+
+        // CALLED AFTER SPLIT WRAPPER IS LOADED (SPLITANIM)
+
+        // GET CLICKED TERM
+        var clickedTerm = this.clickedTerm.toLowerCase();
+
+        // SCROLL TO TERM
+        $("#split_wrapper h4").each( function(){
+
+            // GET LAST WORD – RMEOVING BRACKETS
+            var lastWord = $(this).text().toLowerCase().split("(")[0];
+            lastWord = lastWord.trim().split(" ").slice(-1)[0];
+
+            // IF CLICKEDTERM INCLUDES LAST WORD OF SUB-TITLE 
+            if ( clickedTerm.indexOf( lastWord ) > -1 && lastWord !== "" ) {
+
+                // GET OFFSET
+                var offsetTop = $(this).position().top + $(this).parents(".article_inner_wrapper").position().top,
+                    scrollPos = $("#split_wrapper").scrollTop();
+                // console.log( 368, offsetTop, scrollPos, $(this).position().top, $(this).parents(".article_inner_wrapper").position().top ); // PARENT OFFSET = 650
+                _.defer( function(){
+                    $("#split_wrapper").animate({
+                        scrollTop: offsetTop + scrollPos + 40
+                    }, 1000 );                    
+                });
+
+                return;
+
+            }
+
+        });
+
+        // CLEAR SAVED TERM
+        this.clickedTerm = "";
 
     },
 
@@ -411,6 +465,11 @@ var Articles = {
 
         console.log("Articles.internalLink");
 
+        // IF SMALL SCREEN
+        if ( $(window).width() < 768 ) {
+            return;
+        }
+
         // GET ID
         var hash = click[0].hash,
             clickId = parseInt( hash.split("/")[1] );
@@ -419,7 +478,9 @@ var Articles = {
 
         // CHECK IF NOT ALREADY LOADED
         if ( clickId === parseInt( $("#split_wrapper").attr("data-id") ) ) {
-            // console.log( 391, "Already loaded." );
+            // IF GLOSSARY: SCROLL TO TERM
+            this.clickedTerm = click.text();
+            this.glossaryClick();
             return;
         }
 
@@ -445,9 +506,9 @@ var Articles = {
         var anchor = click.attr("href"),
             target = $(anchor).position().top + $(".article_inner_wrapper").position().top - 80;
 
-        // console.log( 398, anchor, target );
+        console.log( 398, anchor, target );
 
-        $("#article_scroll_wrapper").animate({
+        $("html, body").animate({
             scrollTop : target
         }, 500 );
 
@@ -506,7 +567,14 @@ var Articles = {
 
         var artString = localStorage.articles;
 
-        return artString.split(",");
+        console.log( 511, artString, localStorage );
+
+        if ( artString ) {
+            return artString.split(",");
+        } else {
+            // RETURN EMPTY ARRAY
+            return [];
+        }
 
     },
 
@@ -522,6 +590,8 @@ var Articles = {
                 $("#nav_title").css("opacity","1"); 
             }, 1000 );
         }
+
+        console.log( 545, scroll, limit );
 
         if ( scroll > limit ) {
             $("#nav_title span").css("opacity","1");

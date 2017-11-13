@@ -6,28 +6,37 @@ var HomeNav = {
 
 	scrollBlocked: false, 
 
+	introHidden: false, 
+
+	eventsBound: false, 
+
 	init: function () {
 
 		console.log("HomeNav.init");
 
 		this.bindEvents();
 
-		// IF NOT SFARI
-		var isSafari = navigator.vendor && navigator.vendor.indexOf('Apple') > -1 && navigator.userAgent && !navigator.user;
-
-		if ( !isSafari ) {
-			$("#intro_scroll_wrapper").sectionsnap();
-		}
-
 	},
 
 	bindEvents: function () {
+
+		if ( this.eventsBound ) {
+			return;
+		}
+
+		this.eventsBound = true;
 
 		console.log("HomeNav.bindEvents");
 
 		var self = this;
 
+		// INIT SLIDING SECTIONS IF NOT MOBILE
+		if ( $(window).width() > 768 ) {
+			$("#intro_scroll_wrapper").sectionsnap();
+		}
+
 		// NAV LINKS CLICK
+		// $(".intro_nav").off("click");
 		$(".intro_nav").on( "click", function(e) {
 			
 			e.preventDefault();
@@ -35,12 +44,14 @@ var HomeNav = {
 
 		});
 
+		// $(window).off("resize");
 		$(window).on( "resize", _.throttle( function(e){
 
 			self.winH = $(window).height();
 
 		}, 750 ));
 
+		// $(window).off("scroll");
 		$(window).on( "scroll", _.throttle( function(e){
 
 			if ( !self.scrollBlocked ) {
@@ -51,28 +62,18 @@ var HomeNav = {
 
 		}, 250 ));
 
-		// $("html").on( "scroll", _.throttle( function(e){
-
-		// 	console.log( 42, "HTML scrolling.");
-
-		// }, 100 ));	
-
-		// $("body").on( "scroll", _.throttle( function(e){
-
-		// 	console.log( 42, "Body scrolling.");
-
-		// }, 100 ));	
-
 	},
 
 	hashCheck: function () {
 
-		// console.log("HomeNav.hashCheck");
+		console.log( 71, this.introHidden );
 
 		// PREVENT DURING SCROLLTO ANIMATION
-		if ( this.scrolling ) {
+		if ( this.scrolling || this.introHidden ) {
 			return;
 		}
+
+		console.log("HomeNav.hashCheck");
 
 		// GET CURRENT HASH
 		var currHash = document.location.hash.substr(1),
@@ -87,8 +88,9 @@ var HomeNav = {
 			if ( winTop > thisTop && winTop < thisBottom ) {
 				// IF CURRENT HASH !== VISIBLE SECTION
 				var thisSection = $(this).attr("data-anchor");
-				console.log( 90, "hashCheck", thisSection );
+								
 				if ( currHash !== thisSection && thisSection !== "video" ) {
+					
 					Backbone.history.navigate( thisSection, {trigger: false} );
 
 					// IF FOREWORD AND VIDEO NOT YET HIDDEN
@@ -101,6 +103,32 @@ var HomeNav = {
 			}
 
 		});
+
+	},
+
+	mobileNav: function ( section ) {
+
+		// PREVENT ONCE INTRO HIDDEN
+		if ( this.introHidden ) {
+			return;
+		}
+
+		console.log( "HomeNav.mobileNav", section );
+
+		if ( section === "init" ) {
+			console.log(111);
+			$("#intro_nav_mobile").css("opacity","1");
+		} else {
+			console.log(114);
+			if ( section === "contents" ) {
+				console.log(116);
+				$("#intro_nav_mobile").css("color","white");
+			} else {
+				console.log(119);
+				$("#intro_nav_mobile").css("color","");
+			}
+			$("#intro_nav_mobile").text( section );
+		}
 
 	},
 
@@ -142,12 +170,13 @@ var HomeNav = {
 
 		console.log("HomeNav.colourManager", section);
 
+		// INCLUDE MOBILE NAV UPDATE
+		this.mobileNav( section );
+
 		// IF NOT FIRST TIME
 		if ( section === undefined && Home.videoHidden ) {
 			section = "foreword";
 		}
-
-		console.log( 120, section );
 
 		if ( section !== "video" ) {
 			var bgColour = $("#intro_" + section).css("background-color");

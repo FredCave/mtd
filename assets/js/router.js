@@ -32,119 +32,114 @@ app.MainRouter = Backbone.Router.extend({
 
     },
 
-    wrapperManager: function ( section ) {
+    // wrapperManager: function ( section ) {
 
-        console.log("MainRouter.wrapperManager", section);
+    //     console.log("MainRouter.wrapperManager", section);
 
-        if ( section === "intro" ) {
+    //     if ( section === "intro" ) {
 
-            HomeNav.scrollBlocked = false;
-            $(".current_article").removeClass("prepped");
+    //         HomeNav.scrollBlocked = false;
+    //         $(".current_article").removeClass("prepped");
 
-            $("#intro_scroll_wrapper").css({
-                "display"   : "block", 
-                "opacity" : "1"
-            });            
+    //         $("#intro_scroll_wrapper").css({
+    //             "display"   : "block", 
+    //             "opacity" : "1"
+    //         });            
 
-            $(".article_element").css({
-                "opacity" : "0",
-            });
+    //         // $(".article_element").css({
+    //         //     "opacity" : "0",
+    //         // });
 
-            setTimeout( function(){
+    //         setTimeout( function(){
                     
-                $(".article_element").css({
-                    "display"   : "none", 
-                    "z-index"   : ""    
-                });
+    //             // $(".article_element").css({
+    //             //     "display"   : "none", 
+    //             //     "z-index"   : ""    
+    //             // });
 
-                $("#editor_scroll_wrapper").css({
-                    "display"   : "none", 
-                    "z-index"   : ""    
-                });
+    //             // $("#editor_scroll_wrapper").css({
+    //             //     "display"   : "none", 
+    //             //     "z-index"   : ""    
+    //             // });
 
-                if ( !Home.pageLoaded ) {
-                    HomeNav.colourManager();
-                }
+    //             if ( !Home.pageLoaded ) {
+    //                 HomeNav.colourManager();
+    //             }
 
-            }, 500 );
+    //         }, 500 );
 
-            // IF INTRO ANIMATION ALREADY INIT: RESTART LOOP
-            console.log( 72, Home.animationInit );
-            if ( Home.animationInit ) {
-                Home.introAnimation( true );
-            }
+    //         // IF INTRO ANIMATION ALREADY INIT: RESTART LOOP
+    //         if ( Home.animationInit ) {
+    //             Home.introAnimation( true );
+    //         }
 
-        } else if ( section === "article" ) {
+    //     } else if ( section === "article" ) {
 
-            HomeNav.scrollBlocked = true;
+    //         // HomeNav.scrollBlocked = true;
 
-            $("html").css("background-color","#fffef8");
+    //         // $("html").css("background-color","#fffef8");
 
-            $("#article_nav").css({
-                "background-color"  : "transparent",
-                "box-shadow"        : "none"
-            });
+    //         // $("#article_nav").css({
+    //         //     "background-color"  : "transparent",
+    //         //     "box-shadow"        : "none"
+    //         // });
 
-            $(".article_element").css({
-                "display"   : "block", 
-                "z-index"   : "999"
-            });
+    //         // $(".article_element").css({
+    //         //     "display"   : "block", 
+    //         //     "z-index"   : "999"
+    //         // });
 
-            setTimeout( function(){
+    //         // setTimeout( function(){
                 
-                $(".article_element").css({
-                    "opacity" : "1" 
-                });
+    //         //     $(".article_element").css({
+    //         //         "opacity" : "1" 
+    //         //     });
 
-                $(".top_level_wrapper").not("#article_scroll_wrapper").css({
-                    "opacity" : "0"
-                });
+    //         //     $(".top_level_wrapper").not("#article_scroll_wrapper").css({
+    //         //         "opacity" : "0"
+    //         //     });
 
-                $("#editor_scroll_wrapper").css({
-                    "display"   : "none", 
-                    "z-index"   : ""    
-                });
+    //         //     $("#editor_scroll_wrapper").css({
+    //         //         "display"   : "none", 
+    //         //         "z-index"   : ""    
+    //         //     });
 
-                // SET NAV COLOUR
-                Articles.colourManager();
+    //         //     // SET NAV COLOUR
+    //         //     Articles.colourManager();
 
-            }, 500 );
+    //         // }, 500 );
 
-            // STOP INTRO ANIMATION
-            console.log( 112, Home.interval );
-            clearInterval( Home.interval );
+    //         // // STOP INTRO ANIMATION
+    //         // console.log( 112, Home.interval );
+    //         // clearInterval( Home.interval );
 
-        } else if ( section === "editor" ) {
+    //     } else if ( section === "editor" ) {
 
-            HomeNav.scrollBlocked = true;
-            $(".current_article").removeClass("prepped");
+    //         // HomeNav.scrollBlocked = true;
+    //         // $(".current_article").removeClass("prepped");
 
-            $("html").css("background-color","#fffef8");
+    //         // $("html").css("background-color","#fffef8");
 
-            $("#editor_scroll_wrapper").css({
-                "display"   : "block", 
-                "z-index"   : "999",
-                "opacity"   : "1"
-            }).siblings(".top_level_wrapper").fadeOut(1000);
+    //         // $("#editor_scroll_wrapper").css({
+    //         //     "display"   : "block", 
+    //         //     "z-index"   : "999",
+    //         //     "opacity"   : "1"
+    //         // }).siblings(".top_level_wrapper").fadeOut(1000);
 
-            $(".article_element").fadeOut(1000);
+    //         // $(".article_element").fadeOut(1000);
 
-            // STOP INTRO ANIMATION
-            clearInterval( Home.interval );
+    //         // // STOP INTRO ANIMATION
+    //         // clearInterval( Home.interval );
 
-        }
+    //     }
 
-    },
+    // },
 
     showIntro: function () {
 
         console.log("MainRouter.showIntro");
 
         var section = Backbone.history.fragment;
-
-        this.wrapperManager("intro");
-
-        console.log( 105, Home.pageLoaded );
 
         if ( !Home.pageLoaded ) {
             console.log( 108, "Clear hash." );
@@ -158,9 +153,88 @@ app.MainRouter = Backbone.Router.extend({
             Backbone.history.navigate( section, {trigger: true} );   
         }
 
-        _.delay( function(){
-            Home.init();            
-        }, 250 );
+        // ALLOW NEW CURRENT ARTICLE TO BE PREPPED
+        $(".current_article").removeClass("prepped");
+
+        HomeNav.scrollBlocked = false;
+
+        // UNFIX INTRO
+        var offset = Math.abs( parseInt( $("#intro_sections").css("top") ) );
+        if ( isNaN( offset ) ) {
+            offset = 0;
+        }
+
+        console.log( 172, offset );
+
+
+        // SHOW INTRO BUT DON'T UNFIX YET
+        $("#intro_scroll_wrapper").css({
+            "display"   : "block", 
+            "opacity"   : "1"
+        });   
+        $("#intro_scroll_wrapper").css({
+            "position"  : "",
+            "height"    : ""
+        });
+
+        // JOIN???
+
+        $("#intro_sections").css({
+            "position"  : "",
+            "top"       : "",
+            "width"     : ""
+        }); 
+
+        $("html,body").animate({
+            scrollTop : offset
+        }, 1 ); 
+
+
+        // FADE OUT ARTICLE
+        console.log(166);
+        
+        $("#article_nav").animate({
+            "opacity" : "0"                
+        }, 1000 );
+
+        $("#article_scroll_wrapper").animate({
+            "opacity" : "0"                
+        }, 1000, function(){
+           
+            // AFTER FADE OUT
+            $(".article_element").css({
+                "display"   : "",
+                "z-index"   : ""                
+            });
+
+            $("#editor_scroll_wrapper").animate({
+                "opacity" : 0
+            }, 1000, function (){
+
+                $(this).css({
+                    "display"   : "none", 
+                    "z-index"   : ""    
+                });
+
+            });
+
+            if ( !Home.pageLoaded ) {
+                HomeNav.colourManager();
+            }
+
+            // IF INTRO ANIMATION ALREADY INIT: RESTART LOOP
+            if ( Home.animationInit ) {
+                Home.introAnimation( true );
+            }
+
+            _.defer( function(){
+                Home.init();                 
+            });
+
+            // RESET HASHCHECK
+            HomeNav.introHidden = false;
+
+        });
 
     },
 
@@ -168,11 +242,73 @@ app.MainRouter = Backbone.Router.extend({
 
         console.log("MainRouter.showArticle", id);
 
-        Articles.currentArticle = id;
-        
-        this.wrapperManager("article");
+        // STOP INTRO ANIMATION
+        clearInterval( Home.interval );
 
-        Articles.loadArticle( id );
+        // STOP HASHCHECK
+        HomeNav.introHidden = true;
+
+        // FADE IN WHITE BG (FIXED) + NAV
+        console.log( 80, "Fade in article wrapper." );
+        $(".current_article").empty();
+
+        $("#editor_scroll_wrapper").css({
+            "z-index" : ""
+        });
+        
+        $("#article_scroll_wrapper").css({
+            "display"   : "block",
+            "z-index"   : 9999
+        }).animate({
+            "opacity" : "1"  
+        }, 1000, function (){
+
+           
+            _.defer( function(){
+            
+                // LOAD ARTICLE
+                Articles.loadArticle( id ); 
+
+                // SET NAV COLOUR
+                Articles.colourManager();
+                   
+            });
+
+            $("#article_nav").css({
+                "display"   : "block",
+                "z-index"   : 9999
+            }).animate({
+                "opacity" : "1"                
+            }, 1000 );
+
+            // FIX INTRO WRAPPER LEVEL WITH TOP OF CONTENTS
+            var forewordH = $("#intro_foreword").height();
+            $("#intro_scroll_wrapper").css({
+                "position"  : "fixed",
+                "height"    : "100vh"
+            });
+            $("#intro_sections").css({
+                "position" : "absolute",
+                "top" : 60 - forewordH,
+                "width" : "100%"
+            });
+
+            $("#editor_scroll_wrapper").animate({
+                "opacity" : 0
+            }, 1000, function (){
+                $(this).css({
+                    "display"   : "none", 
+                    // "z-index"   : ""    
+                });
+            });
+
+            // ARTICLE SCROLL WRAPPER ABSOLUTE
+            $("#article_scroll_wrapper").css({
+                "position"  : "absolute",
+                "height"    : "auto"
+            });
+
+        });
 
     },
 
@@ -180,7 +316,37 @@ app.MainRouter = Backbone.Router.extend({
 
         console.log("MainRouter.showEditor");
 
-        this.wrapperManager("editor");
+        // STOP INTRO ANIMATION
+        clearInterval( Home.interval );
+
+        // STOP HASHCHECK
+        HomeNav.introHidden = true;
+
+        $("html").css("background-color","#fffef8");
+
+        // FIRST FIXED 
+        $("#editor_scroll_wrapper").css({
+            "position" : "fixed",
+            "display"   : "block", 
+            "z-index"   : "9999",            
+        }).animate({
+            "opacity" : 1
+        }, 1000, function (){
+
+            // FIX OTHER WRAPPERS
+            var forewordH = $("#intro_foreword").height();
+            $("#intro_scroll_wrapper").css({
+                "position"  : "fixed",
+                "height"    : "100vh"
+            });
+            $("#intro_sections").css({
+                "position" : "absolute",
+                "top" : 60 - forewordH,
+                "width" : "100%"
+            });
+
+
+        });
 
         Editor.init();
 

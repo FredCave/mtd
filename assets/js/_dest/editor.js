@@ -103,7 +103,7 @@ var Editor = {
 			articles = Articles.getStorageArticles(),
 			articleData = App.articles;
 
-		console.log( 106, articles );
+		console.log( 106, articles, articles.length );
 
 		// IF NO ARTICLES
 		if ( articles.length < 1 ) {

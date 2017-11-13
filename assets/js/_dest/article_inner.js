@@ -27,6 +27,10 @@ var ArticleInner = {
         // INTERNAL LINKS
         wrapper.on("click", ".internal_link", function(e) {
 
+            // STORE CLICKED TERM TEMPORARILY FOR GLOSSARY SCROLLING
+            // DEALT WITH IN Articles.glossaryClick
+            Articles.clickedTerm = $(this).text();
+
             // IF IN FOOTNOTES OPEN IN NEW TAB
             if ( $(this).parents(".article_footnotes").length ) {
                 $(this).attr("target","_blank");
@@ -104,16 +108,23 @@ var ArticleInner = {
         });
 
         wrapper.on("click", ".footnotes_close", function(){
-            // console.log( 80, "Close footnotes." );
+            console.log( 80, "Close footnotes." );
             self.closeFootnotes();
             self.footnotesVisible = false;
         });  
 
         // RUNNING TITLE SHOW/HIDE
-        $("#article_scroll_wrapper").off("scroll");
-        $("#article_scroll_wrapper").on("scroll", _.throttle( function(){
+        // $("#article_scroll_wrapper").off("scroll");
+        // $("#article_scroll_wrapper").on("scroll", _.throttle( function(){
+        //     console.log( 115, "scroll" );
+        //     var scroll = $(this).scrollTop();
+        //     Articles.titleCheck( scroll );
+        // }, 500 ));
+
+        $(document).on("scroll", _.throttle( function(){
             var scroll = $(this).scrollTop();
             Articles.titleCheck( scroll );
+            // console.log( 127, scroll );
         }, 500 ));
 
         $(window).on("resize",  _.throttle( function(){
@@ -182,7 +193,10 @@ var ArticleInner = {
                         $(this).attr( "target", "_blank" ).addClass("external_link");    
                     } else {
                         // SPLIT SCREEN LINKS
-                        $(this).addClass("internal_link");
+                        if ( $(window).width() > 768 ) {
+                            $(this).addClass("internal_link");
+                        }
+
                     }
                 }
             }
@@ -195,6 +209,7 @@ var ArticleInner = {
             if ( $(this).parent("p").length ) {
                 $(this).unwrap();
             }
+
             $(this).prepend("<span class='glyph'><img src='" + TEMPLATE + "/assets/img/stix_arrow.svg' /></span> ");
 
         });
@@ -208,6 +223,8 @@ var ArticleInner = {
 
         // IF ARTICLE 3: EXTRACT IMAGE
         wrapper.find(".article_template_3").each( function(){
+
+            // REMOVE SPACES BEFORE A, B, Cs ???
 
             // IF ALIGN TO MARKERS DEFINED
             if ( $(this).find(".align_to").length ) {
@@ -266,7 +283,7 @@ var ArticleInner = {
                     }
                     
                     img.addClass("hidden").hide();
-                    caption.hide();
+                    caption.addClass("hidden").hide();
 
                     imgWrapper.append( html );
 
@@ -303,7 +320,7 @@ var ArticleInner = {
 
         console.log("ArticleInner.mobileNotesCheck");
 
-        if ( $(".article_footnotes_wrapper").length && $(window).width() > 768 ) {
+        if ( $(".article_footnotes_wrapper").length && $(window).width() < 768 ) {
             $("#mobile_notes").fadeIn( 1000 );
         } else {
             $("#mobile_notes").fadeOut( 1000 );
